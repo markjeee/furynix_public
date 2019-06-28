@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+source $(dirname $0)/functions
+
+out_file="$1"
+furynix_token="$2"
+
+configure_furynix_token
+
+mkdir /tmp/module_using_npm
+cp -rf /build/module_using_npm/* /tmp/module_using_npm
+rm -rf /tmp/module_using_npm/node_modules
+
+cd /tmp/module_using_npm
+exec_cmd "npm install"
+exec_cmd "npm test"

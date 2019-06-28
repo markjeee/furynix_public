@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+source $(dirname $0)/functions
+
+out_file="$1"
+source="$2"
+
+detect_if_debian_wheezy
+prepare_apt
+
+exec_cmd "$apt install -y gemfury"
+exec_cmd "which ruby"
+exec_cmd "ruby -v"
+
+fury_path=$(which fury)
+exec_cmd "echo $fury_path" $out_file
+exec_cmd "$fury_path -v" $out_file

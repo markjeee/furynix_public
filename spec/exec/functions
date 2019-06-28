@@ -1,0 +1,88 @@
+#!/usr/bin/env bash
+
+export DEBIAN_FRONTEND=noninteractive
+export PATH=$PATH:/usr/local/bundle/bin
+
+exec_cmd() {
+    echo $1;
+
+    if [ -z $2 ]; then
+        eval "$1; ret=\$?"
+    else
+        eval "$1 | tee -a $2; ret=\${PIPESTATUS[0]}"
+    fi
+
+    #echo "RET: $ret"
+    if [ $ret -ne 0 ]; then exit 1; fi
+}
+
+show_exec_boundary() {
+    echo "=~=~=~=" | tee -a $1
+}
+
+detect_and_adjust_for_ruby19() {
+    if [[ $(ruby -v) =~ ^ruby.1\.9.* ]]; then
+        echo "Detected legacy ruby 1.9, making adjustments..."
+
+        exec_cmd "gem update --system=2.7.8"
+        exec_cmd "gem -v"
+        exec_cmd "gem install bundler -v 1.17.3"
+    fi
+}
+
+detect_if_debian_wheezy() {
+    if [[ -f /etc/debian_version ]]; then
+        debian_version=$(cat /etc/debian_version)
+
+        if [[ "$debian_version" == "7."* ]]; then
+            echo "Detected Debian wheezy, making adjustments..."
+
+            cat >/etc/apt/sources.list <<EOF
+deb http://archive.debian.org/debian/ wheezy main contrib non-free
+EOF
+        fi
+    fi
+}
+
+configure_furynix_token() {
+    cat >~/.netrc <<EOF
+machine api.fury.io
+  login furynix
+  password $furynix_token
+EOF
+    chmod 0600 ~/.netrc
+    cat ~/.netrc
+
+    mkdir -p ~/.gem
+    cat >~/.gem/credentials <<EOF
+---
+:fury: $furynix_token
+EOF
+    chmod 0600 ~/.gem/credentials
+}
+
+prepare_apt() {
+    fury_list="deb [trusted=yes] $source /"
+
+    if [[ -n $(which apt) ]]; then
+        export apt="apt"
+    else
+        export apt="apt-get"
+    fi
+
+    exec_cmd "$apt -y update"
+    exec_cmd "$apt install -y ca-certificates apt-transport-https"
+    exec_cmd "echo $fury_list | tee /etc/apt/sources.list.d/fury.list"
+    exec_cmd "$apt -y update"
+}
+
+
+prepare_yum() {
+    cat >/etc/yum.repos.d/fury.repo <<EOF
+[fury]
+name=Gemfury Private Repo
+baseurl=$source
+enabled=1
+gpgcheck=0
+EOF
+}

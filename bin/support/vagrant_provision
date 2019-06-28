@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+export DEBIAN_FRONTEND=noninteractive
+export PATH=$PATH:/usr/local/bundle/bin
+
+sudo apt-get -y update
+sudo apt-get install -y ca-certificates apt-transport-https ruby docker.io
+
+user=$(whoami)
+echo "USER: $user"
+sudo usermod -a -G docker $user
+
+which ruby
+ruby -v
+which gem
+gem -v
+sudo gem install bundler -v 1.17.2
+
+cd /furynix
+bundle --deployment

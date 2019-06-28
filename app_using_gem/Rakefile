@@ -1,0 +1,18 @@
+require 'bundler'
+
+if ENV['BUNDLE_GEMFILE'].nil? || ENV['BUNDLE_GEMFILE'].empty?
+  ENV['BUNDLE_GEMFILE'] = File.expand_path('../Gemfile', __FILE__)
+end
+
+Bundler.setup
+$:.unshift File.expand_path('../lib', __FILE__)
+
+require 'rspec/core/rake_task'
+
+RSpec::Core::RakeTask.new('spec')
+task :default => :spec
+
+desc 'Say hello world'
+task :hello do
+  puts 'Hello World'
+end

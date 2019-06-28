@@ -1,0 +1,8 @@
+source 'https://rubygems.org'
+
+git_source(:github) { |repo_name| 'https://github.com/%s' % repo_name }
+
+gemspec :path => '../'
+
+gem 'dotenv'
+gem 'gemfury'

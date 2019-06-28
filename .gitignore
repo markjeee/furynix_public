@@ -1,0 +1,12 @@
+.vagrant/
+/*.log
+/*.rpm
+/*.deb
+/tmp
+.env
+module_using_npm/node_modules/
+/*.tgz
+/module_using_npm/*.tgz
+.#*
+#*#
+/#*

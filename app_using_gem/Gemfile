@@ -1,0 +1,11 @@
+source 'http://rubygems.org'
+
+gem 'rake'
+
+source 'https://gem.fury.io/furynix/' do
+  gem 'gem_using_bundler'
+end
+
+group :development do
+  gem 'rspec'
+end

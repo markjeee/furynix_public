@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+source $(dirname $0)/functions
+
+out_file="$1"
+source="$2"
+dev_version="$3"
+rubygem_version="$4"
+
+detect_and_adjust_for_ruby19
+
+exec_cmd "which ruby"
+exec_cmd "ruby -v"
+exec_cmd "which gem"
+exec_cmd "gem -v"
+
+if [ -n "$dev_version" ]; then
+    exec_cmd "gem list --source $source gemfury --remote --prerelease"
+    exec_cmd "gem install --source $source gemfury --prerelease"
+else
+    exec_cmd "gem list --source $source gemfury --remote"
+    exec_cmd "gem install --source $source gemfury"
+fi
+
+fury_path=$(which fury)
+exec_cmd "echo $fury_path" $out_file
+exec_cmd "$fury_path -v" $out_file

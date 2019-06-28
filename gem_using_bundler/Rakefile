@@ -1,0 +1,42 @@
+require 'bundler/gem_tasks'
+require 'rspec/core/rake_task'
+
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+require 'gem_using_bundler/version'
+
+dotenv_file = File.expand_path('../../.env', __FILE__)
+if File.exist?(dotenv_file)
+  require 'dotenv'
+  Dotenv.load(dotenv_file)
+end
+
+require File.expand_path('../../lib/furynix', __FILE__)
+
+RSpec::Core::RakeTask.new(:spec)
+
+task :default => :spec
+
+desc 'Perform release task and push gem to fury account.'
+task :release_fury do
+  ENV['RUBYGEMS_HOST'] = 'https://push.fury.io/furynix'
+
+  Rake::Task[:release].invoke
+end
+
+desc 'Perform build and try releasing of new package to fury'
+task :build_and_release_fury do
+  ENV['RUBYGEMS_HOST'] = 'https://push.fury.io/furynix'
+
+  begin
+    fury = Furynix::GemfuryAPI.client(:user_api_key => ENV['FURYNIX_API_TOKEN'])
+    fury.yank_version('gem_using_bundler', GemUsingBundler::VERSION)
+  rescue Gemfury::NotFound
+    # ignore
+  end
+
+  Rake::Task['build'].invoke
+  Rake::Task['release:rubygem_push'].invoke
+
+  fury.update_privacy('gem_using_bundler', false)
+end
