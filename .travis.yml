@@ -2,5 +2,9 @@ language: ruby
 services:
   - docker
 
+env:
+  - spec=spec:rubygems
+  - spec=spec:apt_install
+
 script:
-  - bundle exec rake
+  - bundle exec rake $spec
