@@ -5,6 +5,11 @@ services:
 env:
   - spec=spec:rubygems
   - spec=spec:apt_install
+  - spec=spec:yum_install
+  - spec=spec:brew_install
+  - spec=spec:cli
+  - spec=spec:api
+  - spec=spec:npm_module_use
 
 script:
   - bundle exec rake $spec
