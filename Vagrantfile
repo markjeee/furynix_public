@@ -20,6 +20,13 @@ Vagrant.configure("2") do |config|
 
     c.vm.hostname = '%s-ubuntu' % config.vm.hostname
     c.vm.network 'private_network', ip: '10.100.0.35'
+
+    c.vm.synced_folder '.', '/furynix'
+
+    c.vm.provision 'shell',
+                   path: File.expand_path('../bin/support/vagrant_provision', __FILE__),
+                   keep_color: true,
+                   privileged: false
   end
 
   config.vm.define 'debian' do |c|
@@ -27,6 +34,8 @@ Vagrant.configure("2") do |config|
 
     c.vm.hostname = '%s-debian' % config.vm.hostname
     c.vm.network 'private_network', ip: '10.100.0.36'
+
+    c.vm.synced_folder '.', '/furynix'
   end
 
   config.vm.define 'centos7' do |c|
@@ -34,6 +43,8 @@ Vagrant.configure("2") do |config|
 
     c.vm.hostname = '%s-centos7' % config.vm.hostname
     c.vm.network 'private_network', ip: '10.100.0.37'
+
+    c.vm.synced_folder '.', '/furynix'
   end
 
   config.vm.define 'fedora' do |c|
@@ -41,6 +52,8 @@ Vagrant.configure("2") do |config|
 
     c.vm.hostname = '%s-fedora' % config.vm.hostname
     c.vm.network 'private_network', ip: '10.100.0.38'
+
+    c.vm.synced_folder '.', '/furynix'
   end
 
   config.vm.define 'gcp' do |c|
@@ -63,12 +76,12 @@ Vagrant.configure("2") do |config|
       override.ssh.private_key_path = File.expand_path(ENV['FURYNIX_GCP_SSH_PKEY'])
     end
 
-    config.vm.provision 'shell',
-                        path: File.expand_path('../bin/support/vagrant_provision', __FILE__),
-                        keep_color: true,
-                        privileged: false
+    c.vm.provision 'shell',
+                   path: File.expand_path('../bin/support/vagrant_provision', __FILE__),
+                   keep_color: true,
+                   privileged: false
 
-    config.vm.synced_folder '.', '/furynix', type: 'rsync'
+    c.vm.synced_folder '.', '/furynix', type: 'rsync'
   end unless ENV['FURYNIX_GCP_PROJECT'].nil? || ENV['FURYNIX_GCP_PROJECT'].empty?
 
   config.vm.define 'aws' do |c|
@@ -90,12 +103,12 @@ Vagrant.configure("2") do |config|
       override.ssh.private_key_path = File.expand_path(ENV['FURYNIX_AWS_SSH_PKEY'])
     end
 
-    config.vm.provision 'shell',
-                        path: File.expand_path('../bin/support/vagrant_provision', __FILE__),
-                        keep_color: true,
-                        privileged: false
+    c.vm.provision 'shell',
+                   path: File.expand_path('../bin/support/vagrant_provision', __FILE__),
+                   keep_color: true,
+                   privileged: false
 
-    config.vm.synced_folder '.', '/furynix', type: 'rsync'
+    c.vm.synced_folder '.', '/furynix', type: 'rsync'
   end unless ENV['FURYNIX_AWS_KEYPAIR'].nil? || ENV['FURYNIX_AWS_KEYPAIR'].empty?
 
   config.vm.define 'managed' do |c|
@@ -110,11 +123,11 @@ Vagrant.configure("2") do |config|
       managed.server = ENV['FURYNIX_MANAGED_SERVER']
     end
 
-    config.vm.provision 'shell',
-                        path: File.expand_path('../bin/support/managed_provision', __FILE__),
-                        keep_color: true,
-                        privileged: false
+    c.vm.provision 'shell',
+                   path: File.expand_path('../bin/support/managed_provision', __FILE__),
+                   keep_color: true,
+                   privileged: false
 
-    config.vm.synced_folder '.', '/opt/furynix', type: 'rsync'
+    c.vm.synced_folder '.', '/opt/furynix', type: 'rsync'
   end unless ENV['FURYNIX_MANAGED_SERVER'].nil? || ENV['FURYNIX_MANAGED_SERVER'].empty?
 end

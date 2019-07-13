@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <PackOnBuild>true</PackOnBuild>
+    <PackageVersion>1.0</PackageVersion>
+    <Authors>Mark John Buenconsejo</Authors>
+    <Description>DotNetWorld Nuget package for testing</Description>
+    <PackageId>Gemfury.DotNetWorld</PackageId>
+  </PropertyGroup>
+
+</Project>

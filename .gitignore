@@ -10,3 +10,8 @@ module_using_npm/node_modules/
 .#*
 #*#
 /#*
+DotNetWorld/bin/
+DotNetWorld/obj/
+DotNetHello/bin/
+DotNetHello/obj/
+vendor/bundle
