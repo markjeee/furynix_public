@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+source $(dirname $0)/functions
+
+out_file="$1"
+source="$2"
+
+cd /build/DotNetWorld
+exec_cmd "rm -rf bin obj" $out_file
+exec_cmd "dotnet build" $out_file

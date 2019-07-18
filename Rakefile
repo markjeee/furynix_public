@@ -42,6 +42,11 @@ namespace :spec do
     t.pattern = [ 'spec/specs/npm_module_using_npm_spec.rb' ]
   end
 
+  desc 'Dotnet, build, push'
+  RSpec::Core::RakeTask.new('dotnet_build') do |t|
+    t.pattern = [ 'spec/specs/dotnet_build_spec.rb' ]
+  end
+
   desc 'CLI specs (on ubuntu/bionic)'
   RSpec::Core::RakeTask.new('cli') do |t|
     t.pattern = [ 'spec/specs/cli_spec.rb' ]
@@ -127,6 +132,18 @@ namespace :bash do
   desc 'Bash to wheezy environment'
   task :wheezy do
     c = DockerTask.containers['furynix.wheezy']
+    c.pull
+    c.runi
+  end
+
+  DockerTask.create({ :remote_repo => 'mcr.microsoft.com/dotnet/core/sdk',
+                      :pull_tag => '2.1',
+                      :image_name => 'furynix.dotnet',
+                      :run => docker_run })
+
+  desc 'Bash to Dotnet environment'
+  task :dotnet do
+    c = DockerTask.containers['furynix.dotnet']
     c.pull
     c.runi
   end

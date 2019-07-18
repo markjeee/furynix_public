@@ -142,6 +142,14 @@ module FurynixSpec
                          :shhh => shhh
                        })
 
+    DockerTask.create!({ :remote_repo => 'mcr.microsoft.com/dotnet/core/sdk',
+                         :pull_tag => '2.1',
+                         :image_name => 'furynix-spec.dotnet',
+                         :run => docker_run,
+                         :show_commands => show_commands,
+                         :shhh => shhh
+                       })
+
     DockerTask.create!({ :remote_repo => 'node',
                          :pull_tag => '11.9-stretch',
                          :image_name => 'furynix-spec.node119',
