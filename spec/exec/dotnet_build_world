@@ -3,8 +3,17 @@
 source $(dirname $0)/functions
 
 out_file="$1"
-source="$2"
+furynix_token="$2"
+package_path="$3"
+gem_name="$4"
+gem_version="$5"
 
 cd /build/DotNetWorld
-exec_cmd "rm -rf bin obj" $out_file
-exec_cmd "dotnet build" $out_file
+exec_cmd "rm -rf bin obj"
+exec_cmd "dotnet build"
+exec_cmd "dotnet pack"
+exec_cmd "ls -fl $package_path" $out_file
+
+exec_cmd "curl -X DELETE https://$furynix_token@api.fury.io/gems/$gem_name/versions/$gem_version -H 'Accept: application/vnd.fury.v1+json'"
+
+exec_cmd "curl --fail -F package=@$package_path https://$furynix_token@push.fury.io/furynix/" $out_file

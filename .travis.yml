@@ -10,6 +10,7 @@ env:
   - spec=spec:cli
   - spec=spec:api
   - spec=spec:npm_module_use
+  - spec=spec:dotnet_build
 
 script:
   - bundle exec rake $spec

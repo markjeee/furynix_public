@@ -12,8 +12,10 @@ exec_cmd() {
         eval "$1 | tee -a $2; ret=\${PIPESTATUS[0]}"
     fi
 
-    #echo "RET: $ret"
-    if [ $ret -ne 0 ]; then exit 1; fi
+    if [ $ret -ne 0 ]; then
+        echo "RET: $ret"
+        exit 1
+    fi
 }
 
 show_exec_boundary() {

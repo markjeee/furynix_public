@@ -11,16 +11,19 @@ describe 'Dotnet' do
     it 'should build and push' do
       container = DockerTask.containers[@container_key]
 
+      api_token = ENV['FURYNIX_API_TOKEN']
+      expect(api_token).to_not be_empty
+
       container.pull
-      ret = container.runi(:exec => '"/build/spec/exec/dotnet_build_world %s"' %
-                                    [ FurynixSpec.calculate_build_path(@out_file_path) ])
+      ret = container.runi(:exec => '"/build/spec/exec/dotnet_build_world %s %s %s %s %s"' %
+                                    [ FurynixSpec.calculate_build_path(@out_file_path),
+                                      api_token,
+                                      'bin/Debug/Gemfury.DotNetWorld.1.0.0.nupkg',
+                                      'Gemfury.DotNetWorld',
+                                      '1.0.0',
+                                    ])
 
       expect(ret).to be_truthy
-      expect(File.exists?(@out_file_path)).to be_truthy
-
-      #lines = File.read(@out_file_path).split("\n")
-      #expect(lines[0]).to eq('/home/linuxbrew/.linuxbrew/bin/fury')
-      #expect(lines[1]).to eq(FurynixSpec.current_gemfury_version)
     end
   end
 
