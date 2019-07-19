@@ -23,7 +23,7 @@ RSpec.configure do |config|
 end
 
 module FurynixSpec
-  UNIQ_ID = '%s-%s' % [ sprintf("%20.10f", Time.now.to_f).delete('.').to_i.to_s(36), $$ ]
+  UNIQ_ID = '%s.%s' % [ sprintf("%20.10f", Time.now.to_f).delete('.').to_i.to_s(36), $$ ]
   TMP_PATH = File.expand_path('../../tmp/spec/%s' % UNIQ_ID, __FILE__)
 
   def self.gemfury_client
@@ -64,7 +64,13 @@ module FurynixSpec
   end
 
   def self.prepare_docker_outfile
-    f = FurynixSpec.tmp_path('docker.out')
+    if defined?(@@outfile_counter)
+      @@outfile_counter += 1
+    else
+      @@outfile_counter = 1
+    end
+
+    f = FurynixSpec.tmp_path('docker.out.%d' % @@outfile_counter)
     FileUtils.rm_f(f) if File.exists?(f)
     f
   end

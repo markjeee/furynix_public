@@ -9,8 +9,6 @@ describe 'RubyGems' do
     end
 
     it 'should build and release' do
-      skip 'for now, since rubygems push API is broken'
-
       container = DockerTask.containers[@container_key]
 
       api_token = ENV['FURYNIX_API_TOKEN']
