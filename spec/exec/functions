@@ -61,6 +61,8 @@ EOF
 :fury: $furynix_token
 EOF
     chmod 0600 ~/.gem/credentials
+
+    export FURYNIX_API_TOKEN="$furynix_token"
 }
 
 prepare_apt() {

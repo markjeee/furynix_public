@@ -8,6 +8,8 @@ package_path="$3"
 gem_name="$4"
 gem_version="$5"
 
+configure_furynix_token
+
 cd /build/DotNetWorld
 exec_cmd "rm -rf bin obj"
 exec_cmd "dotnet build"

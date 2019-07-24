@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+source $(dirname $0)/functions
+
+out_file="$1"
+furynix_token="$2"
+
+configure_furynix_token
+
+cd /build/DotNetHello
+exec_cmd "rm -rf bin obj"
+exec_cmd "dotnet restore"
+exec_cmd "dotnet build"

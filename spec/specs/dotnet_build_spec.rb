@@ -25,6 +25,21 @@ describe 'Dotnet' do
 
       expect(ret).to be_truthy
     end
+
+    it 'should build' do
+      container = DockerTask.containers[@container_key]
+
+      api_token = ENV['FURYNIX_API_TOKEN']
+      expect(api_token).to_not be_empty
+
+      container.pull
+      ret = container.runi(:exec => '"/build/spec/exec/dotnet_build_hello %s %s"' %
+                                    [ FurynixSpec.calculate_build_path(@out_file_path),
+                                      api_token
+                                    ])
+
+      expect(ret).to be_truthy
+    end
   end
 
   describe 'in dotnet' do
