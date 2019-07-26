@@ -9,6 +9,7 @@ describe 'Dotnet' do
     end
 
     it 'should build and push' do
+      skip 'Since Nuget repo at furynix has a bug'
       container = DockerTask.containers[@container_key]
 
       api_token = ENV['FURYNIX_API_TOKEN']
@@ -27,6 +28,7 @@ describe 'Dotnet' do
     end
 
     it 'should build' do
+      skip 'Since Nuget repo at furynix has a bug'
       container = DockerTask.containers[@container_key]
 
       api_token = ENV['FURYNIX_API_TOKEN']
