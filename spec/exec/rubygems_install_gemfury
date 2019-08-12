@@ -2,10 +2,7 @@
 
 source $(dirname $0)/functions
 
-out_file="$1"
-source="$2"
-dev_version="$3"
-rubygem_version="$4"
+parse_exec_args "$1"
 
 detect_and_adjust_for_ruby19
 

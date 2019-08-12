@@ -30,6 +30,29 @@ module FurynixSpec
     Furynix::GemfuryAPI.client(:user_api_key => ENV['FURYNIX_API_TOKEN'])
   end
 
+  def self.furynix_source_url(platform)
+    'https://%s.fury.io/%s' % [ platform, furynix_user ]
+  end
+
+  def self.furynix_push_url
+    'https://push.fury.io/%s' % furynix_user
+  end
+
+  def self.furynix_user
+    ENV['FURYNIX_USER']
+  end
+
+  def self.furynix_api_token
+    ENV['FURYNIX_API_TOKEN']
+  end
+
+  def self.create_exec_args(args)
+    {
+      'furynix_user' => furynix_user,
+      'furynix_token' => furynix_api_token
+    }.merge(args)
+  end
+
   def self.current_gemfury_version
     '0.10.0'
   end
@@ -73,6 +96,30 @@ module FurynixSpec
     f = FurynixSpec.tmp_path('docker.out.%d' % @@outfile_counter)
     FileUtils.rm_f(f) if File.exists?(f)
     f
+  end
+
+  def self.persist_exec_args(args)
+    if defined?(@@execargs_file_counter)
+      @@execargs_file_counter += 1
+    else
+      @@execargs_file_counter = 1
+    end
+
+    f = FurynixSpec.tmp_path('docker.exec_args.%d' % @@execargs_file_counter)
+    FileUtils.rm_f(f) if File.exists?(f)
+
+    File.open(f, 'w') do |io|
+      args.each do |k,v|
+        io.puts('export %s=%s' % [ k, v ])
+      end
+    end
+
+    f
+  end
+
+  def self.pass_exec_args(args)
+    f = persist_exec_args(args)
+    calculate_build_path(f)
   end
 
   def self.calculate_build_path(file_path)

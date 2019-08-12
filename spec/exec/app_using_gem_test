@@ -2,8 +2,9 @@
 
 source $(dirname $0)/functions
 
-out_file="$1"
-gemfile="$2"
+parse_exec_args "$1"
+
+export FURYNIX_SOURCE_URL=$source_url
 
 if [ -n "$gemfile" ]; then
     export BUNDLE_GEMFILE=$gemfile

@@ -2,9 +2,7 @@
 
 source $(dirname $0)/functions
 
-out_file="$1"
-furynix_token="$2"
-gemfile="$3"
+parse_exec_args "$1"
 
 configure_furynix_token
 detect_and_adjust_for_ruby19
@@ -19,4 +17,5 @@ exec_cmd "rake"
 
 export FURYNIX_API_TOKEN="$furynix_token"
 export BUNDLE_GEM__PUSH_KEY=fury
+export RUBYGEMS_HOST=$push_url
 exec_cmd "rake build_and_release_fury"

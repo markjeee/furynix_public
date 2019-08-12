@@ -11,15 +11,19 @@ describe 'RubyGems' do
     it 'should build and release' do
       container = DockerTask.containers[@container_key]
 
-      api_token = ENV['FURYNIX_API_TOKEN']
+      api_token = FurynixSpec.furynix_api_token
       expect(api_token).to_not be_empty
 
       container.pull
-      ret = container.runi(:exec => '"/build/spec/exec/gem_using_bundler_test %s %s %s"' %
-                                    [ FurynixSpec.calculate_build_path(@out_file_path),
-                                      api_token,
-                                      @gemfile
-                                    ])
+
+      args = FurynixSpec.
+               create_exec_args({ 'push_url' => FurynixSpec.furynix_push_url,
+                                  'gemfile' => @gemfile,
+                                  'out_file' => FurynixSpec.calculate_build_path(@out_file_path)
+                                })
+
+      ret = container.runi(:exec => '"/build/spec/exec/gem_using_bundler_test %s"' %
+                                    FurynixSpec.pass_exec_args(args))
 
       expect(ret).to be_truthy
     end

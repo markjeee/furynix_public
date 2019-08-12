@@ -18,6 +18,12 @@ exec_cmd() {
     fi
 }
 
+parse_exec_args() {
+    echo "Exec args from: $1"
+    cat $1
+    source $1
+}
+
 show_exec_boundary() {
     echo "=~=~=~=" | tee -a $1
 }
@@ -47,9 +53,13 @@ EOF
 }
 
 configure_furynix_token() {
+    if [ -z $furynix_user ]; then
+        furynix_user=furynix
+    fi
+
     cat >~/.netrc <<EOF
 machine api.fury.io
-  login furynix
+  login $furynix_user
   password $furynix_token
 EOF
     chmod 0600 ~/.netrc
@@ -63,6 +73,7 @@ EOF
     chmod 0600 ~/.gem/credentials
 
     export FURYNIX_API_TOKEN="$furynix_token"
+    export FURYNIX_USER="$furynix_user"
 }
 
 prepare_apt() {

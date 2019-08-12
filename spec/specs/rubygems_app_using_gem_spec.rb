@@ -12,9 +12,15 @@ describe 'RubyGems' do
       container = DockerTask.containers[@container_key]
 
       container.pull
-      ret = container.runi(:exec => '"/build/spec/exec/app_using_gem_test %s %s"' %
-                                    [ FurynixSpec.calculate_build_path(@out_file_path),
-                                      @gemfile ])
+
+      args = FurynixSpec.
+               create_exec_args({ 'source_url' => FurynixSpec.furynix_source_url('gem'),
+                                  'gemfile' => @gemfile,
+                                  'out_file' => FurynixSpec.calculate_build_path(@out_file_path)
+                                })
+
+      ret = container.runi(:exec => '"/build/spec/exec/app_using_gem_test %s"' %
+                                    FurynixSpec.pass_exec_args(args))
 
       expect(ret).to be_truthy
     end

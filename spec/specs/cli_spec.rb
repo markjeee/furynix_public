@@ -77,7 +77,7 @@ describe 'CLI' do
     def expect_whoami_furynix(line_groups)
       lines = line_groups[2]
 
-      expect(lines[0]).to eq('You are logged in as "furynix"')
+      expect(lines[0]).to eq('You are logged in as "%s"' % FurynixSpec.furynix_user)
     end
 
     def expect_gemfury_listed(line_groups)
@@ -120,20 +120,24 @@ describe 'CLI' do
     end
 
     def cli_list_test(source)
-      container.runi(:exec => '"/build/spec/exec/cli_list_test %s %s %s"' %
-                              [ FurynixSpec.calculate_build_path(@out_file_path),
-                                source,
-                                ENV['FURYNIX_API_TOKEN']
-                              ])
+      args = FurynixSpec.
+               create_exec_args({ 'source' => source,
+                                  'out_file' => FurynixSpec.calculate_build_path(@out_file_path)
+                                })
+
+      container.runi(:exec => '"/build/spec/exec/cli_list_test %s"' %
+                              FurynixSpec.pass_exec_args(args))
     end
 
     def cli_push_test(source, gem)
-      container.runi(:exec => '"/build/spec/exec/cli_push_test %s %s %s \"%s\""' %
-                              [ FurynixSpec.calculate_build_path(@out_file_path),
-                                source,
-                                ENV['FURYNIX_API_TOKEN'],
-                                gem
-                              ])
+      args = FurynixSpec.
+               create_exec_args({ 'source' => source,
+                                  'gem' => '"%s"' % gem,
+                                  'out_file' => FurynixSpec.calculate_build_path(@out_file_path)
+                                })
+
+      container.runi(:exec => '"/build/spec/exec/cli_push_test %s"' %
+                              FurynixSpec.pass_exec_args(args))
     end
   end
 

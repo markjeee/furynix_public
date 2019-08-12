@@ -5,7 +5,19 @@ source 'http://rubygems.org'
 
 gem 'rake'
 
-source 'https://gem.fury.io/furynix/' do
+if ENV['FURYNIX_SOURCE_URL'].nil?
+  if ENV['FURYNIX_USER'].nil?
+    furynix_user = 'furynix'
+  else
+    furynix_user = ENV['FURYNIX_USER']
+  end
+
+  furynix_source_url = 'https://gem.fury.io/%s/' % furynix_user
+else
+  furynix_source_url = ENV['FURYNIX_SOURCE_URL']
+end
+
+source furynix_source_url do
   gem 'gem_using_bundler'
 end
 

@@ -19,14 +19,18 @@ task :default => :spec
 
 desc 'Perform release task and push gem to fury account.'
 task :release_fury do
-  ENV['RUBYGEMS_HOST'] = 'https://push.fury.io/furynix'
+  if ENV['RUBYGEMS_HOST'].nil?
+    ENV['RUBYGEMS_HOST'] = 'https://push.fury.io/furynix'
+  end
 
   Rake::Task[:release].invoke
 end
 
 desc 'Perform build and try releasing of new package to fury'
 task :build_and_release_fury do
-  ENV['RUBYGEMS_HOST'] = 'https://push.fury.io/furynix'
+  if ENV['RUBYGEMS_HOST'].nil?
+    ENV['RUBYGEMS_HOST'] = 'https://push.fury.io/furynix'
+  end
 
   begin
     fury = Furynix::GemfuryAPI.client(:user_api_key => ENV['FURYNIX_API_TOKEN'])

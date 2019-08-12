@@ -2,9 +2,7 @@
 
 source $(dirname $0)/functions
 
-out_file="$1"
-source="$2"
-furynix_token="$3"
+parse_exec_args "$1"
 
 configure_furynix_token
 detect_if_debian_wheezy

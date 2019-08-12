@@ -19,20 +19,24 @@ describe 'RubyGems' do
     end
 
     it 'should install using dev version' do
-      install_spec('https://gem.fury.io/cli/', true)
+      install_spec('https://gem.fury.io/cli-dev/', true)
       should_install_fury(true)
     end
 
-    def install_spec(domain, dev_version = nil)
+    def install_spec(source, dev_version = nil)
       container = DockerTask.containers[@container_key]
 
       container.pull
-      ret = container.runi(:exec => '"/build/spec/exec/rubygems_install_gemfury %s %s %s %s"' %
-                                    [ FurynixSpec.calculate_build_path(@out_file_path),
-                                      domain,
-                                      dev_version ? '1' : nil,
-                                      @rubygem_version
-                                    ])
+      args = FurynixSpec.
+               create_exec_args({ 'source' => source,
+                                  'dev_version' => dev_version ? '1' : nil,
+                                  'rubygem_version' => @rubygem_version,
+                                  'out_file' => FurynixSpec.calculate_build_path(@out_file_path)
+                                })
+
+      ret = container.runi(:exec => '"/build/spec/exec/rubygems_install_gemfury %s"' %
+                                    FurynixSpec.pass_exec_args(args))
+
       expect(ret).to be_truthy
     end
 
