@@ -2,11 +2,7 @@
 
 source $(dirname $0)/functions
 
-out_file="$1"
-furynix_token="$2"
-package_path="$3"
-gem_name="$4"
-gem_version="$5"
+parse_exec_args "$1"
 
 configure_furynix_token
 
@@ -16,6 +12,6 @@ exec_cmd "dotnet build"
 exec_cmd "dotnet pack"
 exec_cmd "ls -fl $package_path" $out_file
 
-exec_cmd "curl -X DELETE https://$furynix_token@api.fury.io/gems/$gem_name/versions/$gem_version -H 'Accept: application/vnd.fury.v1+json'"
+exec_cmd "curl -X DELETE https://$furynix_token@api.fury.io/gems/$package_name/versions/$package_version -H 'Accept: application/vnd.fury.v1+json'"
 
-exec_cmd "curl --fail -F package=@$package_path https://$furynix_token@push.fury.io/furynix/" $out_file
+exec_cmd "curl --fail -F package=@$package_path https://$furynix_token@push.fury.io/furynix2/" $out_file

@@ -9,36 +9,35 @@ describe 'Dotnet' do
     end
 
     it 'should build and push' do
-      skip 'Since Nuget repo at furynix has a bug'
       container = DockerTask.containers[@container_key]
 
-      api_token = ENV['FURYNIX_API_TOKEN']
-      expect(api_token).to_not be_empty
-
       container.pull
-      ret = container.runi(:exec => '"/build/spec/exec/dotnet_build_world %s %s %s %s %s"' %
-                                    [ FurynixSpec.calculate_build_path(@out_file_path),
-                                      api_token,
-                                      'bin/Debug/Gemfury.DotNetWorld.1.0.0.nupkg',
-                                      'Gemfury.DotNetWorld',
-                                      '1.0.0',
-                                    ])
+      args = FurynixSpec.
+               create_exec_args({ 'package_path' => 'bin/Debug/Gemfury.DotNetWorld.1.0.0.nupkg',
+                                  'package_name' => 'Gemfury.DotNetWorld',
+                                  'package_version' => '1.0.0',
+                                  'out_file' => FurynixSpec.calculate_build_path(@out_file_path)
+                                })
+
+      ret = container.runi(:exec => '"/build/spec/exec/dotnet_build_world %s"' %
+                                    FurynixSpec.pass_exec_args(args))
+
 
       expect(ret).to be_truthy
     end
 
     it 'should build' do
-      skip 'Since Nuget repo at furynix has a bug'
       container = DockerTask.containers[@container_key]
 
       api_token = ENV['FURYNIX_API_TOKEN']
       expect(api_token).to_not be_empty
 
       container.pull
-      ret = container.runi(:exec => '"/build/spec/exec/dotnet_build_hello %s %s"' %
-                                    [ FurynixSpec.calculate_build_path(@out_file_path),
-                                      api_token
-                                    ])
+      args = FurynixSpec.
+               create_exec_args({ 'out_file' => FurynixSpec.calculate_build_path(@out_file_path) })
+
+      ret = container.runi(:exec => '"/build/spec/exec/dotnet_build_hello %s"' %
+                                    FurynixSpec.pass_exec_args(args))
 
       expect(ret).to be_truthy
     end

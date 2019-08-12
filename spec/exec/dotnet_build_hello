@@ -2,8 +2,7 @@
 
 source $(dirname $0)/functions
 
-out_file="$1"
-furynix_token="$2"
+parse_exec_args "$1"
 
 configure_furynix_token
 
