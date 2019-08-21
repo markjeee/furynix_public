@@ -14,8 +14,24 @@ module FurynixSpec
     end
 
     DockerTask.create!({ :remote_repo => 'ruby',
+                         :pull_tag => '2.6.3',
+                         :image_name => 'furynix-spec.ruby263',
+                         :run => docker_run,
+                         :show_commands => show_commands,
+                         :shhh => shhh
+                       })
+
+    DockerTask.create!({ :remote_repo => 'ruby',
                          :pull_tag => '2.6.2',
                          :image_name => 'furynix-spec.ruby262',
+                         :run => docker_run,
+                         :show_commands => show_commands,
+                         :shhh => shhh
+                       })
+
+    DockerTask.create!({ :remote_repo => 'ruby',
+                         :pull_tag => '2.5.5',
+                         :image_name => 'furynix-spec.ruby255',
                          :run => docker_run,
                          :show_commands => show_commands,
                          :shhh => shhh
@@ -29,6 +45,14 @@ module FurynixSpec
                          :shhh => shhh
                        })
 
+
+    DockerTask.create!({ :remote_repo => 'ruby',
+                         :pull_tag => '2.4.6',
+                         :image_name => 'furynix-spec.ruby246',
+                         :run => docker_run,
+                         :show_commands => show_commands,
+                         :shhh => shhh
+                       })
 
     DockerTask.create!({ :remote_repo => 'ruby',
                          :pull_tag => '2.4.5',

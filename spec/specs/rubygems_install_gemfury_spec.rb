@@ -54,10 +54,10 @@ describe 'RubyGems' do
     end
   end
 
-  describe 'using ruby 2.6.2' do
+  describe 'using ruby 2.6.3' do
     before do
       skip 'for now' if FurynixSpec.skip_if_only_one
-      @container_key = 'furynix-spec.ruby262'
+      @container_key = 'furynix-spec.ruby263'
       @rubygem_version = nil
     end
 
@@ -76,10 +76,10 @@ describe 'RubyGems' do
   end
 
   if FurynixSpec.include_all_ruby
-    describe 'using ruby 2.5.3' do
+    describe 'using ruby 2.5.5' do
       before do
         skip 'for now' if FurynixSpec.skip_if_only_one
-        @container_key = 'furynix-spec.ruby253'
+        @container_key = 'furynix-spec.ruby255'
         @dev_version = nil
         @rubygem_version = nil
       end
@@ -87,10 +87,10 @@ describe 'RubyGems' do
       it_should_behave_like 'installing CLI fury'
     end
 
-    describe 'using ruby 2.4.5' do
+    describe 'using ruby 2.4.6' do
       before do
         skip 'for now' if FurynixSpec.skip_if_only_one
-        @container_key = 'furynix-spec.ruby245'
+        @container_key = 'furynix-spec.ruby246'
         @dev_version = nil
         @rubygem_version = nil
       end

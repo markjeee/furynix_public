@@ -26,10 +26,10 @@ describe 'RubyGems' do
     end
   end
 
-  describe 'using ruby 2.6.2' do
+  describe 'using ruby 2.6.3' do
     before do
       skip if FurynixSpec.skip_if_only_one
-      @container_key = 'furynix-spec.ruby262'
+      @container_key = 'furynix-spec.ruby263'
       @gemfile = nil
     end
 
@@ -47,20 +47,20 @@ describe 'RubyGems' do
   end
 
   if FurynixSpec.include_all_ruby
-    describe 'using ruby 2.5.3' do
+    describe 'using ruby 2.5.5' do
       before do
         skip if FurynixSpec.skip_if_only_one
-        @container_key = 'furynix-spec.ruby253'
+        @container_key = 'furynix-spec.ruby255'
         @gemfile = nil
       end
 
       it_should_behave_like 'app using gem'
     end
 
-    describe 'using ruby 2.4.5' do
+    describe 'using ruby 2.4.6' do
       before do
         skip if FurynixSpec.skip_if_only_one
-        @container_key = 'furynix-spec.ruby245'
+        @container_key = 'furynix-spec.ruby246'
         @gemfile = nil
       end
 
