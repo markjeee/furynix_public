@@ -40,6 +40,9 @@ describe 'Dotnet' do
                                     FurynixSpec.pass_exec_args(args))
 
       expect(ret).to be_truthy
+
+      lines = File.read(@out_file_path).split("\n")
+      expect(lines[0]).to eq('Hello World')
     end
   end
 

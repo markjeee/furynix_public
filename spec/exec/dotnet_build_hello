@@ -10,3 +10,4 @@ cd /build/DotNetHello
 exec_cmd "rm -rf bin obj"
 exec_cmd "dotnet restore"
 exec_cmd "dotnet build"
+exec_cmd "dotnet run" $out_file
