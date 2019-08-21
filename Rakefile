@@ -54,7 +54,8 @@ namespace :spec do
 
   desc 'API specs (using gemfury gem client)'
   RSpec::Core::RakeTask.new('api') do |t|
-    t.pattern = [ 'spec/specs/gemfury_api_spec.rb' ]
+    t.pattern = [ 'spec/specs/gemfury_api_spec.rb',
+                  'spec/specs/curl_spec.rb' ]
   end
 end
 

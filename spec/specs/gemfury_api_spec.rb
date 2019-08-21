@@ -7,12 +7,12 @@ describe 'Gemfury API' do
     end
 
     it 'should return package info' do
-      package = @fury.package_info('gem_using_bundler')['package']
-      expect(package['name']).to eq('gem_using_bundler')
+      package = @fury.package_info('gemfury')['package']
+      expect(package['name']).to eq('gemfury')
     end
 
     it 'should update privacy to public' do
-      package = @fury.update_privacy('gem_using_bundler', false)['package']
+      package = @fury.update_privacy('gemfury', false)['package']
       expect(package['private']).to_not be_truthy
     end
   end
