@@ -1,6 +1,6 @@
 GEM
   remote: http://rubygems.org/
-  remote: https://gem.fury.io/furynix2/
+  remote: https://gem.fury.io/furynix/
   specs:
     diff-lcs (1.3)
     gem_using_bundler (0.1.0)
