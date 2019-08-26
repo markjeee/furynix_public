@@ -8,6 +8,8 @@ require 'docker_task'
 require 'parallel_tests/tasks'
 require 'furynix'
 
+DockerTask.load_containers
+
 task :default do; warn 'Please specify the specific specs to run (see: `rake -T`)'; end
 
 namespace :spec do
@@ -60,39 +62,19 @@ namespace :spec do
 end
 
 namespace :bash do
-  docker_run = lambda do |task, opts|
-    opts << '-v %s:/build' % File.expand_path('../', __FILE__)
-    opts
-  end
-
-  DockerTask.create({ :remote_repo => 'ruby',
-                      :pull_tag => '2.5.3',
-                      :image_name => 'furynix.ruby253',
-                      :run => docker_run })
-
-  desc 'Bash to ruby25 environment'
-  task :ruby25 do
-    c = DockerTask.containers['furynix.ruby253']
+  desc 'Bash to ruby26 environment'
+  task :ruby26 do
+    c = DockerTask.containers['furynix.ruby26']
     c.pull
     c.runi
   end
-
-  DockerTask.create({ :remote_repo => 'ruby',
-                      :pull_tag => '1.9.3',
-                      :image_name => 'furynix.ruby193',
-                      :run => docker_run })
 
   desc 'Bash to ruby19 environment'
   task :ruby19 do
-    c = DockerTask.containers['furynix.ruby193']
+    c = DockerTask.containers['furynix.ruby19']
     c.pull
     c.runi
   end
-
-  DockerTask.create({ :remote_repo => 'ubuntu',
-                      :pull_tag => 'bionic',
-                      :image_name => 'furynix.bionic',
-                      :run => docker_run })
 
   desc 'Bash to bionic environment'
   task :bionic do
@@ -101,22 +83,12 @@ namespace :bash do
     c.runi
   end
 
-  DockerTask.create({ :remote_repo => 'centos',
-                      :pull_tag => '7',
-                      :image_name => 'furynix.centos7',
-                      :run => docker_run })
-
   desc 'Bash to CentOS 7 environment'
   task :centos7 do
     c = DockerTask.containers['furynix.centos7']
     c.pull
     c.runi
   end
-
-  DockerTask.create({ :remote_repo => 'linuxbrew/linuxbrew',
-                      :pull_tag => '1.9.3',
-                      :image_name => 'furynix.linuxbrew',
-                      :run => docker_run })
 
   desc 'Bash to Linuxbrew environment'
   task :linuxbrew do
@@ -125,22 +97,12 @@ namespace :bash do
     c.runi
   end
 
-  DockerTask.create({ :remote_repo => 'debian',
-                      :pull_tag => 'wheezy',
-                      :image_name => 'furynix.wheezy',
-                      :run => docker_run })
-
   desc 'Bash to wheezy environment'
   task :wheezy do
     c = DockerTask.containers['furynix.wheezy']
     c.pull
     c.runi
   end
-
-  DockerTask.create({ :remote_repo => 'mcr.microsoft.com/dotnet/core/sdk',
-                      :pull_tag => '2.1',
-                      :image_name => 'furynix.dotnet',
-                      :run => docker_run })
 
   desc 'Bash to Dotnet environment'
   task :dotnet do

@@ -1,0 +1,170 @@
+# -*- mode: ruby -*-
+
+c_opts = nil
+build_path = File.expand_path('../', __FILE__)
+
+DT.common_options do |opts|
+  docker_run = lambda do |task, opts|
+    opts << '-v %s:/build' % build_path
+    opts
+  end
+
+  if ENV['DEBUG']
+    show_commands = true
+    shhh = false
+  else
+    show_commands = ENV['SHOW_COMMANDS'] ? true : false
+    shhh = ENV['NO_SHHH'] ? false : true
+  end
+
+  c_opts = { :run => docker_run,
+             :show_commands => show_commands,
+             :shhh => shhh }
+
+  opts.merge(c_opts)
+end
+
+# Generic docker containers for Rake tasks
+# ========================================
+
+DT.create({ :remote_repo => 'ruby',
+            :pull_tag => '1.9.3',
+            :image_name => 'furynix.ruby19' })
+
+DT.create({ :remote_repo => 'ruby',
+            :pull_tag => '2.6.3',
+            :image_name => 'furynix.ruby26'
+          })
+
+DT.create({ :remote_repo => 'ubuntu',
+            :pull_tag => 'bionic',
+            :image_name => 'furynix.bionic'
+          })
+
+DT.create({ :remote_repo => 'centos',
+            :pull_tag => '7',
+            :image_name => 'furynix.centos7'
+          })
+
+DT.create({ :remote_repo => 'linuxbrew/linuxbrew',
+            :pull_tag => '1.9.3',
+            :image_name => 'furynix.linuxbrew'
+          })
+
+DT.create({ :remote_repo => 'debian',
+            :pull_tag => 'wheezy',
+            :image_name => 'furynix.wheezy'
+          })
+
+DT.create({ :remote_repo => 'mcr.microsoft.com/dotnet/core/sdk',
+            :pull_tag => '2.1',
+            :image_name => 'furynix.dotnet'
+          })
+
+# Spec docker containers
+# ======================
+
+DT.create({ :remote_repo => 'ruby',
+            :pull_tag => '2.6.3',
+            :image_name => 'furynix-spec.ruby263'
+          })
+
+DT.create({ :remote_repo => 'ruby',
+            :pull_tag => '2.6.2',
+            :image_name => 'furynix-spec.ruby262'
+          })
+
+DT.create({ :remote_repo => 'ruby',
+            :pull_tag => '2.5.5',
+            :image_name => 'furynix-spec.ruby255'
+          })
+
+DT.create({ :remote_repo => 'ruby',
+            :pull_tag => '2.5.3',
+            :image_name => 'furynix-spec.ruby253',
+          })
+
+DT.create({ :remote_repo => 'ruby',
+            :pull_tag => '2.4.6',
+            :image_name => 'furynix-spec.ruby246',
+          })
+
+DT.create({ :remote_repo => 'ruby',
+            :pull_tag => '2.4.5',
+            :image_name => 'furynix-spec.ruby245',
+          })
+
+DT.create({ :remote_repo => 'ruby',
+            :pull_tag => '2.3.8',
+            :image_name => 'furynix-spec.ruby238',
+          })
+
+DT.create({ :remote_repo => 'ruby',
+            :pull_tag => '1.9.3',
+            :image_name => 'furynix-spec.ruby193',
+          })
+
+DT.create({ :remote_repo => 'ubuntu',
+            :pull_tag => 'bionic',
+            :image_name => 'furynix-spec.bionic',
+          })
+
+DT.create({ :remote_repo => 'ubuntu',
+            :pull_tag => 'xenial',
+            :image_name => 'furynix-spec.xenial',
+          })
+
+DT.create({ :remote_repo => 'ubuntu',
+            :pull_tag => 'trusty',
+            :image_name => 'furynix-spec.trusty',
+          })
+
+DT.create({ :remote_repo => 'debian',
+            :pull_tag => 'jessie',
+            :image_name => 'furynix-spec.jessie',
+          })
+
+DT.create({ :remote_repo => 'debian',
+            :pull_tag => 'stretch',
+            :image_name => 'furynix-spec.stretch',
+          })
+
+DT.create({ :remote_repo => 'debian',
+            :pull_tag => 'wheezy',
+            :image_name => 'furynix-spec.wheezy',
+          })
+
+DT.create({ :remote_repo => 'centos',
+            :pull_tag => '7',
+            :image_name => 'furynix-spec.centos7',
+          })
+
+DT.create({ :remote_repo => 'fedora',
+            :pull_tag => '29',
+            :image_name => 'furynix-spec.fedora29',
+          })
+
+DT.create({ :remote_repo => 'fedora',
+            :pull_tag => '27',
+            :image_name => 'furynix-spec.fedora27',
+          })
+
+DT.create({ :remote_repo => 'fedora',
+            :pull_tag => '23',
+            :image_name => 'furynix-spec.fedora23',
+          })
+
+DT.create({ :remote_repo => 'linuxbrew/linuxbrew',
+            :pull_tag => '1.9.3',
+            :image_name => 'furynix-spec.linuxbrew',
+          })
+
+DT.create({ :remote_repo => 'mcr.microsoft.com/dotnet/core/sdk',
+            :pull_tag => '2.1',
+            :image_name => 'furynix-spec.dotnet',
+          })
+
+DT.create({ :remote_repo => 'node',
+            :pull_tag => '11.9-stretch',
+            :image_name => 'furynix-spec.node119',
+          })
