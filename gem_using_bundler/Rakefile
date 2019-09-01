@@ -35,6 +35,9 @@ task :build_and_release_fury do
   begin
     fury = Furynix::GemfuryAPI.client(:user_api_key => ENV['FURYNIX_API_TOKEN'])
     fury.yank_version('gem_using_bundler', GemUsingBundler::VERSION)
+
+    # sleep is enforced here to allow backend to complete async tasks
+    sleep(3)
   rescue Gemfury::NotFound
     # ignore
   end

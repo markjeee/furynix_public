@@ -23,10 +23,8 @@ describe 'CLI' do
     end
 
     it 'should push a gem' do
-      skip 'For now, due to a bug with quickly yanking and pushing sequence'
-
-      gem = '/build/spec/fixtures/rspec-core-3.8.1.gem'
-      yank_if_exist('rspec-core', '3.8.1')
+      gem = '/build/spec/fixtures/rspec-core-3.8.2.gem'
+      yank_if_exist('rspec-core', '3.8.2')
 
       ret = cli_push_test('https://apt.fury.io/cli/', gem)
       expect(ret).to be_truthy
@@ -34,35 +32,40 @@ describe 'CLI' do
       line_groups = parse_out_file
       lines = line_groups[2]
       expect(lines[0]).to match(/Uploading #{File.basename(gem)}.+\- done/)
+      yank_if_exist('rspec-core', '3.8.2', true)
     end
 
     it 'should push multiple gems' do
-      skip 'For now, due to a bug with quickly yanking and pushing sequence'
+      gems = [ [ 'rspec-core', '3.8.2' ],
+               [ 'httparty', '0.17.0' ] ]
 
-      gems = [ '/build/spec/fixtures/rspec-core-3.8.1.gem',
-               '/build/spec/fixtures/httparty-0.17.0.gem' ]
+      gems.each do |gem|
+        yank_if_exist(*gem)
+      end
 
-      yank_if_exist('rspec-core', '3.8.1')
-      yank_if_exist('httparty', '0.17.0')
-
-      ret = cli_push_test('https://apt.fury.io/cli/', gems.join(' '))
+      gem_files = gems.collect { |gem| '/build/spec/fixtures/%s-%s.gem' % gem }
+      ret = cli_push_test('https://apt.fury.io/cli/', gem_files.join(' '))
       expect(ret).to be_truthy
 
       line_groups = parse_out_file
       lines = line_groups[2]
 
       i = 0
-      gems.each do |gem|
-        expect(lines[i]).to match(/Uploading #{File.basename(gem)}.+\- done/)
+      gem_files.each do |gemf|
+        expect(lines[i]).to match(/Uploading #{File.basename(gemf)}.+\- done/)
+        yank_if_exist(gems[i][0], gems[i][1], true)
         i += 1
       end
     end
 
     private
 
-    def yank_if_exist(gem, version)
+    def yank_if_exist(gem, version, nosleep = false)
       begin
         ret = @fury.yank_version(gem, version)
+
+        # sleep is enforced here to allow backend to complete async tasks
+        sleep(3) unless nosleep
       rescue Gemfury::NotFound
         # ignore
       end
