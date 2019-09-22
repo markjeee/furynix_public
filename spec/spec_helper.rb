@@ -58,7 +58,7 @@ module FurynixSpec
   end
 
   def self.current_gemfury_dev_version
-    '0.10.0'
+    '0.11.0.rc1'
   end
 
   def self.skip_if_only_one
