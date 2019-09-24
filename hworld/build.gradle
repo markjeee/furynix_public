@@ -1,0 +1,36 @@
+apply plugin: "java"
+apply plugin: "maven-publish"
+
+group = "org.furynix"
+version = "1.0"
+
+repositories {
+  //maven {
+  //  url = "file://${buildDir}/../../jworld/build/repo"
+  //}
+
+  maven {
+    url "https://maven.fury.io/furynix"
+    authentication {
+      basic(BasicAuthentication)
+    }
+    credentials {
+      username = "$furyToken"
+      password = ''
+    }
+  }
+
+  mavenCentral()
+}
+
+dependencies {
+  compile "org.furynix:jworld:1.0"
+  testCompile "junit:junit:4.12"
+}
+
+test {
+  testLogging {
+    exceptionFormat = 'full'
+    events = ["passed", "failed", "skipped"]
+  }
+}

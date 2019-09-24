@@ -15,3 +15,8 @@ DotNetWorld/obj/
 DotNetHello/bin/
 DotNetHello/obj/
 vendor/bundle
+jworld/.gradle/*
+jworld/build/*
+hworld/.gradle/*
+hworld/build/*
+gradle.properties
