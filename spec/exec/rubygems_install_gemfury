@@ -13,7 +13,7 @@ exec_cmd "gem -v"
 
 if [ -n "$dev_version" ]; then
     exec_cmd "gem list --source $source gemfury --remote --prerelease"
-    exec_cmd "gem install --source $source gemfury --prerelease"
+    exec_cmd "gem install -V --source $source gemfury -v $dev_version --prerelease"
 else
     exec_cmd "gem list --source $source gemfury --remote"
     exec_cmd "gem install --source $source gemfury"

@@ -19,7 +19,7 @@ describe 'RubyGems' do
     end
 
     it 'should install using dev version' do
-      install_spec('https://gem.fury.io/cli-dev/', true)
+      install_spec('https://gem.fury.io/cli-dev/', FurynixSpec.current_gemfury_dev_version)
       should_install_fury(true)
     end
 
@@ -29,7 +29,7 @@ describe 'RubyGems' do
       container.pull
       args = FurynixSpec.
                create_exec_args({ 'source' => source,
-                                  'dev_version' => dev_version ? '1' : nil,
+                                  'dev_version' => dev_version,
                                   'rubygem_version' => @rubygem_version,
                                   'out_file' => FurynixSpec.calculate_build_path(@out_file_path)
                                 })
