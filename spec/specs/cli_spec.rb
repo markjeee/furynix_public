@@ -23,8 +23,8 @@ describe 'CLI' do
     end
 
     it 'should push a gem' do
-      gem = '/build/spec/fixtures/rspec-core-3.8.2.gem'
-      yank_if_exist('rspec-core', '3.8.2')
+      gem = '/build/spec/fixtures/rspec-support-3.8.3.gem'
+      yank_if_exist('rspec-support', '3.8.3')
 
       ret = cli_push_test('https://apt.fury.io/cli/', gem)
       expect(ret).to be_truthy
@@ -32,11 +32,11 @@ describe 'CLI' do
       line_groups = parse_out_file
       lines = line_groups[2]
       expect(lines[0]).to match(/Uploading #{File.basename(gem)}.+\- done/)
-      yank_if_exist('rspec-core', '3.8.2', true)
+      yank_if_exist('rspec-support', '3.8.3', true)
     end
 
     it 'should push multiple gems' do
-      gems = [ [ 'rspec-core', '3.8.2' ],
+      gems = [ [ 'rspec-support', '3.8.3' ],
                [ 'httparty', '0.17.0' ] ]
 
       gems.each do |gem|
@@ -65,7 +65,7 @@ describe 'CLI' do
         ret = @fury.yank_version(gem, version)
 
         # sleep is enforced here to allow backend to complete async tasks
-        sleep(3) unless nosleep
+        sleep(5) unless nosleep
       rescue Gemfury::NotFound
         # ignore
       end
