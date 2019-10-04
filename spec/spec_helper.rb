@@ -86,6 +86,14 @@ module FurynixSpec
     end
   end
 
+  def self.spec_path
+    File.expand_path('../', __FILE__)
+  end
+
+  def self.fixtures_path
+    File.join(spec_path, 'fixtures')
+  end
+
   def self.prepare_docker_outfile
     if defined?(@@outfile_counter)
       @@outfile_counter += 1
