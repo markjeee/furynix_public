@@ -22,7 +22,7 @@ describe 'Gemfury API' do
       begin
         @fury.package_info('gemfury')['package']
       rescue Gemfury::NotFound
-        f = File.new(File.join(FurynixSpec.fixtures_path, 'gemfury-0.11.0.rc1.gem'))
+        f = File.new(FurynixSpec.fixtures_gemfury_gem)
         @fury.push_gem(f)
       end
     end

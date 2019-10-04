@@ -94,6 +94,14 @@ module FurynixSpec
     File.join(spec_path, 'fixtures')
   end
 
+  def self.fixtures_gemfury_gem
+    File.join(fixtures_path, 'gemfury-0.11.0.rc1.gem')
+  end
+
+  def self.fixtures_gemfury_gem_version
+    '0.11.0.rc1'
+  end
+
   def self.prepare_docker_outfile
     if defined?(@@outfile_counter)
       @@outfile_counter += 1
