@@ -9,23 +9,26 @@ describe 'APT' do
     end
 
     it 'should install' do
-      ret = apt_install_gemfury('https://apt.fury.io/cli/')
-      expect(ret).to be_truthy
+      ret = apt_install_gemfury('https://apt.fury.io/cli/',
+                                FurynixSpec.current_gemfury_version)
 
+      expect(ret).to be_truthy
       expect_fury_version(FurynixSpec.current_gemfury_version)
     end
 
     it 'should install dev version' do
-      ret = apt_install_gemfury('https://apt.fury.io/cli-dev/')
-      expect(ret).to be_truthy
+      ret = apt_install_gemfury('https://apt.fury.io/cli/',
+                                FurynixSpec.current_gemfury_dev_version)
 
+      expect(ret).to be_truthy
       expect_fury_version(FurynixSpec.current_gemfury_dev_version)
     end
 
     it 'should install using custom domain' do
-      ret = apt_install_gemfury('https://cli.gemfury.com/apt/')
-      expect(ret).to be_truthy
+      ret = apt_install_gemfury('https://cli.gemfury.com/apt/',
+                                FurynixSpec.current_gemfury_version)
 
+      expect(ret).to be_truthy
       expect_fury_version(FurynixSpec.current_gemfury_version)
     end
 
@@ -37,13 +40,18 @@ describe 'APT' do
       expect(lines[1]).to eq(version)
     end
 
-    def apt_install_gemfury(source)
+    def apt_install_gemfury(source, version = nil)
       container = DockerTask.containers[@container_key]
-
       container.pull
-      container.runi(:exec => '"/build/spec/exec/apt_install_gemfury %s %s"' %
-                              [ FurynixSpec.calculate_build_path(@out_file_path),
-                                source ])
+
+      args = FurynixSpec.
+               create_exec_args({ 'source' => source,
+                                  'out_file' => FurynixSpec.calculate_build_path(@out_file_path),
+                                  'version' => version
+                                })
+
+      container.runi(:exec => '"/build/spec/exec/apt_install_gemfury %s"' %
+                              FurynixSpec.pass_exec_args(args))
     end
   end
 

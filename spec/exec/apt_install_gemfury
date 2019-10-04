@@ -2,13 +2,17 @@
 
 source $(dirname $0)/functions
 
-out_file="$1"
-source="$2"
+parse_exec_args "$1"
 
 detect_if_debian_wheezy
 prepare_apt
 
-exec_cmd "$apt install -y gemfury"
+if [ -n "$version" ]; then
+    exec_cmd "$apt install -y gemfury=$version"
+else
+    exec_cmd "$apt install -y gemfury"
+fi
+
 exec_cmd "which ruby"
 exec_cmd "ruby -v"
 
