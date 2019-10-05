@@ -2,12 +2,16 @@
 
 source $(dirname $0)/functions
 
-out_file="$1"
-source="$2"
+parse_exec_args "$1"
 
 prepare_yum
 
-exec_cmd "yum install -y which gemfury"
+if [ -n "$version" ]; then
+    exec_cmd "yum install -y which gemfury-$version"
+else
+    exec_cmd "yum install -y which gemfury"
+fi
+
 exec_cmd "which ruby"
 exec_cmd "ruby -v"
 

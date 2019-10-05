@@ -9,21 +9,24 @@ describe 'YUM' do
     end
 
     it 'should install' do
-      ret = yum_install_gemfury('https://yum.fury.io/cli/')
+      ret = yum_install_gemfury('https://yum.fury.io/cli/',
+                                FurynixSpec.current_gemfury_version)
       expect(ret).to be_truthy
 
       expect_fury_version(FurynixSpec.current_gemfury_version)
     end
 
     it 'should install dev version' do
-      ret = yum_install_gemfury('https://yum.fury.io/cli-dev/')
+      ret = yum_install_gemfury('https://yum.fury.io/cli-dev/',
+                                FurynixSpec.current_gemfury_dev_version)
       expect(ret).to be_truthy
 
       expect_fury_version(FurynixSpec.current_gemfury_dev_version)
     end
 
     it 'should install using custom domain' do
-      ret = yum_install_gemfury('https://cli.gemfury.com/yum/')
+      ret = yum_install_gemfury('https://cli.gemfury.com/yum/',
+                                FurynixSpec.current_gemfury_version)
       expect(ret).to be_truthy
 
       expect_fury_version(FurynixSpec.current_gemfury_version)
@@ -37,13 +40,18 @@ describe 'YUM' do
       expect(lines[1]).to eq(version)
     end
 
-    def yum_install_gemfury(source)
+    def yum_install_gemfury(source, version = nil)
       container = DockerTask.containers[@container_key]
-
       container.pull
-      container.runi(:exec => '"/build/spec/exec/yum_install_gemfury %s %s"' %
-                              [ FurynixSpec.calculate_build_path(@out_file_path),
-                                source ])
+
+      args = FurynixSpec.
+               create_exec_args({ 'source' => source,
+                                  'out_file' => FurynixSpec.calculate_build_path(@out_file_path),
+                                  'version' => version
+                                })
+
+      container.runi(:exec => '"/build/spec/exec/yum_install_gemfury %s"' %
+                              FurynixSpec.pass_exec_args(args))
     end
   end
 
