@@ -6,9 +6,11 @@ describe 'RubyGems' do
       FurynixSpec.prepare
 
       @out_file_path = FurynixSpec.prepare_docker_outfile
+      @fury = FurynixSpec.gemfury_client
     end
 
     it 'should bundle and test' do
+      prepare_needed_gem
       container = DockerTask.containers[@container_key]
 
       container.pull
@@ -23,6 +25,16 @@ describe 'RubyGems' do
                                     FurynixSpec.pass_exec_args(args))
 
       expect(ret).to be_truthy
+    end
+
+    def prepare_needed_gem
+      begin
+        @fury.package_info('gem_using_bundler')['package']
+      rescue Gemfury::NotFound
+        f = File.new(File.join(FurynixSpec.fixtures_path, 'gem_using_bundler-0.1.0.gem'))
+        @fury.push_gem(f)
+        @fury.update_privacy('gem_using_bundler', false)
+      end
     end
   end
 
