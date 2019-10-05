@@ -18,12 +18,15 @@ describe 'Gemfury API' do
       expect(package['private']).to_not be_truthy
     end
 
+    private
+
     def prepare_gemfury_gem
       begin
         @fury.package_info('gemfury')['package']
       rescue Gemfury::NotFound
         f = File.new(FurynixSpec.fixtures_gemfury_gem)
         @fury.push_gem(f)
+        @fury.update_privacy('gemfury', false)
       end
     end
   end

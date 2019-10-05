@@ -11,6 +11,7 @@ describe 'CLI' do
     end
 
     it 'should show version, user, and packages' do
+      prepare_gemfury_gem
       ret = cli_list_test('https://apt.fury.io/cli/')
       expect(ret).to be_truthy
 
@@ -59,6 +60,16 @@ describe 'CLI' do
     end
 
     private
+
+    def prepare_gemfury_gem
+      begin
+        @fury.package_info('gemfury')['package']
+      rescue Gemfury::NotFound
+        f = File.new(FurynixSpec.fixtures_gemfury_gem)
+        @fury.push_gem(f)
+        @fury.update_privacy('gemfury', false)
+      end
+    end
 
     def yank_if_exist(gem, version, nosleep = false)
       begin
