@@ -142,3 +142,26 @@ namespace :vagrant do
     sh "vagrant ssh -c \"cd /opt/furynix; rake parallel:spec[3]\" mark-qnuc"
   end
 end
+
+
+namespace :build do
+  desc 'Docker build CentOS 7 environment'
+  task :centos7 do
+    c = DockerTask.containers['furynix.centos7']
+    c.build
+
+    unless ENV['NOPUSH']
+      c.push
+    end
+  end
+
+  desc 'Docker build Fedora 29 environment'
+  task :fedora29 do
+    c = DockerTask.containers['furynix.fedora29']
+    c.build
+
+    unless ENV['NOPUSH']
+      c.push
+    end
+  end
+end

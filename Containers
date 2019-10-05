@@ -41,9 +41,16 @@ DT.create({ :remote_repo => 'ubuntu',
             :image_name => 'furynix.bionic'
           })
 
-DT.create({ :remote_repo => 'centos',
+DT.create({ :remote_repo => 'furynix/centos',
             :pull_tag => '7',
-            :image_name => 'furynix.centos7'
+            :image_name => 'furynix.centos7',
+            :build_path => File.join(build_path, 'dockerfiles/centos7')
+          })
+
+DT.create({ :remote_repo => 'furynix/fedora',
+            :pull_tag => '29',
+            :image_name => 'furynix.fedora29',
+            :build_path => File.join(build_path, 'dockerfiles/fedora29')
           })
 
 DT.create({ :remote_repo => 'linuxbrew/linuxbrew',
@@ -134,12 +141,12 @@ DT.create({ :remote_repo => 'debian',
             :image_name => 'furynix-spec.wheezy',
           })
 
-DT.create({ :remote_repo => 'centos',
+DT.create({ :remote_repo => 'furynix/centos',
             :pull_tag => '7',
             :image_name => 'furynix-spec.centos7',
           })
 
-DT.create({ :remote_repo => 'fedora',
+DT.create({ :remote_repo => 'furynix/fedora',
             :pull_tag => '29',
             :image_name => 'furynix-spec.fedora29',
           })
