@@ -34,7 +34,6 @@ namespace :spec do
   desc 'Rubygem, gem install, gem use, push gem'
   RSpec::Core::RakeTask.new('rubygems') do |t|
     t.pattern = [ 'spec/specs/rubygems_gem_using_bundler_spec.rb',
-                  'spec/specs/rubygems_app_using_gem_spec.rb',
                   'spec/specs/rubygems_install_gemfury_spec.rb'
                 ]
   end

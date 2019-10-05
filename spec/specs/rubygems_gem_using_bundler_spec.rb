@@ -6,6 +6,7 @@ describe 'RubyGems' do
       FurynixSpec.prepare
 
       @out_file_path = FurynixSpec.prepare_docker_outfile
+      @fury = FurynixSpec.gemfury_client
     end
 
     it 'should build and release' do
@@ -29,6 +30,37 @@ describe 'RubyGems' do
     end
   end
 
+  shared_examples 'app using gem' do
+    before do
+      FurynixSpec.prepare
+
+      @out_file_path = FurynixSpec.prepare_docker_outfile
+      @fury = FurynixSpec.gemfury_client
+    end
+
+    it 'should bundle and test' do
+      container = DockerTask.containers[@container_key]
+
+      container.pull
+
+      args = FurynixSpec.
+               create_exec_args({ 'source_url' => FurynixSpec.furynix_source_url('gem'),
+                                  'gemfile' => @gemfile,
+                                  'out_file' => FurynixSpec.calculate_build_path(@out_file_path)
+                                })
+
+      ret = container.runi(:exec => '"/build/spec/exec/app_using_gem_test %s"' %
+                                    FurynixSpec.pass_exec_args(args))
+
+      expect(ret).to be_truthy
+    end
+
+    after do
+      gem_info = @fury.package_info('gem_using_bundler')
+      @fury.yank_version('gem_using_bundler', gem_info['versions'].first['version'])
+    end
+  end
+
   describe 'using ruby 2.6.3' do
     before do
       skip if FurynixSpec.skip_if_only_one
@@ -37,6 +69,7 @@ describe 'RubyGems' do
     end
 
     it_should_behave_like 'gem using bundler'
+    it_should_behave_like 'app using gem'
   end
 
   describe 'using ruby 1.9.3' do
@@ -47,6 +80,7 @@ describe 'RubyGems' do
     end
 
     it_should_behave_like 'gem using bundler'
+    it_should_behave_like 'app using gem'
   end
 
   if FurynixSpec.include_all_ruby

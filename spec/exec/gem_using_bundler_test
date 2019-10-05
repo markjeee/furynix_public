@@ -15,7 +15,6 @@ cd /build/gem_using_bundler
 exec_cmd "bundle"
 exec_cmd "rake"
 
-export FURYNIX_API_TOKEN="$furynix_token"
 export BUNDLE_GEM__PUSH_KEY=fury
 export RUBYGEMS_HOST=$push_url
 exec_cmd "rake build_and_release_fury"
