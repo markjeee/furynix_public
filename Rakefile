@@ -164,4 +164,14 @@ namespace :build do
       c.push
     end
   end
+
+  desc 'Docker build Bionic environment'
+  task :bionic do
+    c = DockerTask.containers['furynix.bionic']
+    c.build
+
+    unless ENV['NOPUSH']
+      c.push
+    end
+  end
 end

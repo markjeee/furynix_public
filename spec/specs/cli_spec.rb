@@ -24,20 +24,21 @@ describe 'CLI' do
     end
 
     it 'should push a gem' do
-      gem = '/build/spec/fixtures/rspec-support-3.8.3.gem'
-      yank_if_exist('rspec-support', '3.8.3')
+      gem = [ 'rspec-expectations', '3.8.5' ]
+      gem_path = '/build/spec/fixtures/%s-%s.gem' % gem
+      yank_if_exist(gem[0], gem[1])
 
-      ret = cli_push_test('https://apt.fury.io/cli/', gem)
+      ret = cli_push_test('https://apt.fury.io/cli/', gem_path)
       expect(ret).to be_truthy
 
       line_groups = parse_out_file
       lines = line_groups[2]
-      expect(lines[0]).to match(/Uploading #{File.basename(gem)}.+\- done/)
-      yank_if_exist('rspec-support', '3.8.3', true)
+      expect(lines[0]).to match(/Uploading #{File.basename(gem_path)}.+\- done/)
+      yank_if_exist(gem[0], gem[1], true)
     end
 
     it 'should push multiple gems' do
-      gems = [ [ 'rspec-support', '3.8.3' ],
+      gems = [ [ 'rspec-core', '3.8.2' ],
                [ 'httparty', '0.17.0' ] ]
 
       gems.each do |gem|

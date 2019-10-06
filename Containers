@@ -36,9 +36,10 @@ DT.create({ :remote_repo => 'ruby',
             :image_name => 'furynix.ruby26'
           })
 
-DT.create({ :remote_repo => 'ubuntu',
+DT.create({ :remote_repo => 'furynix/ubuntu',
             :pull_tag => 'bionic',
-            :image_name => 'furynix.bionic'
+            :image_name => 'furynix.bionic',
+            :build_path => File.join(build_path, 'dockerfiles/bionic')
           })
 
 DT.create({ :remote_repo => 'furynix/centos',
@@ -111,7 +112,7 @@ DT.create({ :remote_repo => 'ruby',
             :image_name => 'furynix-spec.ruby193',
           })
 
-DT.create({ :remote_repo => 'ubuntu',
+DT.create({ :remote_repo => 'furynix/ubuntu',
             :pull_tag => 'bionic',
             :image_name => 'furynix-spec.bionic',
           })

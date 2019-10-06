@@ -85,12 +85,15 @@ prepare_apt() {
         export apt="apt-get"
     fi
 
-    exec_cmd "$apt -y update"
-    exec_cmd "$apt install -y ca-certificates apt-transport-https"
+    dpkg -l apt-transport-https
+    if [ "$?" -eq '1' ]; then
+        exec_cmd "$apt -y update"
+        exec_cmd "$apt install -y ca-certificates apt-transport-https"
+    fi
+
     exec_cmd "echo $fury_list | tee /etc/apt/sources.list.d/fury.list"
     exec_cmd "$apt -y update"
 }
-
 
 prepare_yum() {
     cat >/etc/yum.repos.d/fury.repo <<EOF
