@@ -12,7 +12,7 @@ describe 'APT' do
       ret = apt_install_gemfury('https://apt.fury.io/cli/',
                                 FurynixSpec.current_gemfury_version)
 
-      expect(ret).to be_truthy
+      expect(ret).to be_a_docker_success
       expect_fury_version(FurynixSpec.current_gemfury_version)
     end
 
@@ -50,8 +50,9 @@ describe 'APT' do
                                   'version' => version
                                 })
 
-      container.runi(:exec => '"/build/spec/exec/apt_install_gemfury %s"' %
-                              FurynixSpec.pass_exec_args(args))
+      container.run(:exec => '"/build/spec/exec/apt_install_gemfury %s"' %
+                             FurynixSpec.pass_exec_args(args),
+                    :capture => true)
     end
   end
 
