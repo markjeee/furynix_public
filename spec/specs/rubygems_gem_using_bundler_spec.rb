@@ -23,10 +23,11 @@ describe 'RubyGems' do
                                   'out_file' => FurynixSpec.calculate_build_path(@out_file_path)
                                 })
 
-      ret = container.runi(:exec => '"/build/spec/exec/gem_using_bundler_test %s"' %
-                                    FurynixSpec.pass_exec_args(args))
+      ret = container.run(:exec => '"/build/spec/exec/gem_using_bundler_test %s"' %
+                                   FurynixSpec.pass_exec_args(args),
+                          :capture => true)
 
-      expect(ret).to be_truthy
+      expect(ret).to be_a_docker_success
     end
   end
 
@@ -49,10 +50,11 @@ describe 'RubyGems' do
                                   'out_file' => FurynixSpec.calculate_build_path(@out_file_path)
                                 })
 
-      ret = container.runi(:exec => '"/build/spec/exec/app_using_gem_test %s"' %
-                                    FurynixSpec.pass_exec_args(args))
+      ret = container.run(:exec => '"/build/spec/exec/app_using_gem_test %s"' %
+                                   FurynixSpec.pass_exec_args(args),
+                          :capture => true)
 
-      expect(ret).to be_truthy
+      expect(ret).to be_a_docker_success
     end
 
     after do

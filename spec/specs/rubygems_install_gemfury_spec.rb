@@ -34,10 +34,11 @@ describe 'RubyGems' do
                                   'out_file' => FurynixSpec.calculate_build_path(@out_file_path)
                                 })
 
-      ret = container.runi(:exec => '"/build/spec/exec/rubygems_install_gemfury %s"' %
-                                    FurynixSpec.pass_exec_args(args))
+      ret = container.run(:exec => '"/build/spec/exec/rubygems_install_gemfury %s"' %
+                                   FurynixSpec.pass_exec_args(args),
+                          :capture => true)
 
-      expect(ret).to be_truthy
+      expect(ret).to be_a_docker_success
     end
 
     def should_install_fury(dev_version = nil)
