@@ -16,7 +16,8 @@ describe 'RubyGems' do
       args = FurynixSpec.
                create_exec_args({ 'push_url' => FurynixSpec.furynix_push_url,
                                   'gemfile' => @gemfile,
-                                  'out_file' => FurynixSpec.calculate_build_path(@out_file_path)
+                                  'out_file' => FurynixSpec.calculate_build_path(@out_file_path),
+                                  'build_version' => '0.1.1'
                                 })
 
       ret = container.run(:exec => '"/build/spec/exec/gem_using_bundler_test %s"' %
@@ -24,6 +25,16 @@ describe 'RubyGems' do
                           :capture => true)
 
       expect(ret).to be_a_docker_success
+
+      gem_info = @fury.package_info('gem_using_bundler')
+      expect(gem_info['versions'].collect { |i| i['version'] }).to include('0.1.1')
+    end
+
+    after do
+      begin
+        @fury.yank_version('gem_using_bundler', '0.1.1')
+      rescue Gemfury::NotFound
+      end
     end
   end
 
@@ -58,11 +69,6 @@ describe 'RubyGems' do
                           :capture => true)
 
       expect(ret).to be_a_docker_success
-    end
-
-    after do
-      gem_info = @fury.package_info('gem_using_bundler')
-      @fury.yank_version('gem_using_bundler', gem_info['versions'].first['version'])
     end
   end
 

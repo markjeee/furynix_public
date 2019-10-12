@@ -90,8 +90,12 @@ module FurynixSpec
     File.expand_path('../', __FILE__)
   end
 
-  def self.fixtures_path
-    File.join(spec_path, 'fixtures')
+  def self.fixtures_path(fixture = nil)
+    if fixture.nil?
+      File.join(spec_path, 'fixtures')
+    else
+      File.join(spec_path, 'fixtures', fixture)
+    end
   end
 
   def self.fixtures_gemfury_gem
