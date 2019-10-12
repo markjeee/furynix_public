@@ -9,14 +9,15 @@ describe 'Curl API' do
 
   it 'should return user info' do
     container = DockerTask.containers['furynix-spec.bionic']
-
     container.pull
-    args = FurynixSpec.
-             create_exec_args({ 'out_file' => FurynixSpec.calculate_build_path(@out_file_path) })
 
-    ret = container.runi(:exec => '"/build/spec/exec/curl_users_me %s"' %
-                                  FurynixSpec.pass_exec_args(args))
+    env = FurynixSpec.create_env_args(
+      { 'out_file' => FurynixSpec.calculate_build_path(@out_file_path) })
 
-    expect(ret).to be_truthy
+    ret = container.run(:exec => '/build/spec/exec/curl_users_me',
+                        :capture => true,
+                        :env_file => FurynixSpec.create_env_file(env))
+
+    expect(ret).to be_a_docker_success
   end
 end

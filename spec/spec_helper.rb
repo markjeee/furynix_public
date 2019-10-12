@@ -53,6 +53,13 @@ module FurynixSpec
     }.merge(args)
   end
 
+  def self.create_env_args(env)
+    {
+      'furynix_user' => furynix_user,
+      'furynix_token' => furynix_api_token
+    }.merge(env)
+  end
+
   def self.current_gemfury_version
     '0.10.0'
   end
@@ -131,6 +138,25 @@ module FurynixSpec
     File.open(f, 'w') do |io|
       args.each do |k,v|
         io.puts('export %s=%s' % [ k, v ])
+      end
+    end
+
+    f
+  end
+
+  def self.create_env_file(env)
+    if defined?(@@execargs_file_counter)
+      @@execargs_file_counter += 1
+    else
+      @@execargs_file_counter = 1
+    end
+
+    f = FurynixSpec.tmp_path('docker.env_args.%d' % @@execargs_file_counter)
+    FileUtils.rm_f(f) if File.exists?(f)
+
+    File.open(f, 'w') do |io|
+      env.each do |k,v|
+        io.puts('%s=%s' % [ k, v ])
       end
     end
 

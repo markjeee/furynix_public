@@ -2,8 +2,6 @@
 
 source $(dirname $0)/functions
 
-parse_exec_args "$1"
-
 configure_furynix_token
 
 exec_cmd "apt update"
