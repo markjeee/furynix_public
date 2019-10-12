@@ -10,7 +10,12 @@ RSpec::Matchers.define :be_a_docker_success do
   failure_message do |actual|
     if actual.is_a?(Array)
       out_buffer = actual[0]
-      out_buffer.seek(-2048, IO::SEEK_END)
+
+      if out_buffer.size > 2048
+        out_buffer.seek(-2048, IO::SEEK_END)
+      else
+        out_buffer.rewind
+      end
 
       lines = out_buffer.readlines
       if lines.count > 50
