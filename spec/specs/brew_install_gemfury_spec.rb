@@ -9,19 +9,40 @@ describe 'Linuxbrew' do
     end
 
     it 'should install' do
+      ret = brew_install_gemfury('gemfury/tap')
+
+      expect(ret).to be_a_docker_success
+      expect_fury_version(FurynixSpec.current_gemfury_version)
+    end
+
+    it 'should install devel version' do
+      ret = brew_install_gemfury('gemfury/tap', true)
+
+      expect(ret).to be_a_docker_success
+      expect_fury_version(FurynixSpec.current_gemfury_dev_version)
+    end
+
+    def brew_install_gemfury(source, devel = nil)
       container = DockerTask.containers[@container_key]
-
       container.pull
-      ret = container.runi(:exec => '"/build/spec/exec/brew_install_gemfury %s %s"' %
-                                    [ FurynixSpec.calculate_build_path(@out_file_path),
-                                      'gemfury/tap' ])
 
-      expect(ret).to be_truthy
+      args = FurynixSpec.
+               create_exec_args({ 'source' => source,
+                                  'out_file' => FurynixSpec.calculate_build_path(@out_file_path),
+                                  'devel' => devel
+                                })
+
+      container.run(:exec => '"/build/spec/exec/brew_install_gemfury %s"' %
+                             FurynixSpec.pass_exec_args(args),
+                    :capture => true)
+    end
+
+    def expect_fury_version(version)
       expect(File.exists?(@out_file_path)).to be_truthy
 
       lines = File.read(@out_file_path).split("\n")
       expect(lines[0]).to eq('/home/linuxbrew/.linuxbrew/bin/fury')
-      expect(lines[1]).to eq(FurynixSpec.current_gemfury_version)
+      expect(lines[1]).to eq(version)
     end
   end
 

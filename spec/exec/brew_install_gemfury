@@ -2,8 +2,7 @@
 
 source $(dirname $0)/functions
 
-out_file="$1"
-source="$2"
+parse_exec_args "$1"
 
 exec_cmd "sudo apt -y update"
 exec_cmd "sudo apt install -y ruby"
@@ -15,7 +14,12 @@ exec_cmd "brew cleanup"
 exec_cmd "brew update"
 
 exec_cmd "brew tap $source"
-exec_cmd "brew install gemfury"
+
+if [ -n "$devel" ]; then
+    exec_cmd "brew install --devel gemfury"
+else
+    exec_cmd "brew install gemfury"
+fi
 
 fury_path=$(which fury)
 exec_cmd "echo $fury_path" $out_file

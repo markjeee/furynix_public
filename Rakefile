@@ -174,4 +174,14 @@ namespace :build do
       c.push
     end
   end
+
+  desc 'Docker build Linuxbrew environment'
+  task :linuxbrew do
+    c = DockerTask.containers['furynix.linuxbrew']
+    c.build
+
+    unless ENV['NOPUSH']
+      c.push
+    end
+  end
 end
