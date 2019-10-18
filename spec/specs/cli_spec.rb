@@ -13,7 +13,7 @@ describe 'CLI' do
     it 'should show version, user, and packages' do
       prepare_gemfury_gem
       ret = cli_list_test('https://apt.fury.io/cli/')
-      expect(ret).to be_truthy
+      expect(ret).to be_a_docker_success
 
       expect(File.exists?(@out_file_path)).to be_truthy
       line_groups = parse_out_file
@@ -24,12 +24,12 @@ describe 'CLI' do
     end
 
     it 'should push a gem' do
-      gem = [ 'rspec-expectations', '3.8.5' ]
+      gem = [ 'rspec-expectations', '3.8.3' ]
       gem_path = '/build/spec/fixtures/%s-%s.gem' % gem
       yank_if_exist(gem[0], gem[1])
 
       ret = cli_push_test('https://apt.fury.io/cli/', gem_path)
-      expect(ret).to be_truthy
+      expect(ret).to be_a_docker_success
 
       line_groups = parse_out_file
       lines = line_groups[2]
@@ -41,13 +41,11 @@ describe 'CLI' do
       gems = [ [ 'rspec-core', '3.8.2' ],
                [ 'httparty', '0.17.0' ] ]
 
-      gems.each do |gem|
-        yank_if_exist(*gem)
-      end
+      gems.each { |gem| yank_if_exist(*gem) }
 
       gem_files = gems.collect { |gem| '/build/spec/fixtures/%s-%s.gem' % gem }
       ret = cli_push_test('https://apt.fury.io/cli/', gem_files.join(' '))
-      expect(ret).to be_truthy
+      expect(ret).to be_a_docker_success
 
       line_groups = parse_out_file
       lines = line_groups[2]
@@ -139,24 +137,26 @@ describe 'CLI' do
     end
 
     def cli_list_test(source)
-      args = FurynixSpec.
-               create_exec_args({ 'source' => source,
-                                  'out_file' => FurynixSpec.calculate_build_path(@out_file_path)
-                                })
+      env = FurynixSpec.
+              create_env_args({ 'source' => source,
+                                'out_file' => FurynixSpec.calculate_build_path(@out_file_path)
+                              })
 
-      container.runi(:exec => '"/build/spec/exec/cli_list_test %s"' %
-                              FurynixSpec.pass_exec_args(args))
+      container.run(:exec => '/build/spec/exec/cli_list_test',
+                    :capture => true,
+                    :env_file => FurynixSpec.create_env_file(env))
     end
 
     def cli_push_test(source, gem)
-      args = FurynixSpec.
-               create_exec_args({ 'source' => source,
-                                  'gem' => '"%s"' % gem,
-                                  'out_file' => FurynixSpec.calculate_build_path(@out_file_path)
-                                })
+      env = FurynixSpec.
+              create_env_args({ 'source' => source,
+                                'gem' => '%s' % gem,
+                                'out_file' => FurynixSpec.calculate_build_path(@out_file_path)
+                              })
 
-      container.runi(:exec => '"/build/spec/exec/cli_push_test %s"' %
-                              FurynixSpec.pass_exec_args(args))
+      container.run(:exec => '/build/spec/exec/cli_push_test',
+                    :capture => true,
+                    :env_file => FurynixSpec.create_env_file(env))
     end
   end
 
