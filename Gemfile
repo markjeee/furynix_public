@@ -12,6 +12,6 @@ group :development do
   gem 'parallel_tests'
 
   source 'https://repo.nlevel.io/ruby/' do
-    gem 'docker_task', '~> 0.1.9'
+    gem 'docker_task', '~> 0.1.10'
   end
 end

@@ -48,6 +48,11 @@ namespace :spec do
     t.pattern = [ 'spec/specs/dotnet_build_spec.rb' ]
   end
 
+  desc 'Gradle, build, build'
+  RSpec::Core::RakeTask.new('gradle_build') do |t|
+    t.pattern = [ 'spec/specs/gradle_build_spec.rb' ]
+  end
+
   desc 'CLI specs (on ubuntu/bionic)'
   RSpec::Core::RakeTask.new('cli') do |t|
     t.pattern = [ 'spec/specs/cli_spec.rb' ]
@@ -106,6 +111,13 @@ namespace :bash do
   desc 'Bash to Dotnet environment'
   task :dotnet do
     c = DockerTask.containers['furynix.dotnet']
+    c.pull
+    c.runi
+  end
+
+  desc 'Bash to Gradle environment'
+  task :gradle do
+    c = DockerTask.containers['furynix.gradle']
     c.pull
     c.runi
   end

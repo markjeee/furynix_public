@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-describe 'Dotnet' do
+describe 'Gradle' do
   shared_examples 'build and push' do
     before do
       FurynixSpec.prepare
@@ -14,25 +14,25 @@ describe 'Dotnet' do
       container.pull
 
       env = FurynixSpec.
-              create_env_args({ 'package_path' => 'bin/Debug/Gemfury.DotNetWorld.1.1.0.nupkg',
-                                'package_name' => 'Gemfury.DotNetWorld',
-                                'package_version' => '1.1.0',
+              create_env_args({ 'package_path' => 'build/repo/org/furynix/jworld/1.1/jworld-1.1.jar',
+                                'package_name' => 'org.furynix/jworld',
+                                'package_version' => '1.1',
                                 'out_file' => FurynixSpec.calculate_build_path(@out_file_path)
                               })
 
-      ret = container.run(:exec => '/build/spec/exec/dotnet_build_world',
+      ret = container.run(:exec => '/build/spec/exec/gradle_build_jworld',
                           :capture => true,
                           :env_file => FurynixSpec.create_env_file(env))
 
       expect(ret).to be_a_docker_success
 
-      versions = @fury.versions('Gemfury.DotNetWorld')
-      expect(versions.collect { |i| i['version'] }).to include('1.1.0')
+      versions = @fury.versions('org.furynix/jworld')
+      expect(versions.collect { |i| i['version'] }).to include('1.1')
     end
 
     after do
       begin
-        @fury.yank_version('Gemfury.DotNetWorld', '1.1.0')
+        @fury.yank_version('org.furynix/jworld', '1.1')
       rescue Gemfury::NotFound
       end
     end
@@ -46,9 +46,9 @@ describe 'Dotnet' do
       @fury = FurynixSpec.gemfury_client
 
       begin
-        @fury.versions('Gemfury.DotNetWorld')
+        @fury.versions('org.furynix/jworld')
       rescue Gemfury::NotFound
-        f = File.new(FurynixSpec.fixtures_path('Gemfury.DotNetWorld.1.0.0.nupkg'))
+        f = File.new(FurynixSpec.fixtures_path('jworld-1.0.jar'))
         @fury.push_gem(f)
       end
     end
@@ -60,21 +60,18 @@ describe 'Dotnet' do
       env = FurynixSpec.
               create_env_args({ 'out_file' => FurynixSpec.calculate_build_path(@out_file_path) })
 
-      ret = container.run(:exec => '/build/spec/exec/dotnet_build_hello',
+      ret = container.run(:exec => '/build/spec/exec/gradle_build_hworld',
                           :capture => true,
                           :env_file => FurynixSpec.create_env_file(env))
 
       expect(ret).to be_a_docker_success
-
-      lines = File.read(@out_file_path).split("\n")
-      expect(lines[0]).to eq('Hello World')
     end
   end
 
-  describe 'in dotnet' do
+  describe 'in gradle' do
     before do
       skip if FurynixSpec.skip_if_only_one
-      @container_key = 'furynix-spec.dotnet'
+      @container_key = 'furynix-spec.gradle'
     end
 
     it_should_behave_like 'build and push'

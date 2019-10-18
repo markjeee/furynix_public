@@ -10,7 +10,7 @@ repositories {
   //}
 
   maven {
-    url "https://maven.fury.io/furynix"
+    url "https://maven.fury.io/$furyUser"
     authentication {
       basic(BasicAuthentication)
     }

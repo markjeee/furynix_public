@@ -2,7 +2,7 @@ apply plugin: "java"
 apply plugin: "maven-publish"
 
 group = "org.furynix"
-version = "1.0"
+version = "1.1"
 
 repositories {
   mavenCentral()
@@ -30,13 +30,14 @@ publishing {
     // gradle publishAllPublicationsToThisRepoRepository
     maven {
       name = 'thisRepo'
-      url = "file://${buildDir}/repo"
+      url = "file://$buildDir/repo"
     }
 
     // gradle publishAllPublicationsToFuryRepository
+    // NOT SUPPORTED YET
     maven {
       name = 'fury'
-      url = "https://push.fury.io/furynix"
+      url = "https://push.fury.io/$furyUser"
     }
   }
 }

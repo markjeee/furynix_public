@@ -11,6 +11,7 @@ env:
   - spec=spec:api
   - spec=spec:npm_module_use
   - spec=spec:dotnet_build
+  - spec=spec:gradle_build
 
 script:
   - bundle exec rake $spec
