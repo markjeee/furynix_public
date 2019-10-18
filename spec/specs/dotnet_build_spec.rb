@@ -26,9 +26,8 @@ describe 'Dotnet' do
 
       expect(ret).to be_a_docker_success
 
-      # disabled for now, since API call do not support package name with a '.'
-      #gem_info = @fury.package_info('Gemfury.DotNetWorld')
-      #expect(gem_info['versions'].collect { |i| i['version'] }).to include('1.1.0')
+      versions = @fury.versions('Gemfury.DotNetWorld')
+      expect(versions.collect { |i| i['version'] }).to include('1.1.0')
     end
 
     after do
