@@ -11,7 +11,7 @@ describe 'YUM' do
     it 'should install' do
       ret = yum_install_gemfury('https://yum.fury.io/cli/',
                                 FurynixSpec.current_gemfury_version)
-      expect(ret).to be_truthy
+      expect(ret).to be_a_docker_success
 
       expect_fury_version(FurynixSpec.current_gemfury_version)
     end
@@ -19,7 +19,7 @@ describe 'YUM' do
     it 'should install dev version' do
       ret = yum_install_gemfury('https://yum.fury.io/cli-dev/',
                                 FurynixSpec.current_gemfury_dev_version)
-      expect(ret).to be_truthy
+      expect(ret).to be_a_docker_success
 
       expect_fury_version(FurynixSpec.current_gemfury_dev_version)
     end
@@ -27,7 +27,7 @@ describe 'YUM' do
     it 'should install using custom domain' do
       ret = yum_install_gemfury('https://cli.gemfury.com/yum/',
                                 FurynixSpec.current_gemfury_version)
-      expect(ret).to be_truthy
+      expect(ret).to be_a_docker_success
 
       expect_fury_version(FurynixSpec.current_gemfury_version)
     end
@@ -44,14 +44,15 @@ describe 'YUM' do
       container = DockerTask.containers[@container_key]
       container.pull
 
-      args = FurynixSpec.
-               create_exec_args({ 'source' => source,
-                                  'out_file' => FurynixSpec.calculate_build_path(@out_file_path),
-                                  'version' => version
-                                })
+      env = FurynixSpec.
+              create_env_args({ 'source' => source,
+                                'out_file' => FurynixSpec.calculate_build_path(@out_file_path),
+                                'version' => version
+                              })
 
-      container.runi(:exec => '"/build/spec/exec/yum_install_gemfury %s"' %
-                              FurynixSpec.pass_exec_args(args))
+      container.run(:exec => '/build/spec/exec/yum_install_gemfury',
+                    :capture => true,
+                    :env_file => FurynixSpec.create_env_file(env))
     end
   end
 
