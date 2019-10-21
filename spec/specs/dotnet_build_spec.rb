@@ -9,7 +9,7 @@ describe 'Dotnet' do
       @fury = FurynixSpec.gemfury_client
     end
 
-    it 'should build and push' do
+    it 'should: dotnet build; curl -F' do
       container = DockerTask.containers[@container_key]
       container.pull
 
@@ -53,7 +53,7 @@ describe 'Dotnet' do
       end
     end
 
-    it 'should build' do
+    it 'should: dotnet restore; dotnet build' do
       container = DockerTask.containers[@container_key]
       container.pull
 
