@@ -21,3 +21,4 @@ hworld/.gradle/*
 hworld/build/*
 gradle.properties
 jworld/target/*
+hworld/target/*

@@ -5,21 +5,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.furynix</groupId>
-  <artifactId>jworld</artifactId>
-  <version>1.1</version>
-  <packaging>jar</packaging>
-
-  <name>furynix</name>
-  <url>https://gemfury.com</url>
-
-  <developers>
-    <developer>
-      <name>Gemfury</name>
-      <email>hello@gemfury.com</email>
-      <organization>Gemfury</organization>
-      <organizationUrl>https://gemfury.com</organizationUrl>
-    </developer>
-  </developers>
+  <artifactId>hworld</artifactId>
+  <version>1.0</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -29,6 +16,11 @@
 
   <dependencies>
     <dependency>
+      <groupId>org.furynix</groupId>
+      <artifactId>jworld</artifactId>
+      <version>1.0</version>
+    </dependency>
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.12</version>
@@ -36,12 +28,11 @@
     </dependency>
   </dependencies>
 
-  <!-- WARNING: `mvn deploy` do not work yet. use `fury push target/*.jar` for now -->
-  <distributionManagement>
+  <repositories>
     <repository>
       <id>fury</id>
       <name>Fury</name>
-      <url>https://push.fury.io/furynix</url>
+      <url>https://maven.fury.io/furynix/</url>
     </repository>
-  </distributionManagement>
+  </repositories>
 </project>
