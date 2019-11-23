@@ -159,6 +159,7 @@ end
 namespace :build do
   desc 'Docker build CentOS 7 environment'
   task :centos7 do
+    DockerTask.pull('centos:7')
     c = DockerTask.containers['furynix.centos7']
     c.build
 
@@ -169,6 +170,7 @@ namespace :build do
 
   desc 'Docker build Fedora 29 environment'
   task :fedora29 do
+    DockerTask.pull('fedora:29')
     c = DockerTask.containers['furynix.fedora29']
     c.build
 
@@ -179,6 +181,7 @@ namespace :build do
 
   desc 'Docker build Bionic environment'
   task :bionic do
+    DockerTask.pull('ubuntu:bionic')
     c = DockerTask.containers['furynix.bionic']
     c.build
 
@@ -189,6 +192,7 @@ namespace :build do
 
   desc 'Docker build Linuxbrew environment'
   task :linuxbrew do
+    DockerTask.pull('linuxbrew/brew:latest')
     c = DockerTask.containers['furynix.linuxbrew']
     c.build
 

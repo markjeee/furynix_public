@@ -1,4 +1,4 @@
-FROM linuxbrew/linuxbrew:1.9.3
+FROM linuxbrew/brew:latest
 MAINTAINER hello@gemfury.com
 
 ENV DEBIAN_FRONTEND=noninteractive
