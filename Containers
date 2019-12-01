@@ -60,14 +60,16 @@ DT.create({ :remote_repo => 'furynix/linuxbrew',
             :build_path => File.join(build_path, 'dockerfiles/linuxbrew')
           })
 
-DT.create({ :remote_repo => 'debian',
-            :pull_tag => 'wheezy',
-            :image_name => 'furynix.wheezy'
+DT.create({ :remote_repo => 'furynix/dotnet',
+            :pull_tag => '2.1',
+            :image_name => 'furynix.dotnet',
+            :build_path => File.join(build_path, 'dockerfiles/dotnet')
           })
 
-DT.create({ :remote_repo => 'mcr.microsoft.com/dotnet/core/sdk',
-            :pull_tag => '2.1',
-            :image_name => 'furynix.dotnet'
+DT.create({ :remote_repo => 'furynix/debian',
+            :pull_tag => 'stretch',
+            :image_name => 'furynix.stretch',
+            :build_path => File.join(build_path, 'dockerfiles/stretch')
           })
 
 DT.create({ :remote_repo => 'gradle',
@@ -134,18 +136,18 @@ DT.create({ :remote_repo => 'ubuntu',
           })
 
 DT.create({ :remote_repo => 'debian',
+            :pull_tag => 'wheezy',
+            :image_name => 'furynix-spec.wheezy',
+          })
+
+DT.create({ :remote_repo => 'debian',
             :pull_tag => 'jessie',
             :image_name => 'furynix-spec.jessie',
           })
 
-DT.create({ :remote_repo => 'debian',
+DT.create({ :remote_repo => 'furynix/debian',
             :pull_tag => 'stretch',
             :image_name => 'furynix-spec.stretch',
-          })
-
-DT.create({ :remote_repo => 'debian',
-            :pull_tag => 'wheezy',
-            :image_name => 'furynix-spec.wheezy',
           })
 
 DT.create({ :remote_repo => 'furynix/centos',
@@ -173,7 +175,7 @@ DT.create({ :remote_repo => 'furynix/linuxbrew',
             :image_name => 'furynix-spec.linuxbrew',
           })
 
-DT.create({ :remote_repo => 'mcr.microsoft.com/dotnet/core/sdk',
+DT.create({ :remote_repo => 'furynix/dotnet',
             :pull_tag => '2.1',
             :image_name => 'furynix-spec.dotnet',
           })

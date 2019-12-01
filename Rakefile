@@ -101,9 +101,9 @@ namespace :bash do
     c.runi
   end
 
-  desc 'Bash to wheezy environment'
-  task :wheezy do
-    c = DockerTask.containers['furynix.wheezy']
+  desc 'Bash to stretch environment'
+  task :stretch do
+    c = DockerTask.containers['furynix.stretch']
     c.pull
     c.runi
   end
@@ -190,10 +190,32 @@ namespace :build do
     end
   end
 
+  desc 'Docker build Bionic environment'
+  task :stretch do
+    DockerTask.pull('debian:stretch')
+    c = DockerTask.containers['furynix.stretch']
+    c.build
+
+    unless ENV['NOPUSH']
+      c.push
+    end
+  end
+
   desc 'Docker build Linuxbrew environment'
   task :linuxbrew do
     DockerTask.pull('linuxbrew/brew:latest')
     c = DockerTask.containers['furynix.linuxbrew']
+    c.build
+
+    unless ENV['NOPUSH']
+      c.push
+    end
+  end
+
+  desc 'Docker build Dotnet environment'
+  task :dotnet do
+    DockerTask.pull('mcr.microsoft.com/dotnet/core/sdk:2.1')
+    c = DockerTask.containers['furynix.dotnet']
     c.build
 
     unless ENV['NOPUSH']

@@ -3,6 +3,10 @@
 source $(dirname $0)/functions
 
 configure_furynix_token
+prepare_nuget
+
+exec_cmd "whoami"
+exec_cmd "mono -V"
 
 cd /build/DotNetWorld
 exec_cmd "rm -rf bin obj"
@@ -11,3 +15,6 @@ exec_cmd "dotnet pack"
 exec_cmd "ls -fl $package_path" $out_file
 
 exec_cmd "curl --fail -F package=@$package_path https://$furynix_token@push.fury.io/$furynix_user/" $out_file
+
+exec_cmd "$nuget sources -NonInteractive -Format Short -ConfigFile ./NuGet.Config"
+exec_cmd "$nuget list Gemfury -NonInteractive -ConfigFile ./NuGet.Config"

@@ -104,3 +104,7 @@ enabled=1
 gpgcheck=0
 EOF
 }
+
+prepare_nuget() {
+    export nuget="mono /usr/local/bin/nuget.exe"
+}
