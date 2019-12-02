@@ -17,6 +17,7 @@ describe 'Dotnet' do
               create_env_args({ 'package_path' => 'bin/Debug/Gemfury.DotNetWorld.1.1.0.nupkg',
                                 'package_name' => 'Gemfury.DotNetWorld',
                                 'package_version' => '1.1.0',
+                                'nuget_config' => 'NuGet.Config',
                                 'out_file' => FurynixSpec.calculate_build_path(@out_file_path)
                               })
 

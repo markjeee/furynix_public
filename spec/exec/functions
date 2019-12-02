@@ -106,5 +106,9 @@ EOF
 }
 
 prepare_nuget() {
-    export nuget="mono /usr/local/bin/nuget.exe"
+    if [[ -f /usr/local/bin/nuget.exe ]]; then
+        export nuget="mono /usr/local/bin/nuget.exe"
+    else
+        export nuget="nuget"
+    fi
 }

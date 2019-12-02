@@ -16,5 +16,5 @@ exec_cmd "ls -fl $package_path" $out_file
 
 exec_cmd "curl --fail -F package=@$package_path https://$furynix_token@push.fury.io/$furynix_user/" $out_file
 
-exec_cmd "$nuget sources -NonInteractive -Format Short -ConfigFile ./NuGet.Config"
-exec_cmd "$nuget list Gemfury -NonInteractive -ConfigFile ./NuGet.Config"
+exec_cmd "$nuget sources -NonInteractive -Format Short -ConfigFile $nuget_config"
+exec_cmd "$nuget list Gemfury -NonInteractive -ConfigFile $nuget_config"
