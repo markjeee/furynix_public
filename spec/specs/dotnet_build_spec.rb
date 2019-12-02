@@ -7,16 +7,20 @@ describe 'Dotnet' do
 
       @out_file_path = FurynixSpec.prepare_docker_outfile
       @fury = FurynixSpec.gemfury_client
+
+      @package_name = 'Gemfury.DotNetWorld'
+      @package_version = '1.1.0'
     end
 
     it 'should: dotnet build; curl -F' do
       container = DockerTask.containers[@container_key]
       container.pull
 
+
       env = FurynixSpec.
-              create_env_args({ 'package_path' => 'bin/Debug/Gemfury.DotNetWorld.1.1.0.nupkg',
-                                'package_name' => 'Gemfury.DotNetWorld',
-                                'package_version' => '1.1.0',
+              create_env_args({ 'package_path' => 'bin/Debug/%s.%s.nupkg' % [ @package_name, @package_version ],
+                                'package_name' => @package_name,
+                                'package_version' => @package_version,
                                 'nuget_config' => 'NuGet.Config',
                                 'out_file' => FurynixSpec.calculate_build_path(@out_file_path)
                               })
@@ -27,13 +31,15 @@ describe 'Dotnet' do
 
       expect(ret).to be_a_docker_success
 
-      versions = @fury.versions('Gemfury.DotNetWorld')
-      expect(versions.collect { |i| i['version'] }).to include('1.1.0')
+      versions = @fury.versions(@package_name)
+      expect(versions.collect { |i| i['version'] }).to include(@package_version)
+
+      expect(File.read(@out_file_path).strip).to eq('%s %s' % [ @package_name, @package_version ])
     end
 
     after do
       begin
-        @fury.yank_version('Gemfury.DotNetWorld', '1.1.0')
+        @fury.yank_version(@package_name, @package_version)
       rescue Gemfury::NotFound
       end
     end
