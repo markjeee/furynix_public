@@ -48,9 +48,10 @@ namespace :spec do
     t.pattern = [ 'spec/specs/dotnet_build_spec.rb' ]
   end
 
-  desc 'Gradle, build, build'
-  RSpec::Core::RakeTask.new('gradle_build') do |t|
-    t.pattern = [ 'spec/specs/gradle_build_spec.rb' ]
+  desc 'Maven, build, build'
+  RSpec::Core::RakeTask.new('maven_build') do |t|
+    t.pattern = [ 'spec/specs/maven_build_spec.rb',
+                  'spec/specs/gradle_build_spec.rb' ]
   end
 
   desc 'CLI specs (on ubuntu/bionic)'
@@ -227,6 +228,17 @@ namespace :build do
   task :gradle do
     DockerTask.pull('gradle:6.0.1')
     c = DockerTask.containers['furynix.gradle']
+    c.build
+
+    unless ENV['NOPUSH']
+      c.push
+    end
+  end
+
+  desc 'Docker build Maven environment'
+  task :maven do
+    DockerTask.pull('maven:3.6.3')
+    c = DockerTask.containers['furynix.maven']
     c.build
 
     unless ENV['NOPUSH']

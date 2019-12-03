@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-describe 'Gradle' do
+describe 'Maven' do
   shared_examples 'build and push' do
     before do
       FurynixSpec.prepare
@@ -17,13 +17,13 @@ describe 'Gradle' do
       container.pull
 
       env = FurynixSpec.
-              create_env_args({ 'package_path' => 'build/repo/org/furynix/jworld/1.1/jworld-1.1.jar',
+              create_env_args({ 'package_path' => 'target/jworld-1.1.jar',
                                 'package_name' => @package_name,
                                 'package_version' => @package_version,
                                 'out_file' => FurynixSpec.calculate_build_path(@out_file_path)
                               })
 
-      ret = container.run(:exec => '/build/spec/exec/gradle_build_jworld',
+      ret = container.run(:exec => '/build/spec/exec/maven_build_jworld',
                           :capture => true,
                           :env_file => FurynixSpec.create_env_file(env))
 
@@ -63,7 +63,7 @@ describe 'Gradle' do
       env = FurynixSpec.
               create_env_args({ 'out_file' => FurynixSpec.calculate_build_path(@out_file_path) })
 
-      ret = container.run(:exec => '/build/spec/exec/gradle_build_hworld',
+      ret = container.run(:exec => '/build/spec/exec/maven_build_hworld',
                           :capture => true,
                           :env_file => FurynixSpec.create_env_file(env))
 
@@ -71,10 +71,10 @@ describe 'Gradle' do
     end
   end
 
-  describe 'in gradle' do
+  describe 'in maven' do
     before do
       skip if FurynixSpec.skip_if_only_one
-      @container_key = 'furynix-spec.gradle'
+      @container_key = 'furynix-spec.maven'
     end
 
     it_should_behave_like 'build and push'

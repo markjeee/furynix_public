@@ -78,6 +78,12 @@ DT.create({ :remote_repo => 'furynix/gradle',
             :build_path => File.join(build_path, 'dockerfiles/gradle')
           })
 
+DT.create({ :remote_repo => 'furynix/maven',
+            :pull_tag => '3.6.3',
+            :image_name => 'furynix.maven',
+            :build_path => File.join(build_path, 'dockerfiles/maven')
+          })
+
 # Spec docker containers
 # ======================
 
@@ -189,4 +195,9 @@ DT.create({ :remote_repo => 'node',
 DT.create({ :remote_repo => 'furynix/gradle',
             :pull_tag => '6.0.1',
             :image_name => 'furynix-spec.gradle'
+          })
+
+DT.create({ :remote_repo => 'furynix/maven',
+            :pull_tag => '3.6.3',
+            :image_name => 'furynix-spec.maven'
           })
