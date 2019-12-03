@@ -222,4 +222,15 @@ namespace :build do
       c.push
     end
   end
+
+  desc 'Docker build Gradle environment'
+  task :gradle do
+    DockerTask.pull('gradle:6.0.1')
+    c = DockerTask.containers['furynix.gradle']
+    c.build
+
+    unless ENV['NOPUSH']
+      c.push
+    end
+  end
 end

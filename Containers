@@ -72,9 +72,10 @@ DT.create({ :remote_repo => 'furynix/debian',
             :build_path => File.join(build_path, 'dockerfiles/stretch')
           })
 
-DT.create({ :remote_repo => 'gradle',
-            :pull_tag => '5.6.2',
-            :image_name => 'furynix.gradle'
+DT.create({ :remote_repo => 'furynix/gradle',
+            :pull_tag => '6.0.1',
+            :image_name => 'furynix.gradle',
+            :build_path => File.join(build_path, 'dockerfiles/gradle')
           })
 
 # Spec docker containers
@@ -185,7 +186,7 @@ DT.create({ :remote_repo => 'node',
             :image_name => 'furynix-spec.node119',
           })
 
-DT.create({ :remote_repo => 'gradle',
+DT.create({ :remote_repo => 'furynix/gradle',
             :pull_tag => '6.0.1',
             :image_name => 'furynix-spec.gradle'
           })
