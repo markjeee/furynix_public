@@ -24,7 +24,7 @@ describe 'CLI' do
     end
 
     it 'should push a gem' do
-      gem = [ 'rspec-expectations', '3.8.4' ]
+      gem = [ 'rspec-expectations', '3.8.5' ]
       gem_path = '/build/spec/fixtures/%s-%s.gem' % gem
       yank_if_exist(gem[0], gem[1])
 
@@ -34,12 +34,11 @@ describe 'CLI' do
       line_groups = parse_out_file
       lines = line_groups[2]
       expect(lines[0]).to match(/Uploading #{File.basename(gem_path)}.+\- done/)
-      yank_if_exist(gem[0], gem[1], true)
     end
 
     it 'should push multiple gems' do
       gems = [ [ 'rspec-core', '3.8.2' ],
-               [ 'httparty', '0.17.0' ] ]
+               [ 'httparty', '0.17.1' ] ]
 
       gems.each { |gem| yank_if_exist(*gem) }
 
@@ -53,7 +52,6 @@ describe 'CLI' do
       i = 0
       gem_files.each do |gemf|
         expect(lines[i]).to match(/Uploading #{File.basename(gemf)}.+\- done/)
-        yank_if_exist(gems[i][0], gems[i][1], true)
         i += 1
       end
     end
