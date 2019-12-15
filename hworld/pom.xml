@@ -33,7 +33,7 @@
     <repository>
       <id>fury</id>
       <name>Fury</name>
-      <url>https://maven.fury.io/furynix</url>
+      <url>https://maven.fury.io/furynix/</url>
     </repository>
   </repositories>
 </project>

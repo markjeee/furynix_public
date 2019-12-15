@@ -41,7 +41,7 @@
     <repository>
       <id>fury</id>
       <name>Fury</name>
-      <url>https://push.fury.io/furynix</url>
+      <url>https://push.fury.io/furynix/</url>
     </repository>
   </distributionManagement>
 </project>

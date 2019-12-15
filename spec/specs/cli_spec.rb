@@ -24,7 +24,7 @@ describe 'CLI' do
     end
 
     it 'should push a gem' do
-      gem = [ 'rspec-expectations', '3.8.5' ]
+      gem = [ 'rspec-expectations', '3.8.6' ]
       gem_path = '/build/spec/fixtures/%s-%s.gem' % gem
       yank_if_exist(gem[0], gem[1])
 
