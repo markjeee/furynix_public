@@ -112,3 +112,29 @@ prepare_nuget() {
         export nuget="nuget"
     fi
 }
+
+prepare_maven() {
+    mkdir -p ~/.m2
+    cat >~/.m2/settings.xml <<EOF
+<settings xmlns="http://maven.apache.org/SETTINGS/1.1.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.1.0 http://maven.apache.org/xsd/settings-1.1.0.xsd">
+  <servers>
+    <server>
+      <id>$FURYNIX_MAVEN_REPO_ID</id>
+      <username>$FURYNIX_API_TOKEN</username>
+      <password>.</password>
+      <configuration>
+        <httpConfiguration>
+          <all>
+            <usePreemptive>true</usePreemptive>
+          </all>
+        </httpConfiguration>
+      </configuration>
+    </server>
+  </servers>
+</settings>
+EOF
+
+    cat ~/.m2/settings.xml
+}

@@ -4,6 +4,9 @@ source $(dirname $0)/functions
 
 configure_furynix_token
 
+export FURYNIX_MAVEN_REPO_ID=fury
+prepare_maven
+
 cd /build/hworld
 exec_cmd "rm -rf target"
 exec_cmd "mvn compile"
