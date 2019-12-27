@@ -10,10 +10,13 @@ repositories {
   //}
 
   maven {
-    url "https://maven.fury.io/$furyUser"
+    name = "fury"
+    url = "http://maven.fury.io/$furyUser"
+
     authentication {
       basic(BasicAuthentication)
     }
+
     credentials {
       username = "$furyToken"
       password = ""
@@ -24,8 +27,8 @@ repositories {
 }
 
 dependencies {
-  compile "org.furynix:jworld:1.0"
-  testCompile "junit:junit:4.12"
+  implementation "org.furynix:jworld:1.0"
+  testImplementation "junit:junit:4.12"
 }
 
 test {

@@ -9,7 +9,7 @@ repositories {
 }
 
 dependencies {
-  testCompile "junit:junit:4.12"
+  testImplementation "junit:junit:4.12"
 }
 
 test {
@@ -29,15 +29,24 @@ publishing {
   repositories {
     // gradle publishAllPublicationsToThisRepoRepository
     maven {
-      name = 'thisRepo'
+      name = "thisRepo"
       url = "file://$buildDir/repo"
     }
 
     // gradle publishAllPublicationsToFuryRepository
     // NOT SUPPORTED YET
     maven {
-      name = 'fury'
+      name = "fury"
       url = "https://push.fury.io/$furyUser"
+
+      authentication {
+        basic(BasicAuthentication)
+      }
+
+      credentials {
+        username = "$furyToken"
+        password = ""
+      }
     }
   }
 }
