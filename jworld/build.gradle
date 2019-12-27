@@ -29,7 +29,7 @@ publishing {
   repositories {
     // gradle publishAllPublicationsToThisRepoRepository
     maven {
-      name = "thisRepo"
+      name = "this"
       url = "file://$buildDir/repo"
     }
 
@@ -52,9 +52,9 @@ publishing {
 }
 
 jar {
-  dependsOn('generatePomFileForJworldPublication')
+  dependsOn("generatePomFileForJworldPublication")
   into("META-INF/maven/$project.group/$project.name") {
-    from "$projectDir/build/publications/jworld"
+    from "$projectDir/build/publications/$project.name"
     rename "pom-default.xml", "pom.xml"
   }
 }
