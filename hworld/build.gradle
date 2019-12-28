@@ -11,7 +11,7 @@ repositories {
 
   maven {
     name = "fury"
-    url = "http://maven.fury.io/$furyUser"
+    url = "https://maven.fury.io/$furyUser"
 
     authentication {
       basic(BasicAuthentication)
