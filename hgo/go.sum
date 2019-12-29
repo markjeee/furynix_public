@@ -1,0 +1,4 @@
+git.fury.io/furynix/jgo v1.0.0 h1:8Y3k4apS/Xyb2YoEwvRC0NUP9QiXzr7slttXaB3px7k=
+git.fury.io/furynix/jgo v1.0.0/go.mod h1:sL7TItquKwHu+ctqjiTvZwubgWmjoawxN1+O/PFtF3Q=
+github.com/google/uuid v1.1.1 h1:Gkbcsh/GbpXz7lPftLA3P6TYMwjCLYm83jiFQZF/3gY=
+github.com/google/uuid v1.1.1/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=

@@ -22,3 +22,5 @@ hworld/build/*
 gradle.properties
 jworld/target/*
 hworld/target/*
+hgo/hgo
+jgo/jgo/.git
