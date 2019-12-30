@@ -13,5 +13,8 @@ exec_cmd "git init && git add go.mod jgo.go jgo_test.go && git commit -m 'initia
 exec_cmd "git remote add fury https://git.fury.io/$furynix_user/jgo.git"
 exec_cmd "git push -f fury master"
 
+# this is here to force some gap so the backend can finish async jobs
+sleep 10
+
 exec_cmd "git tag v$package_version"
 exec_cmd "git push -f fury tags/v$package_version"
