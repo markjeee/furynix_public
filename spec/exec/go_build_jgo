@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+source $(dirname $0)/functions
+
+configure_furynix_token
+
+cd /build/jgo
+exec_cmd "go test"
+
+exec_cmd "rm -rf .git"
+exec_cmd "git init && git add go.mod jgo.go jgo_test.go && git commit -m 'initial'"
+
+exec_cmd "git remote add fury https://git.fury.io/$furynix_user/jgo.git"
+exec_cmd "git push -f fury master"
+
+exec_cmd "git tag v$package_version"
+exec_cmd "git push -f fury tags/v$package_version"

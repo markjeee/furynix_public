@@ -61,6 +61,12 @@ configure_furynix_token() {
 machine api.fury.io
   login $furynix_user
   password $furynix_token
+machine git.fury.io
+  login $furynix_user
+  password $furynix_token
+machine push.fury.io
+  login $furynix_user
+  password $furynix_token
 EOF
     chmod 0600 ~/.netrc
     cat ~/.netrc

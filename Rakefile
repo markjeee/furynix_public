@@ -54,6 +54,11 @@ namespace :spec do
                   'spec/specs/gradle_build_spec.rb' ]
   end
 
+  desc 'Go, build, push'
+  RSpec::Core::RakeTask.new('go_build') do |t|
+    t.pattern = [ 'spec/specs/go_build_spec.rb' ]
+  end
+
   desc 'CLI specs (on ubuntu/bionic)'
   RSpec::Core::RakeTask.new('cli') do |t|
     t.pattern = [ 'spec/specs/cli_spec.rb' ]
@@ -122,6 +127,13 @@ namespace :bash do
     c.pull
     c.runi
   end
+
+  desc 'Bash to Go environment'
+  task :go do
+    c = DockerTask.containers['furynix.go']
+    c.pull
+    c.runi
+  end
 end
 
 namespace :vagrant do
@@ -155,7 +167,6 @@ namespace :vagrant do
     sh "vagrant ssh -c \"cd /opt/furynix; rake parallel:spec[3]\" mark-qnuc"
   end
 end
-
 
 namespace :build do
   desc 'Docker build CentOS 7 environment'
@@ -239,6 +250,17 @@ namespace :build do
   task :maven do
     DockerTask.pull('maven:3.6.3')
     c = DockerTask.containers['furynix.maven']
+    c.build
+
+    unless ENV['NOPUSH']
+      c.push
+    end
+  end
+
+  desc 'Docker build Go environment'
+  task :go do
+    DockerTask.pull('golang:1.13.5')
+    c = DockerTask.containers['furynix.go']
     c.build
 
     unless ENV['NOPUSH']
