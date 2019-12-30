@@ -8,9 +8,10 @@ cd /build/jgo
 exec_cmd "go test"
 
 exec_cmd "rm -rf .git"
-exec_cmd "git init && git add go.mod jgo.go jgo_test.go && git commit -m 'initial'"
-
+exec_cmd "tar -xzf git_clean.tgz"
 exec_cmd "git remote add fury https://git.fury.io/$furynix_user/jgo.git"
+
+exec_cmd "git add 1.1.0-delta && git commit -m 'Increment version 1.1.0'"
 exec_cmd "git push -f fury master"
 
 # this is here to force some gap so the backend can finish async jobs

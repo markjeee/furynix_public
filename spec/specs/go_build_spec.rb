@@ -51,19 +51,21 @@ describe 'Go' do
     end
   end
 
-=begin
-  shared_examples 'build using pkg' do
+  shared_examples 'build using modules' do
     before do
       FurynixSpec.prepare
 
       @out_file_path = FurynixSpec.prepare_docker_outfile
       @fury = FurynixSpec.gemfury_client
 
+      @package_name = 'git.fury.io/furynix/jgo'
+      @package_version = '1.0.0'
+
       begin
-        @fury.versions('org.furynix/jworld')
-      rescue Gemfury::NotFound
-        f = File.new(FurynixSpec.fixtures_path('jworld-1.0.jar'))
-        @fury.push_gem(f)
+        versions = @fury.versions(@package_name)
+        unless versions.detect { |v| v['version'] == @package_version }
+          raise 'Required jgo version not in repo'
+        end
       end
     end
 
@@ -74,14 +76,13 @@ describe 'Go' do
       env = FurynixSpec.
               create_env_args({ 'out_file' => FurynixSpec.calculate_build_path(@out_file_path) })
 
-      ret = container.run(:exec => '/build/spec/exec/maven_build_hworld',
+      ret = container.run(:exec => '/build/spec/exec/go_build_hgo',
                           :capture => true,
                           :env_file => FurynixSpec.create_env_file(env))
 
       expect(ret).to be_a_docker_success
     end
   end
-=end
 
   describe 'in Go' do
     before do
@@ -90,6 +91,6 @@ describe 'Go' do
     end
 
     it_should_behave_like 'build and push'
-    #it_should_behave_like 'build using pkg'
+    it_should_behave_like 'build using modules'
   end
 end
