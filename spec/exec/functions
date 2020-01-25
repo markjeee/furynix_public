@@ -67,6 +67,9 @@ machine git.fury.io
 machine push.fury.io
   login $furynix_user
   password $furynix_token
+machine go-proxy.fury.io
+  login $furynix_token
+  password NOPASS
 EOF
     chmod 0600 ~/.netrc
     cat ~/.netrc

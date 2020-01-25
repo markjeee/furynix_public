@@ -10,6 +10,10 @@ describe 'Go' do
 
       @package_name = 'git.fury.io/furynix/jgo'
       @package_version = '1.1.0'
+
+      @goproxy = 'https://go-proxy.fury.io/furynix/'
+      @goprivate = 'git.fury.io/furynix/*'
+      @gonoproxy = 'none'
     end
 
     it 'should build and push' do
@@ -19,7 +23,10 @@ describe 'Go' do
       env = FurynixSpec.
               create_env_args({ 'package_name' => @package_name,
                                 'package_version' => @package_version,
-                                'out_file' => FurynixSpec.calculate_build_path(@out_file_path)
+                                'out_file' => FurynixSpec.calculate_build_path(@out_file_path),
+                                'GOPROXY' => @goproxy,
+                                'GOPRIVATE' => @goprivate,
+                                'GONOPROXY' => @gonoproxy
                               })
 
       ret = container.run(:exec => '/build/spec/exec/go_build_jgo',
@@ -61,6 +68,10 @@ describe 'Go' do
       @package_name = 'git.fury.io/furynix/jgo'
       @package_version = '1.0.0'
 
+      @goproxy = 'https://go-proxy.fury.io/furynix/'
+      @goprivate = 'git.fury.io/furynix/*'
+      @gonoproxy = 'none'
+
       begin
         versions = @fury.versions(@package_name)
         unless versions.detect { |v| v['version'] == @package_version }
@@ -74,7 +85,11 @@ describe 'Go' do
       container.pull
 
       env = FurynixSpec.
-              create_env_args({ 'out_file' => FurynixSpec.calculate_build_path(@out_file_path) })
+              create_env_args({ 'out_file' => FurynixSpec.calculate_build_path(@out_file_path),
+                                'GOPROXY' => @goproxy,
+                                'GOPRIVATE' => @goprivate,
+                                'GONOPROXY' => @gonoproxy
+                              })
 
       ret = container.run(:exec => '/build/spec/exec/go_build_hgo',
                           :capture => true,
