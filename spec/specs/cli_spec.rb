@@ -24,7 +24,7 @@ describe 'CLI' do
     end
 
     it 'should push a gem' do
-      gem = [ 'rspec-expectations', '3.8.6' ]
+      gem = [ 'rspec-expectations', '3.9.0' ]
       gem_path = '/build/spec/fixtures/%s-%s.gem' % gem
       yank_if_exist(gem[0], gem[1])
 
@@ -37,8 +37,8 @@ describe 'CLI' do
     end
 
     it 'should push multiple gems' do
-      gems = [ [ 'rspec-core', '3.8.2' ],
-               [ 'httparty', '0.17.1' ] ]
+      gems = [ [ 'rspec-core', '3.9.1' ],
+               [ 'httparty', '0.17.3' ] ]
 
       gems.each { |gem| yank_if_exist(*gem) }
 
