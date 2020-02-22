@@ -80,7 +80,7 @@ describe 'Go' do
       end
     end
 
-    it 'should build' do
+    it 'should build using GOPROXY' do
       container = DockerTask.containers[@container_key]
       container.pull
 
@@ -89,6 +89,21 @@ describe 'Go' do
                                 'GOPROXY' => @goproxy,
                                 'GOPRIVATE' => @goprivate,
                                 'GONOPROXY' => @gonoproxy
+                              })
+
+      ret = container.run(:exec => '/build/spec/exec/go_build_hgo',
+                          :capture => true,
+                          :env_file => FurynixSpec.create_env_file(env))
+
+      expect(ret).to be_a_docker_success
+    end
+
+    it 'should build using direct Git access' do
+      container = DockerTask.containers[@container_key]
+      container.pull
+
+      env = FurynixSpec.
+              create_env_args({ 'out_file' => FurynixSpec.calculate_build_path(@out_file_path),
                               })
 
       ret = container.run(:exec => '/build/spec/exec/go_build_hgo',
