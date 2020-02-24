@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-describe 'Gemfury API' do
+describe 'Gemfury CLI API' do
   context 'Package info' do
     before do
       @fury = FurynixSpec.gemfury_client
