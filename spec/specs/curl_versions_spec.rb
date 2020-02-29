@@ -7,15 +7,16 @@ describe 'Curl API' do
     @out_file_path = FurynixSpec.prepare_docker_outfile
   end
 
-  it 'should return user info' do
+  it 'should return list of versions' do
     container = DockerTask.containers['furynix-spec.bionic']
     container.pull
 
     env = FurynixSpec.
-            create_env_args({ 'username' => 'furynix',
+            create_env_args({ 'gem' => 'gemfury',
+                              'version' => '0.11.0.rc1',
                               'out_file' => FurynixSpec.calculate_build_path(@out_file_path) })
 
-    ret = container.run(:exec => '/build/spec/exec/curl_users_me',
+    ret = container.run(:exec => '/build/spec/exec/curl_versions',
                         :capture => true,
                         :env_file => FurynixSpec.create_env_file(env))
 

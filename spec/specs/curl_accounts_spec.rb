@@ -7,7 +7,7 @@ describe 'Curl API' do
     @out_file_path = FurynixSpec.prepare_docker_outfile
   end
 
-  it 'should return user info' do
+  it 'should return list of accounts' do
     container = DockerTask.containers['furynix-spec.bionic']
     container.pull
 
@@ -15,7 +15,7 @@ describe 'Curl API' do
             create_env_args({ 'username' => 'furynix',
                               'out_file' => FurynixSpec.calculate_build_path(@out_file_path) })
 
-    ret = container.run(:exec => '/build/spec/exec/curl_users_me',
+    ret = container.run(:exec => '/build/spec/exec/curl_accounts',
                         :capture => true,
                         :env_file => FurynixSpec.create_env_file(env))
 
