@@ -76,6 +76,7 @@ namespace :spec do
                   'spec/specs/curl_gems_spec.rb',
                   'spec/specs/curl_versions_spec.rb',
                   'spec/specs/curl_repos_spec.rb',
+                  'spec/specs/curl_collaborators_spec.rb',
                   'spec/specs/curl_add_remove_collaborator_spec.rb'
                 ]
   end
