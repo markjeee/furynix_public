@@ -9,6 +9,7 @@ env:
   - spec=spec:brew_install
   - spec=spec:cli
   - spec=spec:api
+  - spec=spec:curl_api
   - spec=spec:npm_module_use
   - spec=spec:dotnet_build
   - spec=spec:maven_build
