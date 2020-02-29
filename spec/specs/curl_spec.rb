@@ -12,9 +12,56 @@ describe 'Curl API' do
     container.pull
 
     env = FurynixSpec.
-            create_env_args({ 'out_file' => FurynixSpec.calculate_build_path(@out_file_path) })
+            create_env_args({ 'username' => 'furynix',
+                              'out_file' => FurynixSpec.calculate_build_path(@out_file_path) })
 
     ret = container.run(:exec => '/build/spec/exec/curl_users_me',
+                        :capture => true,
+                        :env_file => FurynixSpec.create_env_file(env))
+
+    expect(ret).to be_a_docker_success
+  end
+
+  it 'should return list of accounts' do
+    container = DockerTask.containers['furynix-spec.bionic']
+    container.pull
+
+    env = FurynixSpec.
+            create_env_args({ 'username' => 'furynix',
+                              'out_file' => FurynixSpec.calculate_build_path(@out_file_path) })
+
+    ret = container.run(:exec => '/build/spec/exec/curl_accounts',
+                        :capture => true,
+                        :env_file => FurynixSpec.create_env_file(env))
+
+    expect(ret).to be_a_docker_success
+  end
+
+  it 'should return list of gems' do
+    container = DockerTask.containers['furynix-spec.bionic']
+    container.pull
+
+    env = FurynixSpec.
+            create_env_args({ 'gem' => 'gemfury',
+                              'out_file' => FurynixSpec.calculate_build_path(@out_file_path) })
+
+    ret = container.run(:exec => '/build/spec/exec/curl_gems',
+                        :capture => true,
+                        :env_file => FurynixSpec.create_env_file(env))
+
+    expect(ret).to be_a_docker_success
+  end
+
+  it 'should return list of versions' do
+    container = DockerTask.containers['furynix-spec.bionic']
+    container.pull
+
+    env = FurynixSpec.
+            create_env_args({ 'gem' => 'gemfury',
+                              'version' => '0.11.0.rc1',
+                              'out_file' => FurynixSpec.calculate_build_path(@out_file_path) })
+
+    ret = container.run(:exec => '/build/spec/exec/curl_versions',
                         :capture => true,
                         :env_file => FurynixSpec.create_env_file(env))
 
