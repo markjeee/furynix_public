@@ -23,15 +23,15 @@ describe 'Curl API' do
   end
 
   it 'should add and remove a collaborator by email' do
-    skip 'Disabled for now since adding by email has a bug'
     container = DockerTask.containers['furynix-spec.bionic']
     container.pull
 
     env = FurynixSpec.
-            create_env_args({ 'user1' => 'furynix-user1@nlevel.io',
+            create_env_args({ 'user1' => 'furynix-user1',
+                              'email1' => 'furynix-user1@nlevel.io',
                               'out_file' => FurynixSpec.calculate_build_path(@out_file_path) })
 
-    ret = container.run(:exec => '/build/spec/exec/curl_add_remove_collaborator',
+    ret = container.run(:exec => '/build/spec/exec/curl_add_remove_collaborator_by_email',
                         :capture => true,
                         :env_file => FurynixSpec.create_env_file(env))
 

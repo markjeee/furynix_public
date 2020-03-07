@@ -12,14 +12,14 @@ describe 'Linuxbrew' do
       ret = brew_install_gemfury('gemfury/tap')
 
       expect(ret).to be_a_docker_success
-      expect_fury_version(FurynixSpec.current_gemfury_version)
+      expect_fury_version(FurynixSpec.gemfury_version)
     end
 
     it 'should install devel version' do
       ret = brew_install_gemfury('gemfury/tap', true)
 
       expect(ret).to be_a_docker_success
-      expect_fury_version(FurynixSpec.current_gemfury_dev_version)
+      expect_fury_version(FurynixSpec.gemfury_dev_version)
     end
 
     def brew_install_gemfury(source, devel = nil)

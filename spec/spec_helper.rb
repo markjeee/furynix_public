@@ -60,11 +60,15 @@ module FurynixSpec
     }.merge(env)
   end
 
-  def self.current_gemfury_version
+  def self.gemfury_version
     '0.11.0'
   end
 
-  def self.current_gemfury_dev_version
+  def self.gemfury_dev_version
+    '0.11.0'
+  end
+
+  def self.gemfury_head_version
     '0.11.0'
   end
 

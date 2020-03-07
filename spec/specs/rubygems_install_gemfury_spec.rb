@@ -19,7 +19,7 @@ describe 'RubyGems' do
     end
 
     it 'should install using dev version' do
-      install_spec('https://gem.fury.io/cli-dev/', FurynixSpec.current_gemfury_dev_version)
+      install_spec('https://gem.fury.io/cli-dev/', FurynixSpec.gemfury_dev_version)
       should_install_fury(true)
     end
 
@@ -48,9 +48,9 @@ describe 'RubyGems' do
       expect(lines[0]).to eq('/usr/local/bundle/bin/fury')
 
       unless dev_version.nil?
-        expect(lines[1]).to eq(FurynixSpec.current_gemfury_dev_version)
+        expect(lines[1]).to eq(FurynixSpec.gemfury_dev_version)
       else
-        expect(lines[1]).to eq(FurynixSpec.current_gemfury_version)
+        expect(lines[1]).to eq(FurynixSpec.gemfury_version)
       end
     end
   end
