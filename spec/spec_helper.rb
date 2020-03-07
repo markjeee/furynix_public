@@ -65,11 +65,11 @@ module FurynixSpec
   end
 
   def self.gemfury_dev_version
-    '0.11.0'
+    '0.11.1.rc1'
   end
 
   def self.gemfury_head_version
-    '0.11.0'
+    '0.11.1.head'
   end
 
   def self.skip_if_only_one

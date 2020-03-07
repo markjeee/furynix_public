@@ -16,6 +16,14 @@ describe 'YUM' do
       expect_fury_version(FurynixSpec.gemfury_version)
     end
 
+    it 'should install using custom domain' do
+      ret = yum_install_gemfury('https://cli.gemfury.com/yum/',
+                                FurynixSpec.gemfury_version)
+      expect(ret).to be_a_docker_success
+
+      expect_fury_version(FurynixSpec.gemfury_version)
+    end
+
     it 'should install dev version' do
       ret = yum_install_gemfury('https://yum.fury.io/cli-dev/',
                                 FurynixSpec.gemfury_dev_version)
@@ -24,12 +32,12 @@ describe 'YUM' do
       expect_fury_version(FurynixSpec.gemfury_dev_version)
     end
 
-    it 'should install using custom domain' do
-      ret = yum_install_gemfury('https://cli.gemfury.com/yum/',
-                                FurynixSpec.gemfury_version)
+    it 'should install head version' do
+      ret = yum_install_gemfury('https://yum.fury.io/cli-dev/',
+                                FurynixSpec.gemfury_head_version)
       expect(ret).to be_a_docker_success
 
-      expect_fury_version(FurynixSpec.gemfury_version)
+      expect_fury_version(FurynixSpec.gemfury_head_version)
     end
 
     def expect_fury_version(version)
