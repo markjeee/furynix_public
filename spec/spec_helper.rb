@@ -64,6 +64,13 @@ module FurynixSpec
     self.gemfury_version
   end
 
+  # this is separate, since only have a single Tap repo,
+  # and can't publish dev version if not yet synced to
+  # the official repo
+  def self.gemfury_brew_dev_version
+    self.gemfury_version
+  end
+
   def self.gemfury_version
     '0.11.0'
   end
