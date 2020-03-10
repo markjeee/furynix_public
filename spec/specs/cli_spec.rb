@@ -18,7 +18,7 @@ describe 'CLI' do
       expect(File.exists?(@out_file_path)).to be_truthy
       line_groups = parse_out_file
 
-      expect_fury_version(line_groups, FurynixSpec.gemfury_dev_version)
+      expect_fury_version(line_groups, FurynixSpec.gemfury_latest_version)
       expect_whoami_furynix(line_groups)
       expect_gemfury_listed(line_groups)
     end
