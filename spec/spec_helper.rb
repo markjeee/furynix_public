@@ -80,7 +80,13 @@ module FurynixSpec
   end
 
   def self.gemfury_head_version
-    '0.11.1.head'
+    v = '0.11.2.head'
+
+    if !ENV['FURYNIX_HEAD_VERSION'].nil? && !ENV['FURYNIX_HEAD_VERSION'].empty?
+      v = ENV['FURYNIX_HEAD_VERSION']
+    end
+
+    v
   end
 
   def self.skip_if_only_one
