@@ -1,4 +1,5 @@
 require_relative '../spec_helper'
+require 'uri'
 
 describe 'APT' do
   shared_examples 'install CLI' do
@@ -40,6 +41,14 @@ describe 'APT' do
       expect_fury_version(FurynixSpec.gemfury_head_version)
     end
 
+    it 'should install private package' do
+      ret = apt_install_gemfury('https://apt.fury.io/furynix/',
+                                FurynixSpec.gemfury_version)
+
+      expect(ret).to be_a_docker_success
+      expect_fury_version(FurynixSpec.gemfury_version)
+    end
+
     def expect_fury_version(version)
       expect(File.exists?(@out_file_path)).to be_truthy
       lines = File.read(@out_file_path).split("\n")
@@ -52,8 +61,12 @@ describe 'APT' do
       container = DockerTask.containers[@container_key]
       container.pull
 
+      u = URI.parse(source)
+      source_host = u.host
+
       env = FurynixSpec.
               create_env_args({ 'source' => source,
+                                'source_host' => source_host,
                                 'out_file' => FurynixSpec.calculate_build_path(@out_file_path),
                                 'version' => version
                               })
@@ -73,10 +86,10 @@ describe 'APT' do
     it_should_behave_like 'install CLI'
   end
 
-  describe 'in debian/stretch' do
+  describe 'in debian/buster' do
     before do
       skip if FurynixSpec.skip_if_only_one
-      @container_key = 'furynix-spec.stretch'
+      @container_key = 'furynix-spec.buster'
     end
 
     it_should_behave_like 'install CLI'
@@ -96,6 +109,15 @@ describe 'APT' do
       before do
         skip if FurynixSpec.skip_if_only_one
         @container_key = 'furynix-spec.trusty'
+      end
+
+      it_should_behave_like 'install CLI'
+    end
+
+    describe 'in debian/stretch' do
+      before do
+        skip if FurynixSpec.skip_if_only_one
+        @container_key = 'furynix-spec.stretch'
       end
 
       it_should_behave_like 'install CLI'

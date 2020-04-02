@@ -93,6 +93,7 @@ EOF
 
 prepare_apt() {
     fury_list="deb [trusted=yes] $source /"
+    apt_auth="machine $source_host login $furynix_token password NOPASS"
 
     if [[ -n $(which apt) ]]; then
         export apt="apt"
@@ -107,6 +108,18 @@ prepare_apt() {
     fi
 
     exec_cmd "echo $fury_list | tee /etc/apt/sources.list.d/fury.list"
+    exec_cmd "mkdir -p /etc/apt/auth.conf.d"
+
+    #exec_cmd "echo $apt_auth | tee /etc/apt/auth.conf.d/fury.conf"
+    cat >/etc/apt/auth.conf.d/fury.conf <<EOF
+machine $source_host
+  login $furynix_token
+  password NOPASS
+EOF
+    chmod 0600 /etc/apt/auth.conf.d/fury.conf
+    cat /etc/apt/auth.conf.d/fury.conf
+
+    exec_cmd "$apt -v"
     exec_cmd "$apt -y update"
 }
 

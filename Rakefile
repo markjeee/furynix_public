@@ -118,9 +118,9 @@ namespace :bash do
     c.runi
   end
 
-  desc 'Bash to stretch environment'
-  task :stretch do
-    c = DockerTask.containers['furynix.stretch']
+  desc 'Bash to buster environment'
+  task :buster do
+    c = DockerTask.containers['furynix.buster']
     c.pull
     c.runi
   end
@@ -213,10 +213,10 @@ namespace :build do
     end
   end
 
-  desc 'Docker build Bionic environment'
-  task :stretch do
-    DockerTask.pull('debian:stretch')
-    c = DockerTask.containers['furynix.stretch']
+  desc 'Docker build Buster environment'
+  task :buster do
+    DockerTask.pull('debian:buster')
+    c = DockerTask.containers['furynix.buster']
     c.build
 
     unless ENV['NOPUSH']
