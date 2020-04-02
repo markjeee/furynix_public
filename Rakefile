@@ -184,7 +184,7 @@ namespace :build do
   task :centos7 do
     DockerTask.pull('centos:7')
     c = DockerTask.containers['furynix.centos7']
-    c.build
+    c.build(no_cache: true)
 
     unless ENV['NOPUSH']
       c.push
@@ -195,7 +195,7 @@ namespace :build do
   task :fedora29 do
     DockerTask.pull('fedora:29')
     c = DockerTask.containers['furynix.fedora29']
-    c.build
+    c.build(no_cache: true)
 
     unless ENV['NOPUSH']
       c.push

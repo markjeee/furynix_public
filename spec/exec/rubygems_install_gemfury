@@ -15,6 +15,10 @@ if [ ! -z "$thor_version" ]; then
     exec_cmd "gem install thor -v $thor_version"
 fi
 
+if [ ! -z "$faraday_version" ]; then
+    exec_cmd "gem install faraday -v $faraday_version"
+fi
+
 if [ -n "$dev_version" ]; then
     exec_cmd "gem list --source $source gemfury --remote --prerelease"
     exec_cmd "gem install -V --source $source gemfury -v $dev_version --prerelease"

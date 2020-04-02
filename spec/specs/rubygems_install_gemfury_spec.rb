@@ -37,6 +37,7 @@ describe 'RubyGems' do
                                   'dev_version' => dev_version,
                                   'rubygem_version' => @rubygem_version,
                                   'thor_version' => @thor_version,
+                                  'faraday_version' => @faraday_version,
                                   'out_file' => FurynixSpec.calculate_build_path(@out_file_path)
                                 })
 
@@ -78,6 +79,7 @@ describe 'RubyGems' do
       @dev_version = nil
       @rubygem_version = nil
       @thor_version = '0.20.3'
+      @faraday_version = '0.17.3'
     end
 
     it_should_behave_like 'installing CLI fury'
