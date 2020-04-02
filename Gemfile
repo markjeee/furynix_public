@@ -12,6 +12,8 @@ group :development do
   gem 'parallel_tests'
 
   source 'https://repo.nlevel.io/ruby/' do
-    gem 'docker_task', '~> 0.1.11'
+    gem 'docker_task', '~> 0.1.12'
   end
+
+  #gem 'docker_task', :path => File.expand_path('~/work/docker_task')
 end
