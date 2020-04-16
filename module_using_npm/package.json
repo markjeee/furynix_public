@@ -9,6 +9,7 @@
   "author": "Mark John Buenconsejo",
   "license": "ISC",
   "devDependencies": {
+    "minimist": "^1.2.5",
     "mocha": "^5.2.0"
   },
   "repository": "https://github.com/gemfury/furynix"
