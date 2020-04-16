@@ -191,10 +191,10 @@ namespace :build do
     end
   end
 
-  desc 'Docker build Fedora 29 environment'
-  task :fedora29 do
-    DockerTask.pull('fedora:29')
-    c = DockerTask.containers['furynix.fedora29']
+  desc 'Docker build Fedora 31 environment'
+  task :fedora31 do
+    DockerTask.pull('fedora:31')
+    c = DockerTask.containers['furynix.fedora31']
     c.build(no_cache: true)
 
     unless ENV['NOPUSH']
