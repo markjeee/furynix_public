@@ -33,12 +33,13 @@ describe 'APT' do
       expect_fury_version(FurynixSpec.gemfury_dev_version)
     end
 
-    it 'should install head version' do
-      ret = apt_install_gemfury('https://apt.fury.io/cli-dev/',
-                                FurynixSpec.gemfury_head_version)
+    FurynixSpec.gemfury_head_versions.each do |v|
+      it 'should install v%s' % v do
+        ret = apt_install_gemfury('https://apt.fury.io/cli-dev/', v)
 
-      expect(ret).to be_a_docker_success
-      expect_fury_version(FurynixSpec.gemfury_head_version)
+        expect(ret).to be_a_docker_success
+        expect_fury_version(v)
+      end
     end
 
     it 'should install private package' do

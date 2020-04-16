@@ -23,9 +23,11 @@ describe 'RubyGems' do
       should_install_fury(FurynixSpec.gemfury_dev_version)
     end
 
-    it 'should install using head version' do
-      install_spec('https://gem.fury.io/cli-dev/', FurynixSpec.gemfury_head_version)
-      should_install_fury(FurynixSpec.gemfury_head_version)
+    FurynixSpec.gemfury_head_versions.each do |v|
+      it 'should install v%s' % v do
+        install_spec('https://gem.fury.io/cli-dev/', v)
+        should_install_fury(v)
+      end
     end
 
     def install_spec(source, dev_version = nil)
