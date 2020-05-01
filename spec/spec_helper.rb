@@ -76,7 +76,7 @@ module FurynixSpec
   end
 
   def self.gemfury_dev_version
-    '0.11.1.rc1'
+    '0.11.1.head'
   end
 
   def self.gemfury_head_versions
@@ -85,7 +85,7 @@ module FurynixSpec
     if !ENV['FURYNIX_HEAD_VERSION'].nil? && !ENV['FURYNIX_HEAD_VERSION'].empty?
       v.concat ENV['FURYNIX_HEAD_VERSION'].split(',')
     else
-      v.concat [ '0.11.1.thor1', '0.11.1.faraday1' ]
+      v.concat [ ]
     end
 
     v
