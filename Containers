@@ -43,6 +43,12 @@ DT.create({ :remote_repo => 'furynix/ubuntu',
           })
 
 DT.create({ :remote_repo => 'furynix/centos',
+            :pull_tag => '8',
+            :image_name => 'furynix.centos8',
+            :build_path => File.join(build_path, 'dockerfiles/centos8')
+          })
+
+DT.create({ :remote_repo => 'furynix/centos',
             :pull_tag => '7',
             :image_name => 'furynix.centos7',
             :build_path => File.join(build_path, 'dockerfiles/centos7')
@@ -172,6 +178,11 @@ DT.create({ :remote_repo => 'furynix/debian',
 DT.create({ :remote_repo => 'furynix/debian',
             :pull_tag => 'buster',
             :image_name => 'furynix-spec.buster',
+          })
+
+DT.create({ :remote_repo => 'furynix/centos',
+            :pull_tag => '8',
+            :image_name => 'furynix-spec.centos8',
           })
 
 DT.create({ :remote_repo => 'furynix/centos',

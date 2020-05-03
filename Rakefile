@@ -180,6 +180,17 @@ namespace :vagrant do
 end
 
 namespace :build do
+  desc 'Docker build CentOS 8 environment'
+  task :centos8 do
+    DockerTask.pull('centos:8')
+    c = DockerTask.containers['furynix.centos8']
+    c.build(no_cache: true)
+
+    unless ENV['NOPUSH']
+      c.push
+    end
+  end
+
   desc 'Docker build CentOS 7 environment'
   task :centos7 do
     DockerTask.pull('centos:7')

@@ -73,6 +73,15 @@ describe 'YUM' do
     end
   end
 
+  describe 'in centos/8' do
+    before do
+      skip if FurynixSpec.skip_if_only_one
+      @container_key = 'furynix-spec.centos8'
+    end
+
+    it_should_behave_like 'install CLI'
+  end
+
   describe 'in centos/7' do
     before do
       skip if FurynixSpec.skip_if_only_one
