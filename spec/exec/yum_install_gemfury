@@ -4,9 +4,6 @@ source $(dirname $0)/functions
 
 prepare_yum
 
-# enable the following, to use ruby24
-# source /opt/rh/rh-ruby24/enable
-
 if [ -n "$version" ]; then
     exec_cmd "yum install -y which gemfury-$version"
 else

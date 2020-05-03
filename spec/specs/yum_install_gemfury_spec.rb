@@ -9,6 +9,8 @@ describe 'YUM' do
     end
 
     it 'should install' do
+      skip if FurynixSpec.skip_if_only_one
+
       ret = yum_install_gemfury('https://yum.fury.io/cli/',
                                 FurynixSpec.gemfury_version)
       expect(ret).to be_a_docker_success
@@ -17,6 +19,8 @@ describe 'YUM' do
     end
 
     it 'should install using custom domain' do
+      skip if FurynixSpec.skip_if_only_one
+
       ret = yum_install_gemfury('https://cli.gemfury.com/yum/',
                                 FurynixSpec.gemfury_version)
       expect(ret).to be_a_docker_success
@@ -25,7 +29,8 @@ describe 'YUM' do
     end
 
     it 'should install dev version' do
-      skip 'for now, since HEAD in master branch requires at least ruby 2.4'
+      skip if FurynixSpec.skip_if_only_one
+
       ret = yum_install_gemfury('https://yum.fury.io/cli-dev/',
                                 FurynixSpec.gemfury_dev_version)
       expect(ret).to be_a_docker_success
@@ -35,7 +40,8 @@ describe 'YUM' do
 
     FurynixSpec.gemfury_head_versions.each do |v|
       it 'should install v%s' % v do
-        skip 'for now, due to faraday1 needing ruby 2.4'
+        skip if FurynixSpec.skip_if_only_one
+
         ret = yum_install_gemfury('https://yum.fury.io/cli-dev/', v)
         expect(ret).to be_a_docker_success
 
@@ -78,7 +84,7 @@ describe 'YUM' do
 
   describe 'in fedora/31' do
     before do
-      #skip if FurynixSpec.skip_if_only_one
+      skip if FurynixSpec.skip_if_only_one
       @container_key = 'furynix-spec.fedora31'
     end
 
