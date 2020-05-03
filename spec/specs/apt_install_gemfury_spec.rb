@@ -10,6 +10,8 @@ describe 'APT' do
     end
 
     it 'should install' do
+      skip if FurynixSpec.skip_if_only_one
+
       ret = apt_install_gemfury('https://apt.fury.io/cli/',
                                 FurynixSpec.gemfury_version)
 
@@ -18,6 +20,8 @@ describe 'APT' do
     end
 
     it 'should install using custom domain' do
+      skip if FurynixSpec.skip_if_only_one
+
       ret = apt_install_gemfury('https://cli.gemfury.com/apt/',
                                 FurynixSpec.gemfury_version)
 
@@ -26,6 +30,8 @@ describe 'APT' do
     end
 
     it 'should install dev version' do
+      skip if FurynixSpec.skip_if_only_one
+
       ret = apt_install_gemfury('https://apt.fury.io/cli-dev/',
                                 FurynixSpec.gemfury_dev_version)
 
@@ -35,6 +41,8 @@ describe 'APT' do
 
     FurynixSpec.gemfury_head_versions.each do |v|
       it 'should install v%s' % v do
+        skip if FurynixSpec.skip_if_only_one
+
         ret = apt_install_gemfury('https://apt.fury.io/cli-dev/', v)
 
         expect(ret).to be_a_docker_success
@@ -76,6 +84,15 @@ describe 'APT' do
                     :capture => true,
                     :env_file => FurynixSpec.create_env_file(env))
     end
+  end
+
+  describe 'in ubuntu/focal' do
+    before do
+      skip if FurynixSpec.skip_if_only_one
+      @container_key = 'furynix-spec.focal'
+    end
+
+    it_should_behave_like 'install CLI'
   end
 
   describe 'in ubuntu/bionic' do

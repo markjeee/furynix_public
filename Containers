@@ -37,6 +37,12 @@ DT.create({ :remote_repo => 'ruby',
           })
 
 DT.create({ :remote_repo => 'furynix/ubuntu',
+            :pull_tag => 'focal',
+            :image_name => 'furynix.focal',
+            :build_path => File.join(build_path, 'dockerfiles/focal')
+          })
+
+DT.create({ :remote_repo => 'furynix/ubuntu',
             :pull_tag => 'bionic',
             :image_name => 'furynix.bionic',
             :build_path => File.join(build_path, 'dockerfiles/bionic')
@@ -143,6 +149,11 @@ DT.create({ :remote_repo => 'ruby',
 DT.create({ :remote_repo => 'ruby',
             :pull_tag => '1.9.3',
             :image_name => 'furynix-spec.ruby193',
+          })
+
+DT.create({ :remote_repo => 'furynix/ubuntu',
+            :pull_tag => 'focal',
+            :image_name => 'furynix-spec.focal',
           })
 
 DT.create({ :remote_repo => 'furynix/ubuntu',

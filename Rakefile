@@ -213,6 +213,17 @@ namespace :build do
     end
   end
 
+  desc 'Docker build Focal environment'
+  task :focal do
+    DockerTask.pull('ubuntu:focal')
+    c = DockerTask.containers['furynix.focal']
+    c.build
+
+    unless ENV['NOPUSH']
+      c.push
+    end
+  end
+
   desc 'Docker build Bionic environment'
   task :bionic do
     DockerTask.pull('ubuntu:bionic')
