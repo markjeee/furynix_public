@@ -217,7 +217,7 @@ namespace :build do
   task :focal do
     DockerTask.pull('ubuntu:focal')
     c = DockerTask.containers['furynix.focal']
-    c.build
+    c.build(no_cache: true)
 
     unless ENV['NOPUSH']
       c.push
@@ -228,7 +228,7 @@ namespace :build do
   task :bionic do
     DockerTask.pull('ubuntu:bionic')
     c = DockerTask.containers['furynix.bionic']
-    c.build
+    c.build(no_cache: true)
 
     unless ENV['NOPUSH']
       c.push
@@ -239,7 +239,7 @@ namespace :build do
   task :buster do
     DockerTask.pull('debian:buster')
     c = DockerTask.containers['furynix.buster']
-    c.build
+    c.build(no_cache: true)
 
     unless ENV['NOPUSH']
       c.push
@@ -250,7 +250,7 @@ namespace :build do
   task :linuxbrew do
     DockerTask.pull('linuxbrew/brew:latest')
     c = DockerTask.containers['furynix.linuxbrew']
-    c.build
+    c.build(no_cache: true)
 
     unless ENV['NOPUSH']
       c.push
@@ -261,7 +261,7 @@ namespace :build do
   task :dotnet do
     DockerTask.pull('mcr.microsoft.com/dotnet/core/sdk:2.1')
     c = DockerTask.containers['furynix.dotnet']
-    c.build
+    c.build(no_cache: true)
 
     unless ENV['NOPUSH']
       c.push
@@ -272,7 +272,7 @@ namespace :build do
   task :gradle do
     DockerTask.pull('gradle:6.0.1')
     c = DockerTask.containers['furynix.gradle']
-    c.build
+    c.build(no_cache: true)
 
     unless ENV['NOPUSH']
       c.push
@@ -283,7 +283,7 @@ namespace :build do
   task :maven do
     DockerTask.pull('maven:3.6.3')
     c = DockerTask.containers['furynix.maven']
-    c.build
+    c.build(no_cache: true)
 
     unless ENV['NOPUSH']
       c.push
@@ -294,7 +294,7 @@ namespace :build do
   task :go do
     DockerTask.pull('golang:1.13.5')
     c = DockerTask.containers['furynix.go']
-    c.build
+    c.build(no_cache: true)
 
     unless ENV['NOPUSH']
       c.push
