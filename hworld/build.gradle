@@ -11,15 +11,15 @@ repositories {
 
   maven {
     name = "fury"
-    url = "https://maven.fury.io/$furyUser"
+    url = "https://maven.fury.io/" + furyUser
 
     authentication {
       basic(BasicAuthentication)
     }
 
     credentials {
-      username = "$furyToken"
-      password = ""
+      username = furyToken
+      password = "NOPASS"
     }
   }
 

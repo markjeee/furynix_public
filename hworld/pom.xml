@@ -32,7 +32,7 @@
   <repositories>
     <repository>
       <id>fury</id>
-      <url>https://maven.fury.io/furynix/</url>
+      <url>https://maven.fury.io/${env.FURYNIX_USER}/</url>
     </repository>
   </repositories>
 </project>

@@ -17,7 +17,7 @@ describe 'Gradle' do
       container.pull
 
       env = FurynixSpec.
-              create_env_args({ 'package_path' => 'build/repo/org/furynix/jworld/1.1/jworld-1.1.jar',
+              create_env_args({ 'package_path' => 'build/libs/jworld-1.1.jar',
                                 'package_name' => @package_name,
                                 'package_version' => @package_version,
                                 'out_file' => FurynixSpec.calculate_build_path(@out_file_path)

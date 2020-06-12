@@ -36,12 +36,11 @@
     </dependency>
   </dependencies>
 
-  <!-- WARNING: `mvn deploy` do not work yet. use `fury push target/*.jar` for now -->
   <distributionManagement>
     <repository>
       <id>fury</id>
       <name>Fury</name>
-      <url>https://push.fury.io/furynix/</url>
+      <url>https://maven.fury.io/${env.FURYNIX_USER}/</url>
     </repository>
   </distributionManagement>
 </project>

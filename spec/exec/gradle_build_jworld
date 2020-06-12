@@ -11,7 +11,6 @@ cd /build/jworld
 exec_cmd "rm -rf .gradle build"
 exec_cmd "gradle -i build"
 exec_cmd "gradle -i test"
-exec_cmd "gradle -i publishAllPublicationsToThisRepository"
-exec_cmd "ls -fl $package_path" $out_file
+exec_cmd "gradle -i publishAllPublicationsToFuryRepository"
 
-exec_cmd "curl --fail -F package=@$package_path https://$furynix_token@push.fury.io/$furynix_user/" $out_file
+exec_cmd "ls -fl $package_path" $out_file

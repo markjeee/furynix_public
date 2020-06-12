@@ -34,18 +34,17 @@ publishing {
     }
 
     // gradle publishAllPublicationsToFuryRepository
-    // NOT SUPPORTED YET
     maven {
       name = "fury"
-      url = "https://push.fury.io/$furyUser"
+      url = "https://maven.fury.io/" + furyUser
 
       authentication {
         basic(BasicAuthentication)
       }
 
       credentials {
-        username = "$furyToken"
-        password = ""
+        username = furyToken
+        password = "NOPASS"
       }
     }
   }
