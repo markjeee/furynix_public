@@ -1,4 +1,4 @@
-FROM gradle:6.0.1
+FROM gradle:6.5
 MAINTAINER hello@gemfury.com
 
 ENV DEBIAN_FRONTEND=noninteractive

@@ -270,7 +270,7 @@ namespace :build do
 
   desc 'Docker build Gradle environment'
   task :gradle do
-    DockerTask.pull('gradle:6.0.1')
+    DockerTask.pull('gradle:6.5')
     c = DockerTask.containers['furynix.gradle']
     c.build(no_cache: true)
 
