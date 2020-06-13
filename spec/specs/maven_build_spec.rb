@@ -23,12 +23,9 @@ describe 'Maven' do
                                 'out_file' => FurynixSpec.calculate_build_path(@out_file_path)
                               })
 
-      ret = nil
-      container.shhh(false) do
-        ret = container.run(:exec => '/build/spec/exec/maven_build_jworld',
-                            :capture => true,
-                            :env_file => FurynixSpec.create_env_file(env))
-      end
+      ret = container.run(:exec => '/build/spec/exec/maven_build_jworld',
+                          :capture => true,
+                          :env_file => FurynixSpec.create_env_file(env))
       expect(ret).to be_a_docker_success
 
       versions = @fury.versions(@package_name)

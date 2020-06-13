@@ -26,7 +26,6 @@ describe 'Gradle' do
       ret = container.run(:exec => '/build/spec/exec/gradle_build_jworld',
                           :capture => true,
                           :env_file => FurynixSpec.create_env_file(env))
-
       expect(ret).to be_a_docker_success
 
       versions = @fury.versions(@package_name)
