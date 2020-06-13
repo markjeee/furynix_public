@@ -23,9 +23,12 @@ describe 'Gradle' do
                                 'out_file' => FurynixSpec.calculate_build_path(@out_file_path)
                               })
 
-      ret = container.run(:exec => '/build/spec/exec/gradle_build_jworld',
-                          :capture => true,
-                          :env_file => FurynixSpec.create_env_file(env))
+      ret = nil
+      container.shhh(false) do
+        ret = container.run(:exec => '/build/spec/exec/gradle_build_jworld',
+                            :capture => true,
+                            :env_file => FurynixSpec.create_env_file(env))
+      end
       expect(ret).to be_a_docker_success
 
       versions = @fury.versions(@package_name)
@@ -62,10 +65,12 @@ describe 'Gradle' do
       env = FurynixSpec.
               create_env_args({ 'out_file' => FurynixSpec.calculate_build_path(@out_file_path) })
 
-      ret = container.run(:exec => '/build/spec/exec/gradle_build_hworld',
-                          :capture => true,
-                          :env_file => FurynixSpec.create_env_file(env))
-
+      ret = nil
+      container.shhh(false) do
+        ret = container.run(:exec => '/build/spec/exec/gradle_build_hworld',
+                            :capture => true,
+                            :env_file => FurynixSpec.create_env_file(env))
+      end
       expect(ret).to be_a_docker_success
     end
   end
@@ -73,7 +78,7 @@ describe 'Gradle' do
   describe 'in gradle' do
     before do
       skip if FurynixSpec.skip_if_only_one
-      @container_key = 'furynix-spec.gradle'
+      @container_key = 'furynix-spec.gradle65'
     end
 
     it_should_behave_like 'build and push'

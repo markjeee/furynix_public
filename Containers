@@ -238,7 +238,7 @@ DT.create({ :remote_repo => 'node',
 
 DT.create({ :remote_repo => 'furynix/gradle',
             :pull_tag => '6.5',
-            :image_name => 'furynix-spec.gradle'
+            :image_name => 'furynix-spec.gradle65'
           })
 
 DT.create({ :remote_repo => 'furynix/maven',
