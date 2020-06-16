@@ -38,6 +38,7 @@ describe 'Gradle' do
     after do
       begin
         @fury.yank_version(@package_name, @package_version)
+        sleep(10)
       rescue Gemfury::NotFound
       end
     end
