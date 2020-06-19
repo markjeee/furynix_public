@@ -36,7 +36,7 @@ publishing {
     // gradle publishAllPublicationsToFuryRepository
     maven {
       name = "fury"
-      url = "https://maven.fury.io/" + furyUser
+      url = "https://push.fury.io/" + furyUser
 
       authentication {
         basic(BasicAuthentication)

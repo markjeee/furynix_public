@@ -40,7 +40,7 @@
     <repository>
       <id>fury</id>
       <name>Fury</name>
-      <url>https://maven.fury.io/${env.FURYNIX_USER}/</url>
+      <url>https://push.fury.io/${env.FURYNIX_USER}/</url>
     </repository>
   </distributionManagement>
 </project>
