@@ -51,7 +51,7 @@ describe 'APT' do
     end
 
     it 'should install private package' do
-      ret = apt_install_gemfury('https://apt.fury.io/furynix/',
+      ret = apt_install_gemfury('https://apt.fury.io/%s/' % FurynixSpec.furynix_user,
                                 FurynixSpec.gemfury_version)
       expect(ret).to be_a_docker_success
 

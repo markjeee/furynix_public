@@ -7,6 +7,7 @@ require 'rspec/core/rake_task'
 require 'docker_task'
 require 'parallel_tests/tasks'
 require 'furynix'
+require 'dotenv/load'
 
 DockerTask.load_containers
 
@@ -79,6 +80,89 @@ namespace :spec do
                   'spec/specs/curl_collaborators_spec.rb',
                   'spec/specs/curl_add_remove_collaborator_spec.rb'
                 ]
+  end
+
+  desc 'Prepare a new account for testing'
+  task :prepare_account do
+    furynix_user = ENV['FURYNIX_USER']
+    furynix_api_token = ENV['FURYNIX_API_TOKEN']
+
+    puts 'For account: %s' % furynix_user
+    puts 'Using token: %s' % furynix_api_token
+
+    fixtures_path = File.expand_path('../spec/fixtures', __FILE__)
+
+    packages = [ { name: 'gemfury',
+                   version: '0.11.0',
+                   kind: 'deb',
+                   file: 'gemfury_0.11.0_all.deb',
+                   pub: false
+                 },
+                 { name: 'gemfury',
+                   version: '0.11.0-1',
+                   kind: 'rpm',
+                   file: 'gemfury_0.11.0_all.rpm',
+                   pub: false
+                 },
+                 { name: 'gemfury',
+                   version: '0.11.0',
+                   kind: 'ruby',
+                   file: 'gemfury-0.11.0.gem',
+                   pub: false
+                 },
+                 { name: 'gem_using_bundler',
+                   version: '0.1.0',
+                   kind: 'ruby',
+                   file: 'gem_using_bundler-0.1.0.gem',
+                   pub: true
+                 },
+                 { name: 'Gemfury.DotNetWorld',
+                   version: '1.0.0',
+                   kind: 'nuget',
+                   file: 'Gemfury.DotNetWorld.1.0.0.nupkg',
+                   pub: false
+                 },
+                 { name: 'Gemfury.DotNetWorld',
+                   version: '1.0.0',
+                   kind: 'nuget',
+                   file: 'Gemfury.DotNetWorld.1.0.0.nupkg',
+                   pub: false
+                 }
+               ]
+
+    client = Furynix::GemfuryAPI.client(:user_api_key => furynix_api_token)
+
+    packages.each do |package|
+      package_path = File.join(fixtures_path, package[:file])
+
+      if File.exist?(package_path)
+        matched = false
+
+        begin
+          gem_info = client.package_info('%s:%s' % [ package[:kind], package[:name] ])
+          matched = gem_info['versions'].detect { |i| i['version'] == package[:version] }
+        rescue Gemfury::NotFound
+        end
+
+        unless matched
+          puts 'Uploading %s:%s => %s' % [ package[:kind], package[:name], furynix_user ]
+
+          f = File.new(package_path)
+          begin
+            client.push_gem(f, { :public => package[:pub],
+                                 :params => { :as => furynix_user } })
+          ensure
+            f.close
+          end
+        else
+          puts 'WARN Package %s of kind %s with v%s already exist' % [ package[:name],
+                                                                       package[:kind],
+                                                                       package[:version] ]
+        end
+      else
+        puts 'ERR File does not exist: %s' % package_path
+      end
+    end
   end
 end
 

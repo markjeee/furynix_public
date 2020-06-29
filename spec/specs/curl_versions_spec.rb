@@ -13,7 +13,7 @@ describe 'Curl API' do
 
     env = FurynixSpec.
             create_env_args({ 'gem' => 'gemfury',
-                              'version' => '0.11.0.rc1',
+                              'version' => FurynixSpec.gemfury_version,
                               'out_file' => FurynixSpec.calculate_build_path(@out_file_path) })
 
     ret = container.run(:exec => '/build/spec/exec/curl_versions',
