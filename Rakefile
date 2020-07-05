@@ -3,6 +3,7 @@ require 'bundler'
 Bundler.setup
 $:.unshift File.expand_path('../lib', __FILE__)
 
+require 'fileutils'
 require 'rspec/core/rake_task'
 require 'docker_task'
 require 'parallel_tests/tasks'
@@ -122,15 +123,16 @@ namespace :spec do
                    file: 'Gemfury.DotNetWorld.1.0.0.nupkg',
                    pub: false
                  },
-                 { name: 'Gemfury.DotNetWorld',
+                 { name: 'git.fury.io/furynix/jgo',
                    version: '1.0.0',
-                   kind: 'nuget',
-                   file: 'Gemfury.DotNetWorld.1.0.0.nupkg',
+                   kind: 'go',
+                   file: 'jgo-1.0.0.tgz',
                    pub: false
                  }
                ]
 
     client = Furynix::GemfuryAPI.client(:user_api_key => furynix_api_token)
+    client.account = furynix_user
 
     packages.each do |package|
       package_path = File.join(fixtures_path, package[:file])
@@ -139,20 +141,44 @@ namespace :spec do
         matched = false
 
         begin
-          gem_info = client.package_info('%s:%s' % [ package[:kind], package[:name] ])
-          matched = gem_info['versions'].detect { |i| i['version'] == package[:version] }
+          versions = client.versions('%s:%s' % [ package[:kind], package[:name] ])
+          matched = versions.detect { |i| i['version'] == package[:version] }
         rescue Gemfury::NotFound
         end
 
         unless matched
           puts 'Uploading %s:%s => %s' % [ package[:kind], package[:name], furynix_user ]
 
-          f = File.new(package_path)
-          begin
-            client.push_gem(f, { :public => package[:pub],
-                                 :params => { :as => furynix_user } })
-          ensure
-            f.close
+          case package[:kind]
+          when 'go'
+            tmp_path = File.expand_path('../tmp', __FILE__)
+            working_path = File.join(tmp_path, '%s-%s' % [ package[:name], package[:version] ])
+            FileUtils.mkdir_p(working_path)
+
+            bash_script = <<EOF
+#!/bin/bash
+
+cd #{working_path}
+tar -vxzf #{package_path}
+git remote add fury https://git.fury.io/#{furynix_user}/jgo.git
+git tag v#{package[:version]}
+git push -f fury tags/v#{package[:version]}
+git push -f fury master
+
+EOF
+            script_path = File.join(working_path, 'apply')
+            File.write(script_path, bash_script)
+            system('bash %s' % script_path)
+          else
+            f = File.new(package_path)
+            begin
+              client.push_gem(f, { :public => package[:pub],
+                                   :params => { :as => furynix_user } })
+            rescue Gemfury::DupeVersion
+              puts 'WARN Package %s already exist' % package[:name]
+            ensure
+              f.close
+            end
           end
         else
           puts 'WARN Package %s of kind %s with v%s already exist' % [ package[:name],
@@ -162,6 +188,35 @@ namespace :spec do
       else
         puts 'ERR File does not exist: %s' % package_path
       end
+    end
+  end
+
+  desc 'Clear all packages and git repos in the account'
+  task :reset_account do
+    furynix_user = ENV['FURYNIX_USER']
+    furynix_api_token = ENV['FURYNIX_API_TOKEN']
+
+    puts 'For account: %s' % furynix_user
+    puts 'Using token: %s' % furynix_api_token
+
+    client = Furynix::GemfuryAPI.client(:user_api_key => furynix_api_token)
+    client.account = furynix_user
+
+    packages = client.list
+    packages.each do |p|
+      puts 'Found %s:%s' % [ p['language'], p['name'] ]
+
+      versions = client.versions('%s:%s' % [ p['language'], p['name'] ])
+      versions.each do |v|
+        puts '  YANK: %s' % v['version']
+        client.yank_version('%s:%s' % [ p['language'], p['name'] ], v['version'])
+      end
+    end
+
+    repos = client.git_repos
+    repos['repos'].each do |r|
+      puts 'Deleting %s repo' % r['name']
+      client.git_reset(r['name'])
     end
   end
 end
