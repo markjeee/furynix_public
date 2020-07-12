@@ -68,7 +68,7 @@ module FurynixSpec
   # and can't publish dev version if not yet synced to
   # the official repo
   def self.gemfury_brew_dev_version
-    self.gemfury_version
+    self.gemfury_dev_version
   end
 
   def self.gemfury_version
@@ -76,7 +76,7 @@ module FurynixSpec
   end
 
   def self.gemfury_dev_version
-    '0.11.1.head'
+    '0.12.0.rc1'
   end
 
   def self.gemfury_head_versions

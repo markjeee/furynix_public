@@ -16,7 +16,7 @@ exec_cmd "brew update"
 exec_cmd "brew tap $source"
 
 if [ -n "$devel" ]; then
-    exec_cmd "brew install --devel gemfury"
+    exec_cmd "brew install --head gemfury"
 else
     exec_cmd "brew install gemfury"
 fi
