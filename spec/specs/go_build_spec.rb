@@ -18,8 +18,6 @@ describe 'Go' do
     end
 
     it 'should build and push' do
-      skip 'Skip for now, due to occasional push build problems with go packages'
-
       container = DockerTask.containers[@container_key]
       container.pull
 
@@ -110,6 +108,8 @@ describe 'Go' do
 
       env = FurynixSpec.
               create_env_args({ 'out_file' => FurynixSpec.calculate_build_path(@out_file_path),
+                                'GOPRIVATE' => @goprivate,
+                                'GONOPROXY' => 'git.fury.io/furynix/*'
                               })
 
       ret = container.run(:exec => '/build/spec/exec/go_build_hgo',

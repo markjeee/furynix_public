@@ -3,7 +3,9 @@
 source $(dirname $0)/functions
 
 configure_furynix_token
+show_env
 
 cd /build/hgo
-exec_cmd "go clean"
+exec_cmd "rm -f go.sum"
+exec_cmd "go clean -modcache"
 exec_cmd "go test"

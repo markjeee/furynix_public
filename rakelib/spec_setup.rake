@@ -86,8 +86,10 @@ namespace :spec do
 cd #{working_path}
 tar -xzf #{package_path}
 git remote add fury https://git.fury.io/#{furynix_user}/#{repo_name}.git
-git tag v#{package[:version]}
-git push -f fury tags/v#{package[:version]}
+
+git push -f fury --delete v#{package[:version]}; true
+git tag v#{package[:version]} master
+git push -f fury refs/tags/v#{package[:version]}
 sleep 3
 git push -f fury master
 

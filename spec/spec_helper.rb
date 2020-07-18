@@ -46,6 +46,10 @@ module FurynixSpec
     ENV['FURYNIX_API_TOKEN']
   end
 
+  def self.debug?
+    ENV['DEBUG'] == '1'
+  end
+
   def self.create_exec_args(args)
     {
       'furynix_user' => furynix_user,
@@ -174,6 +178,10 @@ module FurynixSpec
       @@execargs_file_counter = 1
     end
 
+    if debug?
+      env = { 'DEBUG' => '1' }.merge(env)
+    end
+
     f = FurynixSpec.tmp_path('docker.env_args.%d' % @@execargs_file_counter)
     FileUtils.rm_f(f) if File.exists?(f)
 
@@ -181,6 +189,12 @@ module FurynixSpec
       env.each do |k,v|
         io.puts('%s=%s' % [ k, v ])
       end
+    end
+
+    if debug?
+      puts '===== CONTAINER ENV ====='
+      puts File.read(f)
+      puts '='*25
     end
 
     f

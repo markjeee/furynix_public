@@ -3,6 +3,7 @@
 source $(dirname $0)/functions
 
 configure_furynix_token
+show_env
 
 cd /build/jgo
 exec_cmd "go test"
@@ -11,8 +12,14 @@ exec_cmd "rm -rf .git"
 exec_cmd "tar -xzf git_clean.tgz"
 exec_cmd "git remote add fury https://git.fury.io/$furynix_user/jgo.git"
 
-exec_cmd "git add 1.1.0-delta && git commit -m 'Increment version 1.1.0'"
+# clear our repo first
+exec_cmd "git push -f fury master:master"
+exec_cmd "git push -f fury --delete v$package_version; true"
 
-exec_cmd "git tag v$package_version"
-exec_cmd "git push -f fury tags/v$package_version"
+exec_cmd "git add 1.1.0-delta && git commit -m 'Increment version $package_version'"
+
+exec_cmd "git tag v$package_version master"
+exec_cmd "git push -f fury refs/tags/v$package_version"
+sleep 3
+
 exec_cmd "git push -f fury master"

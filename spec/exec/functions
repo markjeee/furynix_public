@@ -3,6 +3,12 @@
 export DEBIAN_FRONTEND=noninteractive
 export PATH=$PATH:/usr/local/bundle/bin
 
+show_env() {
+    if [ ! -z $DEBUG ]; then
+        exec_cmd "env"
+    fi
+}
+
 exec_cmd() {
     echo "$1";
 
@@ -18,9 +24,11 @@ exec_cmd() {
         checkr=$3
     fi
 
-    if [ $ret -ne $checkr ]; then
-        echo "RET: $ret"
-        exit 1
+    if [ $checkr == -1 ]; then
+        if [ $ret -ne $checkr ]; then
+            echo "RET: $ret"
+            exit 1
+        fi
     fi
 }
 
