@@ -27,13 +27,23 @@ end
 # Generic docker containers for Rake tasks
 # ========================================
 
-DT.create({ :remote_repo => 'ruby',
-            :pull_tag => '1.9.3',
-            :image_name => 'furynix.ruby19' })
 
-DT.create({ :remote_repo => 'ruby',
-            :pull_tag => '2.6.3',
-            :image_name => 'furynix.ruby26'
+DT.create({ :remote_repo => 'furynix/ruby',
+            :pull_tag => '2.7',
+            :image_name => 'furynix.ruby27',
+            :build_path => File.join(build_path, 'dockerfiles/ruby27')
+          })
+
+DT.create({ :remote_repo => 'furynix/ruby',
+            :pull_tag => '2.6',
+            :image_name => 'furynix.ruby26',
+            :build_path => File.join(build_path, 'dockerfiles/ruby26')
+          })
+
+DT.create({ :remote_repo => 'furynix/ruby',
+            :pull_tag => '1.9',
+            :image_name => 'furynix.ruby19',
+            :build_path => File.join(build_path, 'dockerfiles/ruby19')
           })
 
 DT.create({ :remote_repo => 'furynix/ubuntu',
@@ -111,44 +121,19 @@ DT.create({ :remote_repo => 'furynix/go',
 # Spec docker containers
 # ======================
 
-DT.create({ :remote_repo => 'ruby',
-            :pull_tag => '2.6.3',
-            :image_name => 'furynix-spec.ruby263'
+DT.create({ :remote_repo => 'furynix/ruby',
+            :pull_tag => '2.7',
+            :image_name => 'furynix-spec.ruby27'
           })
 
-DT.create({ :remote_repo => 'ruby',
-            :pull_tag => '2.6.2',
-            :image_name => 'furynix-spec.ruby262'
+DT.create({ :remote_repo => 'furynix/ruby',
+            :pull_tag => '2.6',
+            :image_name => 'furynix-spec.ruby26'
           })
 
-DT.create({ :remote_repo => 'ruby',
-            :pull_tag => '2.5.5',
-            :image_name => 'furynix-spec.ruby255'
-          })
-
-DT.create({ :remote_repo => 'ruby',
-            :pull_tag => '2.5.3',
-            :image_name => 'furynix-spec.ruby253',
-          })
-
-DT.create({ :remote_repo => 'ruby',
-            :pull_tag => '2.4.6',
-            :image_name => 'furynix-spec.ruby246',
-          })
-
-DT.create({ :remote_repo => 'ruby',
-            :pull_tag => '2.4.5',
-            :image_name => 'furynix-spec.ruby245',
-          })
-
-DT.create({ :remote_repo => 'ruby',
-            :pull_tag => '2.3.8',
-            :image_name => 'furynix-spec.ruby238',
-          })
-
-DT.create({ :remote_repo => 'ruby',
-            :pull_tag => '1.9.3',
-            :image_name => 'furynix-spec.ruby193',
+DT.create({ :remote_repo => 'furynix/ruby',
+            :pull_tag => '1.9',
+            :image_name => 'furynix-spec.ruby19',
           })
 
 DT.create({ :remote_repo => 'furynix/ubuntu',

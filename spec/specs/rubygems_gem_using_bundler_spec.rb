@@ -32,7 +32,9 @@ describe 'RubyGems' do
 
     after do
       begin
-        @fury.yank_version('gem_using_bundler', '0.1.1')
+        unless @fury.nil?
+          @fury.yank_version('gem_using_bundler', '0.1.1')
+        end
       rescue Gemfury::NotFound
       end
     end
@@ -72,10 +74,10 @@ describe 'RubyGems' do
     end
   end
 
-  describe 'using ruby 2.6.3' do
+  describe 'using ruby 2.7' do
     before do
       skip if FurynixSpec.skip_if_only_one
-      @container_key = 'furynix-spec.ruby263'
+      @container_key = 'furynix-spec.ruby27'
       @gemfile = nil
     end
 
@@ -83,10 +85,21 @@ describe 'RubyGems' do
     it_should_behave_like 'app using gem'
   end
 
-  describe 'using ruby 1.9.3' do
+  describe 'using ruby 2.6' do
     before do
       skip if FurynixSpec.skip_if_only_one
-      @container_key = 'furynix-spec.ruby193'
+      @container_key = 'furynix-spec.ruby26'
+      @gemfile = nil
+    end
+
+    it_should_behave_like 'gem using bundler'
+    it_should_behave_like 'app using gem'
+  end
+
+  describe 'using ruby 1.9' do
+    before do
+      skip if FurynixSpec.skip_if_only_one
+      @container_key = 'furynix-spec.ruby19'
       @gemfile = '/build/gem_using_bundler/gemfiles/Gemfile19'
     end
 

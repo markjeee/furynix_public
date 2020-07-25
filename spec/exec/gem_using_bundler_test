@@ -11,6 +11,13 @@ if [ -n "$gemfile" ]; then
     export BUNDLE_GEMFILE=$gemfile
 fi
 
+exec_cmd "which ruby"
+exec_cmd "ruby -v"
+exec_cmd "which gem"
+exec_cmd "gem -v"
+exec_cmd "which bundle"
+exec_cmd "bundle -v"
+
 cd /build/gem_using_bundler
 exec_cmd "bundle"
 exec_cmd "rake"
