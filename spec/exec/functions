@@ -24,7 +24,7 @@ exec_cmd() {
         checkr=$3
     fi
 
-    if [ $checkr == -1 ]; then
+    if [ $checkr -ne -1 ]; then
         if [ $ret -ne $checkr ]; then
             echo "RET: $ret"
             exit 1
