@@ -4,9 +4,8 @@ source $(dirname $0)/functions
 
 configure_furynix_token
 
-exec_cmd "apt update"
-exec_cmd "apt install -yy curl"
-
 exec_cmd "curl --fail -s -X GET \
             -H 'Accept: application/vnd.fury.v1+json' \
-            https://$furynix_token@api.fury.io/accounts | grep '$username'"
+            -H 'Authorization: $furynix_token' \
+            https://api.fury.io/accounts |\
+            grep '$username'"
