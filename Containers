@@ -76,6 +76,12 @@ DT.create({ :remote_repo => 'furynix/fedora',
             :build_path => File.join(build_path, 'dockerfiles/fedora31')
           })
 
+DT.create({ :remote_repo => 'furynix/fedora',
+            :pull_tag => '29',
+            :image_name => 'furynix.fedora29',
+            :build_path => File.join(build_path, 'dockerfiles/fedora29')
+          })
+
 DT.create({ :remote_repo => 'furynix/linuxbrew',
             :pull_tag => '1.9.3',
             :image_name => 'furynix.linuxbrew',

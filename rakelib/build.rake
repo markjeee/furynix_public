@@ -32,6 +32,17 @@ namespace :build do
     end
   end
 
+  desc 'Docker build Fedora 29 environment'
+  task :fedora29 do
+    DockerTask.pull('fedora:29')
+    c = DockerTask.containers['furynix.fedora29']
+    c.build(no_cache: true)
+
+    unless ENV['NOPUSH']
+      c.push
+    end
+  end
+
   desc 'Docker build Focal environment'
   task :focal do
     DockerTask.pull('ubuntu:focal')

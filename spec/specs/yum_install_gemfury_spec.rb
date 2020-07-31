@@ -8,8 +8,8 @@ describe 'YUM' do
       @out_file_path = FurynixSpec.prepare_docker_outfile
     end
 
-    it 'should install' do
-      skip if FurynixSpec.skip_if_only_one
+    it 'should install v%s' % FurynixSpec.gemfury_version do
+      #skip if FurynixSpec.skip_if_only_one
 
       ret = yum_install_gemfury('https://yum.fury.io/cli/',
                                 FurynixSpec.gemfury_version)
@@ -19,7 +19,7 @@ describe 'YUM' do
     end
 
     it 'should install using custom domain' do
-      skip if FurynixSpec.skip_if_only_one
+      #skip if FurynixSpec.skip_if_only_one
 
       ret = yum_install_gemfury('https://cli.gemfury.com/yum/',
                                 FurynixSpec.gemfury_version)
@@ -28,8 +28,8 @@ describe 'YUM' do
       expect_fury_version(FurynixSpec.gemfury_version)
     end
 
-    it 'should install dev version' do
-      skip if FurynixSpec.skip_if_only_one
+    it 'should install dev version v%s' % FurynixSpec.gemfury_dev_version do
+      #skip if FurynixSpec.skip_if_only_one
 
       ret = yum_install_gemfury('https://yum.fury.io/cli-dev/',
                                 FurynixSpec.gemfury_dev_version)
@@ -40,7 +40,7 @@ describe 'YUM' do
 
     FurynixSpec.gemfury_head_versions.each do |v|
       it 'should install v%s' % v do
-        skip if FurynixSpec.skip_if_only_one
+        #skip if FurynixSpec.skip_if_only_one
 
         ret = yum_install_gemfury('https://yum.fury.io/cli-dev/', v)
         expect(ret).to be_a_docker_success
@@ -95,6 +95,15 @@ describe 'YUM' do
     before do
       skip if FurynixSpec.skip_if_only_one
       @container_key = 'furynix-spec.fedora31'
+    end
+
+    it_should_behave_like 'install CLI'
+  end
+
+  describe 'in fedora/29' do
+    before do
+      skip if FurynixSpec.skip_if_only_one
+      @container_key = 'furynix-spec.fedora29'
     end
 
     it_should_behave_like 'install CLI'
