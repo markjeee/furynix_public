@@ -9,7 +9,7 @@ describe 'YUM' do
     end
 
     it 'should install v%s' % FurynixSpec.gemfury_version do
-      #skip if FurynixSpec.skip_if_only_one
+      skip if FurynixSpec.skip_if_only_one
 
       ret = yum_install_gemfury('https://yum.fury.io/cli/',
                                 FurynixSpec.gemfury_version)
@@ -19,7 +19,7 @@ describe 'YUM' do
     end
 
     it 'should install using custom domain' do
-      #skip if FurynixSpec.skip_if_only_one
+      skip if FurynixSpec.skip_if_only_one
 
       ret = yum_install_gemfury('https://cli.gemfury.com/yum/',
                                 FurynixSpec.gemfury_version)
@@ -29,7 +29,7 @@ describe 'YUM' do
     end
 
     it 'should install dev version v%s' % FurynixSpec.gemfury_dev_version do
-      #skip if FurynixSpec.skip_if_only_one
+      skip if FurynixSpec.skip_if_only_one
 
       ret = yum_install_gemfury('https://yum.fury.io/cli-dev/',
                                 FurynixSpec.gemfury_dev_version)
@@ -40,7 +40,7 @@ describe 'YUM' do
 
     FurynixSpec.gemfury_head_versions.each do |v|
       it 'should install v%s' % v do
-        #skip if FurynixSpec.skip_if_only_one
+        skip if FurynixSpec.skip_if_only_one
 
         ret = yum_install_gemfury('https://yum.fury.io/cli-dev/', v)
         expect(ret).to be_a_docker_success
