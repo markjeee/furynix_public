@@ -8,14 +8,14 @@ describe 'Linuxbrew' do
       @out_file_path = FurynixSpec.prepare_docker_outfile
     end
 
-    it 'should install' do
+    it 'should install v%s' % FurynixSpec.gemfury_version do
       ret = brew_install_gemfury('gemfury/tap')
 
       expect(ret).to be_a_docker_success
       expect_fury_version(FurynixSpec.gemfury_version)
     end
 
-    it 'should install devel version' do
+    it 'should install dev version v%s' % FurynixSpec.gemfury_brew_dev_version do
       ret = brew_install_gemfury('gemfury/tap', true)
 
       expect(ret).to be_a_docker_success
