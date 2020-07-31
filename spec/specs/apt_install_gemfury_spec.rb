@@ -9,7 +9,7 @@ describe 'APT' do
       @out_file_path = FurynixSpec.prepare_docker_outfile
     end
 
-    it 'should install' do
+    it 'should install v%s' % FurynixSpec.gemfury_version do
       skip if FurynixSpec.skip_if_only_one
 
       ret = apt_install_gemfury('https://apt.fury.io/cli/',
@@ -29,7 +29,7 @@ describe 'APT' do
       expect_fury_version(FurynixSpec.gemfury_version)
     end
 
-    it 'should install dev version' do
+    it 'should install dev version v%s' % FurynixSpec.gemfury_dev_version do
       skip if FurynixSpec.skip_if_only_one
 
       ret = apt_install_gemfury('https://apt.fury.io/cli-dev/',
@@ -113,6 +113,15 @@ describe 'APT' do
     it_should_behave_like 'install CLI'
   end
 
+    describe 'in debian/stretch' do
+      before do
+        skip if FurynixSpec.skip_if_only_one
+        @container_key = 'furynix-spec.stretch'
+      end
+
+      it_should_behave_like 'install CLI'
+    end
+
   if FurynixSpec.include_all_systems
     describe 'in ubuntu/xenial' do
       before do
@@ -127,15 +136,6 @@ describe 'APT' do
       before do
         skip if FurynixSpec.skip_if_only_one
         @container_key = 'furynix-spec.trusty'
-      end
-
-      it_should_behave_like 'install CLI'
-    end
-
-    describe 'in debian/stretch' do
-      before do
-        skip if FurynixSpec.skip_if_only_one
-        @container_key = 'furynix-spec.stretch'
       end
 
       it_should_behave_like 'install CLI'

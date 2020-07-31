@@ -65,6 +65,17 @@ namespace :build do
     end
   end
 
+  desc 'Docker build Stretch environment'
+  task :stretch do
+    DockerTask.pull('debian:stretch')
+    c = DockerTask.containers['furynix.stretch']
+    c.build(no_cache: true)
+
+    unless ENV['NOPUSH']
+      c.push
+    end
+  end
+
   desc 'Docker build Linuxbrew environment'
   task :linuxbrew do
     DockerTask.pull('linuxbrew/brew:latest')
