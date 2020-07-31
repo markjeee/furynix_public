@@ -4,6 +4,13 @@ source $(dirname $0)/functions
 
 configure_furynix_token
 
+exec_cmd "curl --fail -s -X PATCH \
+            -H 'Accept: application/vnd.fury.v1+json' \
+            -H 'Authorization: $furynix_token' \
+            -H 'Content-Type: application/json' \
+            --data-raw '{ \"config_vars\": { \"HELLO\": null } }' \
+            https://api.fury.io/git/repos/$username/$repo/config-vars"
+
 exec_cmd "curl --fail -s -X GET \
             -H 'Accept: application/vnd.fury.v1+json' \
             -H 'Authorization: $furynix_token' \
