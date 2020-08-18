@@ -80,7 +80,7 @@ module FurynixSpec
   end
 
   def self.gemfury_dev_version
-    '0.12.0.rc1'
+    '0.12.0.rc2'
   end
 
   def self.gemfury_head_versions
