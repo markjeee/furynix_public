@@ -49,6 +49,15 @@ describe 'YUM' do
       end
     end
 
+    it 'should install private package' do
+      ret = yum_install_gemfury('https://%s@yum.fury.io/%s/' %
+                                [ FurynixSpec.furynix_api_token, FurynixSpec.furynix_user ],
+                                FurynixSpec.gemfury_version)
+      expect(ret).to be_a_docker_success
+
+      expect_fury_version(FurynixSpec.gemfury_version)
+    end
+
     def expect_fury_version(version)
       expect(File.exists?(@out_file_path)).to be_truthy
       lines = File.read(@out_file_path).split("\n")
