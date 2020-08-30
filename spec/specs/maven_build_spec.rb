@@ -20,6 +20,7 @@ describe 'Maven' do
               create_env_args({ 'package_path' => 'target/jworld-1.1.jar',
                                 'package_name' => @package_name,
                                 'package_version' => @package_version,
+                                'FURYNIX_PUSH_ENDPOINT' => @push_endpoint,
                                 'out_file' => FurynixSpec.calculate_build_path(@out_file_path)
                               })
 
@@ -75,9 +76,29 @@ describe 'Maven' do
     before do
       skip if FurynixSpec.skip_if_only_one
       @container_key = 'furynix-spec.maven'
+      @push_endpoint = 'maven.fury.io'
+    end
+
+    it_should_behave_like 'build using pkg'
+  end
+
+  describe 'in maven (endpoint: maven.fury.io)' do
+    before do
+      skip if FurynixSpec.skip_if_only_one
+      @container_key = 'furynix-spec.maven'
+      @push_endpoint = 'maven.fury.io'
     end
 
     it_should_behave_like 'build and push'
-    it_should_behave_like 'build using pkg'
+  end
+
+  describe 'in maven (endpoint: push.fury.io)' do
+    before do
+      skip if FurynixSpec.skip_if_only_one
+      @container_key = 'furynix-spec.maven'
+      @push_endpoint = 'push.fury.io'
+    end
+
+    it_should_behave_like 'build and push'
   end
 end

@@ -20,6 +20,7 @@ describe 'Gradle' do
               create_env_args({ 'package_path' => 'build/libs/jworld-1.1.jar',
                                 'package_name' => @package_name,
                                 'package_version' => @package_version,
+                                'FURYNIX_PUSH_ENDPOINT' => @push_endpoint,
                                 'out_file' => FurynixSpec.calculate_build_path(@out_file_path)
                               })
 
@@ -37,8 +38,10 @@ describe 'Gradle' do
 
     after do
       begin
-        @fury.yank_version(@package_name, @package_version)
-        sleep(10)
+        if defined?(@fury) && !@fury.nil?
+          @fury.yank_version(@package_name, @package_version)
+          sleep(10)
+        end
       rescue Gemfury::NotFound
       end
     end
@@ -80,9 +83,31 @@ describe 'Gradle' do
     before do
       skip if FurynixSpec.skip_if_only_one
       @container_key = 'furynix-spec.gradle65'
+      @push_endpoint = 'maven.fury.io'
+    end
+
+    it_should_behave_like 'build using pkg'
+  end
+
+  describe 'in gradle (endpoint: maven.fury.io)' do
+    before do
+      skip if FurynixSpec.skip_if_only_one
+      @container_key = 'furynix-spec.gradle65'
+      @push_endpoint = 'maven.fury.io'
     end
 
     it_should_behave_like 'build and push'
-    it_should_behave_like 'build using pkg'
+  end
+
+  describe 'in gradle (endpoint: push.fury.io)' do
+    before do
+      skip 'Returned 500 at the moment'
+
+      skip if FurynixSpec.skip_if_only_one
+      @container_key = 'furynix-spec.gradle65'
+      @push_endpoint = 'push.fury.io'
+    end
+
+    it_should_behave_like 'build and push'
   end
 end
