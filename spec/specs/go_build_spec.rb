@@ -18,8 +18,6 @@ describe 'Go' do
     end
 
     it 'should build and push' do
-      skip 'for now, due to a bug in builder'
-
       container = DockerTask.containers[@container_key]
       container.pull
 
@@ -85,8 +83,6 @@ describe 'Go' do
     end
 
     it 'should build using GOPROXY' do
-      skip 'for now, due to a bug in builder'
-
       container = DockerTask.containers[@container_key]
       container.pull
 
