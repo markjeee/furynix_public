@@ -24,7 +24,7 @@ describe 'CLI' do
     end
 
     it 'should push a gem' do
-      skip 'Quick yank bug is on a roll'
+#      skip 'Quick yank bug is on a roll'
 
       gem = [ 'rspec-expectations', '3.9.0' ]
       gem_path = '/build/spec/fixtures/%s-%s.gem' % gem
@@ -39,7 +39,7 @@ describe 'CLI' do
     end
 
     it 'should push multiple gems' do
-      skip 'Quick yank bug is on a roll'
+      #skip 'Quick yank bug is on a roll'
 
       gems = [ [ 'rspec-core', '3.9.1' ],
                [ 'httparty', '0.17.3' ] ]
