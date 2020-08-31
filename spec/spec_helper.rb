@@ -58,10 +58,20 @@ module FurynixSpec
   end
 
   def self.create_env_args(env)
-    {
+    global_env = {
       'furynix_user' => furynix_user,
       'furynix_token' => furynix_api_token
-    }.merge(env)
+    }
+
+    if ENV['USE_PROXY']
+      if ENV['USE_PROXY'] == '1'
+        global_env['FURYNIX_USE_PROXY'] = 'http://host.docker.internal:3128/'
+      else
+        global_env['FURYNIX_USE_PROXY'] = ENV['USE_PROXY']
+      end
+    end
+
+    global_env.merge(env)
   end
 
   def self.gemfury_latest_version

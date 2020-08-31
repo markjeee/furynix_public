@@ -101,7 +101,6 @@ EOF
 
 prepare_apt() {
     fury_list="deb [trusted=yes] $source /"
-    apt_auth="machine $source_host login $furynix_token password NOPASS"
 
     if [[ -n $(which apt) ]]; then
         export apt="apt"
@@ -125,6 +124,14 @@ machine $source_host
 EOF
     chmod 0600 /etc/apt/auth.conf.d/fury.conf
     cat /etc/apt/auth.conf.d/fury.conf
+
+    if [ ! -z "$FURYNIX_USE_PROXY" ]; then
+        cat >/etc/apt/apt.conf.d/proxy.conf <<EOF
+Acquire::http::Proxy "$FURYNIX_USE_PROXY";
+Acquire::https::Proxy "$FURYNIX_USE_PROXY";
+EOF
+        cat /etc/apt/apt.conf.d/proxy.conf
+    fi
 
     exec_cmd "$apt -v"
     exec_cmd "$apt -y update"

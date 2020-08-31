@@ -48,6 +48,13 @@ namespace :bash do
     c.runi
   end
 
+  desc 'Bash to stretch environment'
+  task :stretch do
+    c = DockerTask.containers['furynix.stretch']
+    c.pull
+    c.runi
+  end
+
   desc 'Bash to Dotnet environment'
   task :dotnet do
     c = DockerTask.containers['furynix.dotnet']

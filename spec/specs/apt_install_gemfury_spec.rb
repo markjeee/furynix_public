@@ -51,6 +51,7 @@ describe 'APT' do
     end
 
     it 'should install private package' do
+      skip @skip_private_packages if defined?(@skip_private_packages)
       skip if FurynixSpec.skip_if_only_one
 
       ret = apt_install_gemfury('https://apt.fury.io/%s/' % FurynixSpec.furynix_user,
@@ -72,12 +73,11 @@ describe 'APT' do
       container = DockerTask.containers[@container_key]
       container.pull
 
-      u = URI.parse(source)
-      source_host = u.host
+      source_u = URI.parse(source)
 
       env = FurynixSpec.
               create_env_args({ 'source' => source,
-                                'source_host' => source_host,
+                                'source_host' => '%s%s' % [ source_u.host, source_u.path ],
                                 'out_file' => FurynixSpec.calculate_build_path(@out_file_path),
                                 'version' => version
                               })
@@ -115,14 +115,18 @@ describe 'APT' do
     it_should_behave_like 'install CLI'
   end
 
-    describe 'in debian/stretch' do
-      before do
-        skip if FurynixSpec.skip_if_only_one
-        @container_key = 'furynix-spec.stretch'
-      end
+  describe 'in debian/stretch' do
+    before do
+      skip if FurynixSpec.skip_if_only_one
+      @container_key = 'furynix-spec.stretch'
 
-      it_should_behave_like 'install CLI'
+      # apt_auth.conf not yet supported in this version
+      # refer: https://manpages.debian.org/buster/apt/apt_auth.conf.5.en.html
+      @skip_private_packages = 'Not yet supported'
     end
+
+    it_should_behave_like 'install CLI'
+  end
 
   if FurynixSpec.include_all_systems
     describe 'in ubuntu/xenial' do
