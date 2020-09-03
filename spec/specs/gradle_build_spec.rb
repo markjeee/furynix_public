@@ -101,8 +101,6 @@ describe 'Gradle' do
 
   describe 'in gradle (endpoint: push.fury.io)' do
     before do
-      skip 'Returned 500 at the moment'
-
       skip if FurynixSpec.skip_if_only_one
       @container_key = 'furynix-spec.gradle65'
       @push_endpoint = 'push.fury.io'
