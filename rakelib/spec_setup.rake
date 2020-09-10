@@ -39,6 +39,30 @@ namespace :spec do
                    file: 'Gemfury.DotNetWorld.1.0.0.nupkg',
                    pub: false
                  },
+                 { name: 'org.furynix/jworld',
+                   version: '1.0',
+                   kind: 'maven',
+                   file: 'jworld-1.0.jar',
+                   pub: false
+                 },
+                 #{ name: 'org.furynix/nworld',
+                 #  version: '1.0',
+                 #  kind: 'maven',
+                 #  file: 'nworld-pom-1.0.xml',
+                 #  pub: false
+                 #},
+                 { name: 'org.furynix.nworld/jhello',
+                   version: '1.0',
+                   kind: 'maven',
+                   file: 'nworld-jhello-1.0.jar',
+                   pub: false
+                 },
+                 { name: 'org.furynix.nworld/jworld',
+                   version: '1.0',
+                   kind: 'maven',
+                   file: 'nworld-jworld-1.0.jar',
+                   pub: false
+                 },
                  { name: 'git.fury.io/furynix/jgo',
                    version: '1.0.0',
                    kind: 'go',

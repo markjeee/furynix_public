@@ -1,0 +1,59 @@
+apply plugin: "java"
+apply plugin: "maven-publish"
+
+group = "org.furynix"
+version = "1.1"
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  testImplementation "junit:junit:4.12"
+}
+
+test {
+  testLogging {
+    exceptionFormat = 'full'
+    events = ["passed", "failed", "skipped"]
+  }
+}
+
+publishing {
+  publications {
+    jworld(MavenPublication) {
+      from components.java
+    }
+  }
+
+  repositories {
+    // gradle publishAllPublicationsToThisRepoRepository
+    maven {
+      name = "this"
+      url = "file://$buildDir/repo"
+    }
+
+    // gradle publishAllPublicationsToFuryRepository
+    maven {
+      name = "fury"
+      url = "https://" + furyPushEndpoint + "/" + furyUser
+
+      authentication {
+        basic(BasicAuthentication)
+      }
+
+      credentials {
+        username = furyToken
+        password = "NOPASS"
+      }
+    }
+  }
+}
+
+jar {
+  dependsOn("generatePomFileForJworldPublication")
+  into("META-INF/maven/$project.group/$project.name") {
+    from "$projectDir/build/publications/$project.name"
+    rename "pom-default.xml", "pom.xml"
+  }
+}

@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+source $(dirname $0)/functions
+
+configure_furynix_token
+
+export FURYNIX_MAVEN_REPO_ID=fury
+
+prepare_maven
+
+cd /build/jworld
+exec_cmd "rm -rf target"
+exec_cmd "mvn compile"
+exec_cmd "mvn test"
+
+# Error 1, should return 401
+export FURYNIX_API_TOKEN=WRONG
+prepare_maven
+
+exec_cmd "mvn deploy"
+
+exec_cmd "ls -fl $package_path"

@@ -25,3 +25,5 @@ hworld/target/*
 hgo/hgo
 jgo/jgo/.git
 ._.git
+nworld/jhello/target
+nworld/jworld/target

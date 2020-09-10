@@ -6,6 +6,7 @@ Bundler.setup
 
 $:.unshift File.expand_path('../../lib', __FILE__)
 require 'furynix'
+require 'gemfury'
 require 'docker_task'
 require 'rspec'
 require 'dotenv/load'

@@ -1,0 +1,11 @@
+desc 'Clean working path'
+task :clean do
+  this_path = File.expand_path('../', __FILE__)
+
+  [ '.gradle', 'build', 'target', 'jworld/target', 'jhello/target' ].each do |path|
+    working_path = File.join(this_path, path)
+
+    puts 'Deleting... %s' % working_path
+    FileUtils.rm_rf(working_path)
+  end
+end

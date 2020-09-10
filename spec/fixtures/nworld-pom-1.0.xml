@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.furynix</groupId>
+  <artifactId>nworld</artifactId>
+  <version>1.0</version>
+  <packaging>pom</packaging>
+
+  <name>furynix - nworld</name>
+  <url>https://gemfury.com</url>
+
+  <developers>
+    <developer>
+      <name>Gemfury</name>
+      <email>hello@gemfury.com</email>
+      <organization>Gemfury</organization>
+      <organizationUrl>https://gemfury.com</organizationUrl>
+    </developer>
+  </developers>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
+
+  <modules>
+    <module>jworld</module>
+    <module>jhello</module>
+  </modules>
+
+  <distributionManagement>
+    <repository>
+      <id>fury4</id>
+      <name>Fury</name>
+      <url>https://${env.FURYNIX_PUSH_ENDPOINT}/${env.FURYNIX_USER}/</url>
+    </repository>
+  </distributionManagement>
+</project>
