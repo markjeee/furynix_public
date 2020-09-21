@@ -9,7 +9,8 @@ namespace :spec do
 
     fixtures_path = File.join(FURYNIX_PUBLIC_PATH, 'spec/fixtures')
 
-    packages = [ { name: 'gemfury',
+    packages = [
+                 { name: 'gemfury',
                    version: '0.11.0',
                    kind: 'deb',
                    file: 'gemfury_0.11.0_all.deb',
@@ -45,12 +46,13 @@ namespace :spec do
                    file: 'jworld-1.0.jar',
                    pub: false
                  },
-                 #{ name: 'org.furynix/nworld',
-                 #  version: '1.0',
-                 #  kind: 'maven',
-                 #  file: 'nworld-pom-1.0.xml',
-                 #  pub: false
-                 #},
+                 { name: 'org.furynix/nworld',
+                   version: '1.0',
+                   kind: 'maven',
+                   file: 'nworld-1.0.pom',
+                   metadata: 'nworld-1.0-maven-metadata.xml',
+                   pub: false
+                 },
                  { name: 'org.furynix.nworld/jhello',
                    version: '1.0',
                    kind: 'maven',
@@ -126,6 +128,32 @@ EOF
               sleep(3)
 
               client.update_privacy(package[:name], false)
+            end
+          elsif package[:kind] == 'maven' && package[:file] =~ /^.+\.pom$/
+            metadata_path = File.join(fixtures_path, package[:metadata])
+            put_endpoint = 'https://push.fury.io'
+
+            f = Faraday.new(url: put_endpoint,
+                            headers: { 'user-agent' => 'Apache-Maven/3.6.3 (Furynix mock client)' })
+            f.basic_auth(furynix_api_token, '.')
+
+            push_files = [ ]
+            push_files << { put_path: File.join('/', furynix_user, package[:name].gsub('.', '/'),
+                                                package[:version], package[:file]),
+                            put_file: File.read(package_path) }
+            push_files << { put_path: File.join('/', furynix_user, package[:name].gsub('.', '/'),
+                                                'maven-metadata.xml'),
+                            put_file: File.read(metadata_path) }
+
+            push_files.each do |pf|
+              put_path = pf[:put_path]
+              put_file = pf[:put_file]
+
+              resp = f.put(put_path, put_file)
+              unless resp.success?
+                error = (resp.body || { })['error'] || { }
+                puts 'ERR Put failed: %s - %s' % [ resp.status, error ]
+              end
             end
           else
             f = File.new(package_path)
