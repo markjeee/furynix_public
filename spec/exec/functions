@@ -99,6 +99,14 @@ EOF
     export FURYNIX_USER="$furynix_user"
 }
 
+prepare_npm() {
+    cat >~/.npmrc <<EOF
+registry=https://npm-proxy.fury.io/$furynix_user/
+//npm-proxy.fury.io/$furynix_user/:_authToken=$furynix_token
+EOF
+    cat ~/.npmrc
+}
+
 prepare_apt() {
     fury_list="deb [trusted=yes] $source /"
 

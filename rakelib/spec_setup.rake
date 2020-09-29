@@ -40,6 +40,12 @@ namespace :spec do
                    file: 'Gemfury.DotNetWorld.1.0.0.nupkg',
                    pub: false
                  },
+                 { name: '@fury/module_using_npm',
+                   version: '1.0.0',
+                   kind: 'js',
+                   file: 'fury-module_using_npm-1.0.0.tgz',
+                   pub: false
+                 },
                  { name: 'org.furynix/jworld',
                    version: '1.0',
                    kind: 'maven',

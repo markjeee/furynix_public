@@ -142,6 +142,28 @@ namespace :build do
     end
   end
 
+  desc 'Docker build Node environment'
+  task :node14 do
+    DockerTask.pull('node:14.11')
+    c = DockerTask.containers['furynix.node14']
+    c.build(no_cache: true)
+
+    unless ENV['NOPUSH']
+      c.push
+    end
+  end
+
+  desc 'Docker build Node environment'
+  task :node10 do
+    DockerTask.pull('node:10.22')
+    c = DockerTask.containers['furynix.node10']
+    c.build(no_cache: true)
+
+    unless ENV['NOPUSH']
+      c.push
+    end
+  end
+
   desc 'Docker build Ruby 2.7.x environment'
   task :ruby27 do
     DockerTask.pull('ruby:2.7.1')

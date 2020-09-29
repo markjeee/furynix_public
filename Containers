@@ -124,6 +124,18 @@ DT.create({ :remote_repo => 'furynix/go',
             :build_path => File.join(build_path, 'dockerfiles/go')
           })
 
+DT.create({ :remote_repo => 'furynix/node',
+            :pull_tag => '14.11',
+            :image_name => 'furynix.node14',
+            :build_path => File.join(build_path, 'dockerfiles/node14')
+          })
+
+DT.create({ :remote_repo => 'furynix/node',
+            :pull_tag => '10.22',
+            :image_name => 'furynix.node10',
+            :build_path => File.join(build_path, 'dockerfiles/node10')
+          })
+
 # Spec docker containers
 # ======================
 
@@ -222,9 +234,14 @@ DT.create({ :remote_repo => 'furynix/dotnet',
             :image_name => 'furynix-spec.dotnet',
           })
 
-DT.create({ :remote_repo => 'node',
-            :pull_tag => '11.9-stretch',
-            :image_name => 'furynix-spec.node119',
+DT.create({ :remote_repo => 'furynix/node',
+            :pull_tag => '14.11',
+            :image_name => 'furynix-spec.node14',
+          })
+
+DT.create({ :remote_repo => 'furynix/node',
+            :pull_tag => '10.22',
+            :image_name => 'furynix-spec.node10',
           })
 
 DT.create({ :remote_repo => 'furynix/gradle',
