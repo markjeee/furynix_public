@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-describe 'Node' do
+describe 'NPM' do
   shared_examples 'module using npm' do
     before do
       FurynixSpec.prepare
@@ -42,6 +42,36 @@ describe 'Node' do
     end
   end
 
+  shared_examples 'app using npm' do
+    before do
+      FurynixSpec.prepare
+
+      @out_file_path = FurynixSpec.prepare_docker_outfile
+      @fury = FurynixSpec.gemfury_client
+
+      begin
+        @fury.versions('@fury/module_using_npm')
+      rescue Gemfury::NotFound
+        f = File.new(FurynixSpec.fixtures_path('fury-module_using_npm-1.0.0.tgz'))
+        @fury.push_gem(f)
+      end
+    end
+
+    it 'should build' do
+      container = DockerTask.containers[@container_key]
+      container.pull
+
+      env = FurynixSpec.
+              create_env_args({ 'out_file' => FurynixSpec.calculate_build_path(@out_file_path) })
+
+      ret = container.run(:exec => '/build/spec/exec/app_using_npm_test',
+                          :capture => true,
+                          :env_file => FurynixSpec.create_env_file(env))
+
+      expect(ret).to be_a_docker_success
+    end
+  end
+
   describe 'using node v14' do
     before do
       skip if FurynixSpec.skip_if_only_one
@@ -49,6 +79,7 @@ describe 'Node' do
     end
 
     it_should_behave_like 'module using npm'
+    it_should_behave_like 'app using npm'
   end
 
   describe 'using node v10' do

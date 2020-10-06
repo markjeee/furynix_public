@@ -25,8 +25,8 @@ namespace :spec do
   end
 
   desc 'NPM, module use'
-  RSpec::Core::RakeTask.new('npm_module_use') do |t|
-    t.pattern = [ 'spec/specs/npm_module_using_npm_spec.rb' ]
+  RSpec::Core::RakeTask.new('npm_install') do |t|
+    t.pattern = [ 'spec/specs/npm_install_spec.rb' ]
   end
 
   desc 'Dotnet, build, push'

@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+source $(dirname $0)/functions
+
+configure_furynix_token
+prepare_npm
+
+exec_cmd "which node"
+exec_cmd "node -v"
+exec_cmd "which npm"
+exec_cmd "npm -v"
+
+mkdir /tmp/app_using_npm
+cp -rf /build/app_using_npm/* /tmp/app_using_npm
+rm -rf /tmp/app_using_npm/package-lock.json
+rm -rf /tmp/app_using_npm/node_modules
+
+cd /tmp/app_using_npm
+exec_cmd "npm install"
+exec_cmd "npm test"
