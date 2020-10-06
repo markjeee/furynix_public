@@ -9,7 +9,7 @@ describe 'NPM' do
       @fury = FurynixSpec.gemfury_client
 
 
-      @package_name = '@fury/module_using_npm'
+      @package_name = 'module_using_npm'
       @package_version = '1.0.1'
     end
 
@@ -50,9 +50,9 @@ describe 'NPM' do
       @fury = FurynixSpec.gemfury_client
 
       begin
-        @fury.versions('@fury/module_using_npm')
+        @fury.versions('module_using_npm')
       rescue Gemfury::NotFound
-        f = File.new(FurynixSpec.fixtures_path('fury-module_using_npm-1.0.0.tgz'))
+        f = File.new(FurynixSpec.fixtures_path('module_using_npm-1.0.0.tgz'))
         @fury.push_gem(f)
       end
     end
@@ -63,6 +63,22 @@ describe 'NPM' do
 
       env = FurynixSpec.
               create_env_args({ 'out_file' => FurynixSpec.calculate_build_path(@out_file_path) })
+
+      ret = container.run(:exec => '/build/spec/exec/app_using_npm_test',
+                          :capture => true,
+                          :env_file => FurynixSpec.create_env_file(env))
+
+      expect(ret).to be_a_docker_success
+    end
+
+    it 'should build (using tags)' do
+      container = DockerTask.containers[@container_key]
+      container.pull
+
+      env = FurynixSpec.
+              create_env_args({ 'use_package_json' => 'package-stable.json',
+                                'out_file' => FurynixSpec.calculate_build_path(@out_file_path),
+                              })
 
       ret = container.run(:exec => '/build/spec/exec/app_using_npm_test',
                           :capture => true,

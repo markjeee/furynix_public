@@ -1,4 +1,4 @@
-var ModuleUsingNPM = require("@fury/module_using_npm");
+var ModuleUsingNPM = require("module_using_npm");
 
 (function(definition) {
   "use strict";

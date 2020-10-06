@@ -40,11 +40,12 @@ namespace :spec do
                    file: 'Gemfury.DotNetWorld.1.0.0.nupkg',
                    pub: false
                  },
-                 { name: '@fury/module_using_npm',
+                 { name: 'module_using_npm',
                    version: '1.0.0',
                    kind: 'js',
-                   file: 'fury-module_using_npm-1.0.0.tgz',
-                   pub: false
+                   file: 'module_using_npm-1.0.0.tgz',
+                   pub: false,
+                   tag: 'stable'
                  },
                  { name: 'org.furynix/jworld',
                    version: '1.0',
@@ -170,6 +171,28 @@ EOF
               puts 'WARN Package %s already exist' % package[:name]
             ensure
               f.close
+            end
+
+            if package[:kind] == 'js' && !package[:tag].nil?
+              puts 'Adding a tag `%s` to %s@%s...' % [ package[:tag], package[:name], package[:version] ]
+
+              # sleep, to allow async jobs to complete
+              sleep(3)
+
+              put_endpoint = 'https://npm-proxy.fury.io/%s/-/package/%s/dist-tags/%s' %
+                             [ furynix_user, package[:name], package[:tag] ]
+
+              f = Faraday.new(url: put_endpoint,
+                              headers: { 'user-agent' => 'npm/6.14.8 node/v14.13.0 (Furynix mock client)',
+                                         'content-type' => 'application/json'
+                                       })
+              f.basic_auth(furynix_api_token, '.')
+
+              resp = f.put(put_endpoint, '"%s"' % package[:version])
+              unless resp.success?
+                error = (resp.body || { })['error'] || { }
+                puts 'ERR Put failed: %s - %s' % [ resp.status, error ]
+              end
             end
           end
         else

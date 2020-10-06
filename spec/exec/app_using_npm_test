@@ -16,5 +16,13 @@ rm -rf /tmp/app_using_npm/package-lock.json
 rm -rf /tmp/app_using_npm/node_modules
 
 cd /tmp/app_using_npm
+
+if [ ! -z $use_package_json ]; then
+    echo "Using package json: $use_package_json"
+    exec_cmd "ls -fl $use_package_json"
+    exec_cmd "cp -f $use_package_json package.json"
+    cat package.json
+fi
+
 exec_cmd "npm install"
 exec_cmd "npm test"

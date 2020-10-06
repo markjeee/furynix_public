@@ -1,5 +1,5 @@
 {
-  "name": "@fury/module_using_npm",
+  "name": "module_using_npm",
   "version": "1.0.1",
   "description": "A module used in javascript integration tests",
   "main": "index.js",
