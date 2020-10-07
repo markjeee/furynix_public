@@ -12,14 +12,14 @@ exec_cmd "npm -v"
 
 cd /build/module_using_npm
 
-exec_cmd "npm dist-tags ls >/dev/stdout | grep '$tag'" "" 1
+exec_cmd "npm dist-tags ls >/dev/stdout | grep '$dist_tag'" "" 1
 
-exec_cmd "npm dist-tags add $package_name@$package_version $tag >/dev/stdout | grep '+$tag'"
+exec_cmd "npm dist-tags add $package_name@$package_version $tag >/dev/stdout | grep '+$dist_tag'"
 sleep 10
 
-exec_cmd "npm dist-tags ls >/dev/stdout | grep '$tag'"
+exec_cmd "npm dist-tags ls >/dev/stdout | grep '$dist_tag'"
 
-exec_cmd "npm dist-tags rm $package_name $tag >/dev/stdout | grep '-$tag'"
+exec_cmd "npm dist-tags rm $package_name $tag >/dev/stdout | grep '-$dist_tag'"
 sleep 10
 
-exec_cmd "npm dist-tags ls >/dev/stdout | grep '$tag'" "" 1
+exec_cmd "npm dist-tags ls >/dev/stdout | grep '$dist_tag'" "" 1

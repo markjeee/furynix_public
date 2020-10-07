@@ -17,4 +17,9 @@ rm -rf /tmp/module_using_npm/node_modules
 cd /tmp/module_using_npm
 exec_cmd "npm install"
 exec_cmd "npm test"
-exec_cmd "npm publish"
+
+if [ -z $dist_tag ]; then
+    exec_cmd "npm publish"
+else
+    exec_cmd "npm publish --tag $dist_tag"
+fi

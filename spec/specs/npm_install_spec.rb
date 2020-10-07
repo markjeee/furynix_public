@@ -107,7 +107,7 @@ describe 'NPM' do
               create_env_args({ 'out_file' => FurynixSpec.calculate_build_path(@out_file_path),
                                 'package_name' => @package_name,
                                 'package_version' => @package_version,
-                                'tag' => 'edge'
+                                'dist_tag' => 'edge'
                               })
 
       ret = container.run(:exec => '/build/spec/exec/npm_dist_tags_test',
