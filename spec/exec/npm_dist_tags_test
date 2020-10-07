@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+source $(dirname $0)/functions
+
+configure_furynix_token
+prepare_npm
+
+exec_cmd "which node"
+exec_cmd "node -v"
+exec_cmd "which npm"
+exec_cmd "npm -v"
+
+cd /build/module_using_npm
+
+exec_cmd "npm dist-tags ls >/dev/stdout | grep '$tag'" "" 1
+
+exec_cmd "npm dist-tags add $package_name@$package_version $tag >/dev/stdout | grep '+$tag'"
+sleep 10
+
+exec_cmd "npm dist-tags ls >/dev/stdout | grep '$tag'"
+
+exec_cmd "npm dist-tags rm $package_name $tag >/dev/stdout | grep '-$tag'"
+sleep 10
+
+exec_cmd "npm dist-tags ls >/dev/stdout | grep '$tag'" "" 1

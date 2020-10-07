@@ -88,6 +88,36 @@ describe 'NPM' do
     end
   end
 
+  shared_examples 'dist tags' do
+    before do
+      FurynixSpec.prepare
+
+      @out_file_path = FurynixSpec.prepare_docker_outfile
+      @fury = FurynixSpec.gemfury_client
+
+      @package_name = 'module_using_npm'
+      @package_version = '1.0.0'
+    end
+
+    it 'should support dist tags' do
+      container = DockerTask.containers[@container_key]
+      container.pull
+
+      env = FurynixSpec.
+              create_env_args({ 'out_file' => FurynixSpec.calculate_build_path(@out_file_path),
+                                'package_name' => @package_name,
+                                'package_version' => @package_version,
+                                'tag' => 'edge'
+                              })
+
+      ret = container.run(:exec => '/build/spec/exec/npm_dist_tags_test',
+                          :capture => true,
+                          :env_file => FurynixSpec.create_env_file(env))
+
+      expect(ret).to be_a_docker_success
+    end
+  end
+
   describe 'using node v14' do
     before do
       skip if FurynixSpec.skip_if_only_one
@@ -96,6 +126,7 @@ describe 'NPM' do
 
     it_should_behave_like 'module using npm'
     it_should_behave_like 'app using npm'
+    #it_should_behave_like 'dist tags'
   end
 
   describe 'using node v10' do
