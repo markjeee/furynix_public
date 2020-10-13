@@ -8,7 +8,6 @@ describe 'NPM' do
       @out_file_path = FurynixSpec.prepare_docker_outfile
       @fury = FurynixSpec.gemfury_client
 
-
       @package_name = 'module_using_npm'
       @package_version = '1.0.1'
     end
@@ -19,6 +18,25 @@ describe 'NPM' do
 
       env = FurynixSpec.
               create_env_args({ 'out_file' => FurynixSpec.calculate_build_path(@out_file_path)
+                              })
+
+      ret = container.run(:exec => '/build/spec/exec/module_using_npm_test',
+                          :capture => true,
+                          :env_file => FurynixSpec.create_env_file(env))
+
+      expect(ret).to be_a_docker_success
+
+      versions = @fury.versions(@package_name)
+      expect(versions.collect { |i| i['version'] }).to include(@package_version)
+    end
+
+    it 'should build and release with tag' do
+      container = DockerTask.containers[@container_key]
+      container.pull
+
+      env = FurynixSpec.
+              create_env_args({ 'out_file' => FurynixSpec.calculate_build_path(@out_file_path),
+                                'dist_tag' => 'edge'
                               })
 
       ret = container.run(:exec => '/build/spec/exec/module_using_npm_test',
@@ -136,5 +154,6 @@ describe 'NPM' do
     end
 
     it_should_behave_like 'module using npm'
+    it_should_behave_like 'app using npm'
   end
 end
