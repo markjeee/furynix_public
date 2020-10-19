@@ -66,7 +66,7 @@ module FurynixSpec
 
     if ENV['USE_PROXY']
       if ENV['USE_PROXY'] == '1'
-        global_env['FURYNIX_USE_PROXY'] = 'http://host.docker.internal:3128/'
+        global_env['FURYNIX_USE_PROXY'] = 'http://host.docker.internal:8866/'
       else
         global_env['FURYNIX_USE_PROXY'] = ENV['USE_PROXY']
       end
