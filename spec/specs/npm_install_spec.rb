@@ -155,5 +155,6 @@ describe 'NPM' do
 
     it_should_behave_like 'module using npm'
     it_should_behave_like 'app using npm'
+    #it_should_behave_like 'dist tags'
   end
 end
