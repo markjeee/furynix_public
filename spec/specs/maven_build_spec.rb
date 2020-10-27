@@ -166,7 +166,6 @@ describe 'Maven' do
 
   describe 'in maven (endpoint: push.fury.io)' do
     before do
-      skip 'For now, since getting 207 http response'
       skip if FurynixSpec.skip_if_only_one
       @container_key = 'furynix-spec.maven'
       @push_endpoint = 'push.fury.io'
