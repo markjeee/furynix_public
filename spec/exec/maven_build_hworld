@@ -9,5 +9,5 @@ prepare_maven
 
 cd /build/hworld
 exec_cmd "rm -rf target"
-exec_cmd "mvn compile"
-exec_cmd "mvn test"
+exec_cmd "mvn compile -f $POM_FILE"
+exec_cmd "mvn test -f $POM_FILE"

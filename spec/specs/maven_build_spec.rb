@@ -64,36 +64,6 @@ describe 'Maven' do
     end
   end
 
-  shared_examples 'build using pkg' do
-    before do
-      FurynixSpec.prepare
-
-      @out_file_path = FurynixSpec.prepare_docker_outfile
-      @fury = FurynixSpec.gemfury_client
-
-      begin
-        @fury.versions('org.furynix/jworld')
-      rescue Gemfury::NotFound
-        f = File.new(FurynixSpec.fixtures_path('jworld-1.0.jar'))
-        @fury.push_gem(f)
-      end
-    end
-
-    it 'should build' do
-      container = DockerTask.containers[@container_key]
-      container.pull
-
-      env = FurynixSpec.
-              create_env_args({ 'out_file' => FurynixSpec.calculate_build_path(@out_file_path) })
-
-      ret = container.run(:exec => '/build/spec/exec/maven_build_hworld',
-                          :capture => true,
-                          :env_file => FurynixSpec.create_env_file(env))
-
-      expect(ret).to be_a_docker_success
-    end
-  end
-
   shared_examples 'multi-project compile and deploy' do
     before do
       FurynixSpec.prepare
@@ -140,6 +110,56 @@ describe 'Maven' do
         rescue Gemfury::NotFound
         end
       end
+    end
+  end
+
+  shared_examples 'build using pkg' do
+    before do
+      FurynixSpec.prepare
+
+      @out_file_path = FurynixSpec.prepare_docker_outfile
+      @fury = FurynixSpec.gemfury_client
+
+      begin
+        @fury.versions('org.furynix/jworld')
+      rescue Gemfury::NotFound
+        f = File.new(FurynixSpec.fixtures_path('jworld-1.0.jar'))
+        @fury.push_gem(f)
+      end
+    end
+
+    it 'should build' do
+      container = DockerTask.containers[@container_key]
+      container.pull
+
+      env = FurynixSpec.
+              create_env_args({ 'out_file' => FurynixSpec.calculate_build_path(@out_file_path),
+                                'POM_FILE' => 'pom.xml'
+                              })
+
+      ret = container.run(:exec => '/build/spec/exec/maven_build_hworld',
+                          :capture => true,
+                          :env_file => FurynixSpec.create_env_file(env))
+
+      expect(ret).to be_a_docker_success
+    end
+
+    it 'should build (multi-project)' do
+      skip 'At the moment multi-project modules return 404'
+
+      container = DockerTask.containers[@container_key]
+      container.pull
+
+      env = FurynixSpec.
+              create_env_args({ 'out_file' => FurynixSpec.calculate_build_path(@out_file_path),
+                                'POM_FILE' => 'pom.multi.xml'
+                              })
+
+      ret = container.run(:exec => '/build/spec/exec/maven_build_hworld',
+                          :capture => true,
+                          :env_file => FurynixSpec.create_env_file(env))
+
+      expect(ret).to be_a_docker_success
     end
   end
 
