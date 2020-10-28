@@ -10,6 +10,8 @@ describe 'Maven' do
 
       @package_name = 'org.furynix/jworld'
       @package_version = '1.1'
+      @snapshot_version = /^1\.1\-\d{8}\.\d{6}\-\d$/
+      @actual_snapshot_version = nil
     end
 
     it 'should compile and deploy' do
@@ -17,10 +19,11 @@ describe 'Maven' do
       container.pull
 
       env = FurynixSpec.
-              create_env_args({ 'package_path' => 'target/jworld-1.1.jar',
+              create_env_args({ 'package_path' => 'target/jworld-1.1*.jar',
                                 'package_name' => @package_name,
                                 'package_version' => @package_version,
                                 'FURYNIX_PUSH_ENDPOINT' => @push_endpoint,
+                                'POM_FILE' => 'pom.xml',
                                 'out_file' => FurynixSpec.calculate_build_path(@out_file_path)
                               })
 
@@ -33,24 +36,28 @@ describe 'Maven' do
       expect(versions.collect { |i| i['version'] }).to include(@package_version)
     end
 
-    it 'should return expected errors on deploy' do
-      skip 'for now'
-
+    it 'should compile and deploy (snapshot)' do
       container = DockerTask.containers[@container_key]
       container.pull
 
       env = FurynixSpec.
-              create_env_args({ 'package_path' => 'target/jworld-1.1.jar',
+              create_env_args({ 'package_path' => 'target/jworld-1.1*.jar',
                                 'package_name' => @package_name,
                                 'package_version' => @package_version,
                                 'FURYNIX_PUSH_ENDPOINT' => @push_endpoint,
+                                'POM_FILE' => 'pom.snapshot.xml',
                                 'out_file' => FurynixSpec.calculate_build_path(@out_file_path)
                               })
 
-      ret = container.run(:exec => '/build/spec/exec/maven_expected_errors',
+      ret = container.run(:exec => '/build/spec/exec/maven_build_jworld',
                           :capture => true,
                           :env_file => FurynixSpec.create_env_file(env))
       expect(ret).to be_a_docker_success
+
+      versions = @fury.versions(@package_name)
+      expect(versions.collect { |i| i['version'] }).to include(match @snapshot_version)
+
+      @actual_snapshot_version = (versions.collect { |i| i['version'] }).select { |v| v =~ @snapshot_version }.first
     end
 
     after do
@@ -59,6 +66,14 @@ describe 'Maven' do
           @fury.yank_version(@package_name, @package_version)
           sleep(10)
         rescue Gemfury::NotFound
+        end
+
+        unless @actual_snapshot_version.nil?
+          begin
+            @fury.yank_version(@package_name, @actual_snapshot_version)
+            sleep(10)
+          rescue Gemfury::NotFound
+          end
         end
       end
     end
