@@ -10,7 +10,7 @@ describe 'Maven' do
 
       @package_name = 'org.furynix/jworld'
       @package_version = '1.1'
-      @snapshot_version = /^1\.1\-\d{8}\.\d{6}\-\d$/
+      @snapshot_version = /^1\.2\-\d{8}\.\d{6}.*$/
       @actual_snapshot_version = nil
     end
 
@@ -41,7 +41,7 @@ describe 'Maven' do
       container.pull
 
       env = FurynixSpec.
-              create_env_args({ 'package_path' => 'target/jworld-1.1*.jar',
+              create_env_args({ 'package_path' => 'target/jworld-1.2*.jar',
                                 'package_name' => @package_name,
                                 'package_version' => @package_version,
                                 'FURYNIX_PUSH_ENDPOINT' => @push_endpoint,
@@ -160,14 +160,28 @@ describe 'Maven' do
     end
 
     it 'should build (multi-project)' do
-      skip 'At the moment multi-project modules return 404'
-
       container = DockerTask.containers[@container_key]
       container.pull
 
       env = FurynixSpec.
               create_env_args({ 'out_file' => FurynixSpec.calculate_build_path(@out_file_path),
                                 'POM_FILE' => 'pom.multi.xml'
+                              })
+
+      ret = container.run(:exec => '/build/spec/exec/maven_build_hworld',
+                          :capture => true,
+                          :env_file => FurynixSpec.create_env_file(env))
+
+      expect(ret).to be_a_docker_success
+    end
+
+    it 'should build (snapshot)' do
+      container = DockerTask.containers[@container_key]
+      container.pull
+
+      env = FurynixSpec.
+              create_env_args({ 'out_file' => FurynixSpec.calculate_build_path(@out_file_path),
+                                'POM_FILE' => 'pom.snapshot.xml'
                               })
 
       ret = container.run(:exec => '/build/spec/exec/maven_build_hworld',

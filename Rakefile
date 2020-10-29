@@ -11,6 +11,7 @@ require 'docker_task'
 require 'parallel_tests/tasks'
 require 'furynix'
 require 'dotenv/load'
+require 'digest'
 
 DockerTask.load_containers
 

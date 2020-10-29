@@ -53,23 +53,33 @@ namespace :spec do
                    file: 'jworld-1.0.jar',
                    pub: false
                  },
+                 { name: 'org.furynix/jworld',
+                   version: '1.1-SNAPSHOT',
+                   kind: 'maven',
+                   file: 'jworld-1.1-SNAPSHOT.jar',
+                   pom: 'jworld-1.1-SNAPSHOT.pom',
+                   version_metadata: 'jworld-1.1-SNAPSHOT-maven-metadata.xml',
+                   timestamp: [ '20201029', '100245' ],
+                   metadata: 'jworld-maven-metadata.xml',
+                   pub: false
+                 },
                  { name: 'org.furynix/nworld',
                    version: '1.0',
                    kind: 'maven',
                    file: 'nworld-1.0.pom',
-                   metadata: 'nworld-1.0-maven-metadata.xml',
+                   metadata: 'nworld-maven-metadata.xml',
                    pub: false
                  },
                  { name: 'org.furynix.nworld/jhello',
                    version: '1.0',
                    kind: 'maven',
-                   file: 'nworld-jhello-1.0.jar',
+                   file: 'nworld/jhello-1.0.jar',
                    pub: false
                  },
                  { name: 'org.furynix.nworld/jworld',
                    version: '1.0',
                    kind: 'maven',
-                   file: 'nworld-jworld-1.0.jar',
+                   file: 'nworld/jworld-1.0.jar',
                    pub: false
                  },
                  { name: 'git.fury.io/furynix/jgo',
@@ -91,6 +101,10 @@ namespace :spec do
     client = Furynix::GemfuryAPI.client(:user_api_key => furynix_api_token)
     client.account = furynix_user
 
+    unless ENV['ONLY_PACKAGE'].nil?
+      packages = packages.select { |p| p[:name] == ENV['ONLY_PACKAGE'] }
+    end
+
     packages.each do |package|
       package_path = File.join(fixtures_path, package[:file])
 
@@ -99,12 +113,19 @@ namespace :spec do
 
         begin
           versions = client.versions('%s:%s' % [ package[:kind], package[:name] ])
-          matched = versions.detect { |i| i['version'] == package[:version] }
+
+          matched = versions.detect do |i|
+            if package[:version] =~ /^(.+)\-SNAPSHOT.*$/
+              i['version'] =~ /^#{Regexp.escape($~[1])}\-\d{8}\.\d{6}.*$/
+            else
+              package[:version] == i['version']
+            end
+          end
         rescue Gemfury::NotFound
         end
 
         unless matched
-          puts 'Uploading %s:%s => %s' % [ package[:kind], package[:name], furynix_user ]
+          puts 'Uploading %s:%s v%s => %s' % [ package[:kind], package[:name], package[:version], furynix_user ]
 
           if package[:kind] == 'go' || package[:git] == true
             tmp_path = File.join(FURYNIX_PUBLIC_PATH, 'tmp')
@@ -136,8 +157,36 @@ EOF
 
               client.update_privacy(package[:name], false)
             end
-          elsif package[:kind] == 'maven' && package[:file] =~ /^.+\.pom$/
+          elsif package[:kind] == 'maven' && (package[:file] =~ /^.+\.pom$/ ||
+                                              package[:version] =~ /^.+\-SNAPSHOT.*$/)
+
+            publish_file = nil
+            publish_pom_file = nil
+
             metadata_path = File.join(fixtures_path, package[:metadata])
+
+            unless package[:pom].nil?
+              pom_path = File.join(fixtures_path, package[:pom])
+            else
+              pom_path = nil
+            end
+
+            unless package[:version_metadata].nil?
+              version_metadata_path = File.join(fixtures_path, package[:version_metadata])
+            else
+              version_metadata_path = nil
+            end
+
+            if package[:version] =~ /^.+\-SNAPSHOT.*$/
+              snapshot = true
+              snap_version = '%s.%s-1' % [ package[:timestamp][0], package[:timestamp][1] ]
+
+              publish_file = File.basename(package[:file]).gsub('SNAPSHOT', snap_version)
+              publish_pom_file = File.basename(package[:pom]).gsub('SNAPSHOT', snap_version)
+            else
+              snapshot = false
+            end
+
             put_endpoint = 'https://push.fury.io'
 
             f = Faraday.new(url: put_endpoint,
@@ -145,12 +194,50 @@ EOF
             f.basic_auth(furynix_api_token, '.')
 
             push_files = [ ]
+
+            package_fname = publish_file || File.basename(package[:file])
+            package_buf = File.read(package_path)
+            package_sha1 = Digest::SHA1.hexdigest(package_buf)
+            package_md5 = Digest::MD5.hexdigest(package_buf)
+
             push_files << { put_path: File.join('/', furynix_user, package[:name].gsub('.', '/'),
-                                                package[:version], package[:file]),
-                            put_file: File.read(package_path) }
+                                                package[:version], package_fname),
+                            put_file: package_buf }
+            push_files << { put_path: File.join('/', furynix_user, package[:name].gsub('.', '/'),
+                                                package[:version], '%s.sha1' % package_fname),
+                            put_file: package_sha1 }
+            push_files << { put_path: File.join('/', furynix_user, package[:name].gsub('.', '/'),
+                                                package[:version], '%s.md5' % package_fname),
+                            put_file: package_md5 }
+
+            if snapshot
+              raise 'Missing pom file' if pom_path.nil?
+              raise 'Missing version metadata file' if version_metadata_path.nil?
+
+              push_files << { put_path: File.join('/', furynix_user, package[:name].gsub('.', '/'),
+                                                  package[:version], publish_pom_file || File.basename(package[:file])),
+                              put_file: File.read(pom_path) }
+
+              vmd_buf = File.read(version_metadata_path)
+              vmd_sha1 = Digest::SHA1.hexdigest(vmd_buf)
+              vmd_md5 = Digest::MD5.hexdigest(vmd_buf)
+
+              push_files << { put_path: File.join('/', furynix_user, package[:name].gsub('.', '/'),
+                                                  package[:version], 'maven-metadata.xml'),
+                              put_file: vmd_buf }
+              push_files << { put_path: File.join('/', furynix_user, package[:name].gsub('.', '/'),
+                                                  package[:version], 'maven-metadata.xml.sha1'),
+                              put_file: vmd_sha1 }
+              push_files << { put_path: File.join('/', furynix_user, package[:name].gsub('.', '/'),
+                                                  package[:version], 'maven-metadata.xml.md5'),
+                              put_file: vmd_md5 }
+            end
+
             push_files << { put_path: File.join('/', furynix_user, package[:name].gsub('.', '/'),
                                                 'maven-metadata.xml'),
                             put_file: File.read(metadata_path) }
+
+            #puts '%s' % push_files.collect { |f| f[:put_path] }.inspect
 
             push_files.each do |pf|
               put_path = pf[:put_path]

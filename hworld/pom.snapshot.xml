@@ -1,25 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.furynix</groupId>
-  <artifactId>jworld</artifactId>
-  <version>1.2-SNAPSHOT</version>
-  <packaging>jar</packaging>
-
-  <name>furynix</name>
-  <url>https://gemfury.com</url>
-
-  <developers>
-    <developer>
-      <name>Gemfury</name>
-      <email>hello@gemfury.com</email>
-      <organization>Gemfury</organization>
-      <organizationUrl>https://gemfury.com</organizationUrl>
-    </developer>
-  </developers>
+  <artifactId>hworld</artifactId>
+  <version>1.0</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -29,6 +17,11 @@
 
   <dependencies>
     <dependency>
+      <groupId>org.furynix</groupId>
+      <artifactId>jworld</artifactId>
+      <version>1.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.12</version>
@@ -36,14 +29,13 @@
     </dependency>
   </dependencies>
 
-  <distributionManagement>
+  <repositories>
     <repository>
       <id>fury</id>
-      <name>Fury</name>
-      <url>https://${env.FURYNIX_PUSH_ENDPOINT}/${env.FURYNIX_USER}/</url>
+      <url>https://maven.fury.io/${env.FURYNIX_USER}/</url>
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
     </repository>
-  </distributionManagement>
+  </repositories>
 </project>
