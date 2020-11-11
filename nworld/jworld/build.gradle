@@ -1,7 +1,7 @@
 apply plugin: "java"
 apply plugin: "maven-publish"
 
-group = "org.furynix"
+group = "org.furynix.nworld"
 version = "1.1"
 
 repositories {
@@ -21,7 +21,7 @@ test {
 
 publishing {
   publications {
-    nworld(MavenPublication) {
+    jworld(MavenPublication) {
       from components.java
     }
   }
@@ -47,5 +47,13 @@ publishing {
         password = "NOPASS"
       }
     }
+  }
+}
+
+jar {
+  dependsOn("generatePomFileForJworldPublication")
+  into("META-INF/maven/$project.group/$project.name") {
+    from "$projectDir/build/publications/$project.name"
+    rename "pom-default.xml", "pom.xml"
   }
 }

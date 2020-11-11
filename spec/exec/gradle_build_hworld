@@ -9,5 +9,5 @@ export ORG_GRADLE_PROJECT_furyToken="$FURYNIX_API_TOKEN"
 
 cd /build/hworld
 exec_cmd "rm -rf .gradle build"
-exec_cmd "gradle -i build"
-exec_cmd "gradle -i test"
+exec_cmd "gradle -i build -b $BUILD_FILE"
+exec_cmd "gradle -i test -b $BUILD_FILE"

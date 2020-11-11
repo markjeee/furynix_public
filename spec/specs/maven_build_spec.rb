@@ -116,14 +116,14 @@ describe 'Maven' do
 
     after do
       unless @fury.nil?
-        begin
-          @packages.each do |p_info|
+        @packages.each do |p_info|
+          begin
             @fury.yank_version(p_info[:name], p_info[:version])
+          rescue Gemfury::NotFound
           end
-
-          sleep(10)
-        rescue Gemfury::NotFound
         end
+
+        sleep(10)
       end
     end
   end

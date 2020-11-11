@@ -8,10 +8,8 @@ export ORG_GRADLE_PROJECT_furyUser="$FURYNIX_USER"
 export ORG_GRADLE_PROJECT_furyToken="$FURYNIX_API_TOKEN"
 export ORG_GRADLE_PROJECT_furyPushEndpoint="$FURYNIX_PUSH_ENDPOINT"
 
-cd /build/jworld
-exec_cmd "rm -rf .gradle build"
-exec_cmd "gradle -i -b $BUILD_FILE build"
-exec_cmd "gradle -i -b $BUILD_FILE test"
-exec_cmd "gradle -i -b $BUILD_FILE publishAllPublicationsToFuryRepository"
-
-exec_cmd "ls -fl $package_path"
+cd /build/nworld
+exec_cmd "rm -rf .gradle build jhello/build jworld/build"
+exec_cmd "gradle -i build"
+exec_cmd "gradle -i test"
+exec_cmd "gradle -i publishAllPublicationsToFuryRepository"
