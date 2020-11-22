@@ -62,6 +62,13 @@ namespace :bash do
     c.runi
   end
 
+  desc 'Bash to Maven environment'
+  task :maven do
+    c = DockerTask.containers['furynix.maven']
+    c.pull
+    c.runi
+  end
+
   desc 'Bash to Gradle environment'
   task :gradle do
     c = DockerTask.containers['furynix.gradle']
