@@ -36,8 +36,12 @@ namespace :spec do
 
   desc 'Maven, build, build'
   RSpec::Core::RakeTask.new('maven_build') do |t|
-    t.pattern = [ 'spec/specs/maven_build_spec.rb',
-                  'spec/specs/gradle_build_spec.rb' ]
+    t.pattern = [ 'spec/specs/maven_build_spec.rb' ]
+  end
+
+  desc 'Gradle, build, build'
+  RSpec::Core::RakeTask.new('gradle_build') do |t|
+    t.pattern = [ 'spec/specs/gradle_build_spec.rb' ]
   end
 
   desc 'Go, build, push'

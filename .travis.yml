@@ -4,6 +4,7 @@ services:
 
 env:
   - spec=spec:rubygems
+  - spec=spec:gradle_build
   - spec=spec:apt_install
   - spec=spec:yum_install
   - spec=spec:brew_install
