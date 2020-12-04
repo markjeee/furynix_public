@@ -8,10 +8,12 @@ export ORG_GRADLE_PROJECT_furyUser="$FURYNIX_USER"
 export ORG_GRADLE_PROJECT_furyToken="$FURYNIX_API_TOKEN"
 export ORG_GRADLE_PROJECT_furyPushEndpoint="$FURYNIX_PUSH_ENDPOINT"
 
+export GRADLE_ARGS="-Dorg.gradle.internal.repository.max.retries=4 -Dorg.gradle.internal.repository.initial.backoff=250"
+
 cd /build/jworld
 exec_cmd "rm -rf .gradle build"
-exec_cmd "gradle -i -b $BUILD_FILE build"
-exec_cmd "gradle -i -b $BUILD_FILE test"
-exec_cmd "gradle -i -b $BUILD_FILE publishAllPublicationsToFuryRepository"
+exec_cmd "gradle -i -b $BUILD_FILE $GRADLE_ARGS build"
+exec_cmd "gradle -i -b $BUILD_FILE $GRADLE_ARGS test"
+exec_cmd "gradle -i -b $BUILD_FILE $GRADLE_ARGS publishAllPublicationsToFuryRepository"
 
 exec_cmd "ls -fl $package_path"
