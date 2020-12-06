@@ -222,4 +222,15 @@ describe 'Gradle' do
     it_should_behave_like 'build and push'
     it_should_behave_like 'multi-project compile and deploy'
   end
+
+  describe 'in gradle (endpoint: maven-beta.fury.io)' do
+    before do
+      #skip if FurynixSpec.skip_if_only_one
+      @container_key = 'furynix-spec.gradle65'
+      @push_endpoint = 'maven-beta.fury.io'
+    end
+
+    it_should_behave_like 'build and push'
+    it_should_behave_like 'multi-project compile and deploy'
+  end
 end
