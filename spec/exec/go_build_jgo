@@ -13,7 +13,7 @@ exec_cmd "tar -xzf git_clean.tgz"
 exec_cmd "git remote add fury https://git.fury.io/$furynix_user/jgo.git"
 
 # clear our repo first
-exec_cmd "git push -f fury master:master"
+# exec_cmd "git push -f fury master:master"
 exec_cmd "git push -f fury --delete v$package_version; true"
 
 exec_cmd "git add 1.1.0-delta && git commit -m 'Increment version $package_version'"
