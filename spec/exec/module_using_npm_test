@@ -22,7 +22,7 @@ if [ -z $dist_tag ]; then
     exec_cmd "npm publish"
 else
     exec_cmd "npm publish --tag $dist_tag"
-    sleep 10
+    sleep 20
 
     exec_cmd "npm dist-tags ls >/dev/stdout | grep '$dist_tag'"
 fi
