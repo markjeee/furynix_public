@@ -47,6 +47,14 @@ module FurynixSpec
     ENV['FURYNIX_API_TOKEN']
   end
 
+  def self.furynix_push_token
+    ENV['FURYNIX_PUSH_TOKEN']
+  end
+
+  def self.furynix_deploy_token
+    ENV['FURYNIX_DEPLOY_TOKEN']
+  end
+
   def self.debug?
     ENV['DEBUG'] == '1'
   end
@@ -61,7 +69,9 @@ module FurynixSpec
   def self.create_env_args(env)
     global_env = {
       'furynix_user' => furynix_user,
-      'furynix_token' => furynix_api_token
+      'furynix_token' => furynix_api_token,
+      'furynix_push_token' => furynix_push_token,
+      'furynix_deploy_token' => furynix_deploy_token
     }
 
     if ENV['USE_PROXY']

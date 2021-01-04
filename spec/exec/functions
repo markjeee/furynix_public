@@ -172,7 +172,7 @@ prepare_maven() {
   <servers>
     <server>
       <id>$FURYNIX_MAVEN_REPO_ID</id>
-      <username>$FURYNIX_API_TOKEN</username>
+      <username>$FURYNIX_MAVEN_TOKEN</username>
       <password>.</password>
       <configuration>
         <httpConfiguration>
