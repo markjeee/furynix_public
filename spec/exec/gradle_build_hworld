@@ -5,7 +5,7 @@ source $(dirname $0)/functions
 configure_furynix_token
 
 export ORG_GRADLE_PROJECT_furyUser="$FURYNIX_USER"
-export ORG_GRADLE_PROJECT_furyToken="$FURYNIX_API_TOKEN"
+export ORG_GRADLE_PROJECT_furyToken="$furynix_deploy_token"
 
 cd /build/hworld
 exec_cmd "rm -rf .gradle build"
