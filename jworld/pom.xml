@@ -38,7 +38,7 @@
 
   <distributionManagement>
     <repository>
-      <id>fury</id>
+      <id>fury-push</id>
       <name>Fury</name>
       <url>https://${env.FURYNIX_PUSH_ENDPOINT}/${env.FURYNIX_USER}/</url>
     </repository>

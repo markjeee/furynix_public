@@ -4,7 +4,7 @@ source $(dirname $0)/functions
 
 configure_furynix_token
 
-export FURYNIX_MAVEN_REPO_ID=fury
+export FURYNIX_MAVEN_REPO_ID=fury-push
 export FURYNIX_MAVEN_TOKEN="$furynix_push_token"
 
 prepare_maven
