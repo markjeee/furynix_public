@@ -131,6 +131,8 @@ machine $source_host
   password NOPASS
 EOF
     chmod 0600 /etc/apt/auth.conf.d/fury.conf
+    ls -fl /etc/apt/auth.conf.d/fury.conf
+    ls -fl /etc/apt/auth.conf.d
     cat /etc/apt/auth.conf.d/fury.conf
 
     if [ ! -z "$FURYNIX_USE_PROXY" ]; then

@@ -128,16 +128,16 @@ describe 'APT' do
     it_should_behave_like 'install CLI'
   end
 
-  if FurynixSpec.include_all_systems
-    describe 'in ubuntu/xenial' do
-      before do
-        skip if FurynixSpec.skip_if_only_one
-        @container_key = 'furynix-spec.xenial'
-      end
-
-      it_should_behave_like 'install CLI'
+  describe 'in ubuntu/xenial' do
+    before do
+      skip if FurynixSpec.skip_if_only_one
+      @container_key = 'furynix-spec.xenial'
     end
 
+    it_should_behave_like 'install CLI'
+  end
+
+  if FurynixSpec.include_all_systems
     describe 'in ubuntu/trusty' do
       before do
         skip if FurynixSpec.skip_if_only_one

@@ -139,7 +139,7 @@ namespace :spec do
 
 cd #{working_path}
 tar -xzf #{package_path}
-git remote add fury https://git.fury.io/#{furynix_user}/#{repo_name}.git
+git remote add fury https://#{furynix_user}:#{furynix_api_token}@git.fury.io/#{furynix_user}/#{repo_name}.git
 
 git push -f fury --delete v#{package[:version]}; true
 git tag v#{package[:version]} master
