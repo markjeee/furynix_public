@@ -12,7 +12,7 @@ describe 'Curl API' do
     container.pull
 
     env = FurynixSpec.
-            create_env_args({ 'username' => 'furynix',
+            create_env_args({ 'username' => FurynixSpec.furynix_user,
                               'out_file' => FurynixSpec.calculate_build_path(@out_file_path) })
 
     ret = container.run(:exec => '/build/spec/exec/curl_users_me',

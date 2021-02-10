@@ -5,6 +5,11 @@ source $(dirname $0)/functions
 detect_if_debian_wheezy
 prepare_apt
 
+find /var/lib/apt/lists/apt.fury.io*
+rm -rf /var/lib/apt/lists/apt.fury.io*
+
+exec_cmd "apt update"
+
 if [ -n "$version" ]; then
     exec_cmd "$apt install -y gemfury=$version"
 else
