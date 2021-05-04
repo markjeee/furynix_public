@@ -226,7 +226,8 @@ describe 'Maven' do
 
   describe 'in maven (endpoint: maven-beta.fury.io)' do
     before do
-      skip if FurynixSpec.skip_if_only_one
+      skip 'for now, since cert has not been renewed'
+      #skip if FurynixSpec.skip_if_only_one
       @container_key = 'furynix-spec.maven'
       @push_endpoint = 'maven-beta.fury.io'
     end

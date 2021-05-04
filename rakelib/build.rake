@@ -186,10 +186,10 @@ namespace :build do
     end
   end
 
-  desc 'Docker build Ruby 1.9.x environment'
-  task :ruby19 do
-    DockerTask.pull('ruby:1.9.3')
-    c = DockerTask.containers['furynix.ruby19']
+  desc 'Docker build Ruby 2.0.0 environment'
+  task :ruby20 do
+    DockerTask.pull('ruby:2.0.0')
+    c = DockerTask.containers['furynix.ruby20']
     c.build(no_cache: true)
 
     unless ENV['NOPUSH']

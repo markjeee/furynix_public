@@ -41,6 +41,12 @@ DT.create({ :remote_repo => 'furynix/ruby',
           })
 
 DT.create({ :remote_repo => 'furynix/ruby',
+            :pull_tag => '2.0',
+            :image_name => 'furynix.ruby20',
+            :build_path => File.join(build_path, 'dockerfiles/ruby20')
+          })
+
+DT.create({ :remote_repo => 'furynix/ruby',
             :pull_tag => '1.9',
             :image_name => 'furynix.ruby19',
             :build_path => File.join(build_path, 'dockerfiles/ruby19')

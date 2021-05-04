@@ -227,7 +227,8 @@ describe 'Gradle' do
 
   describe 'in gradle (endpoint: maven-beta.fury.io)' do
     before do
-      skip if FurynixSpec.skip_if_only_one
+      skip 'for now, since cert has not been renewed'
+      #skip if FurynixSpec.skip_if_only_one
       @container_key = 'furynix-spec.gradle65'
       @push_endpoint = 'maven-beta.fury.io'
     end
