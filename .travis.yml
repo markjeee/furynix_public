@@ -1,4 +1,7 @@
 language: ruby
+rvm:
+  - 2.7
+
 services:
   - docker
 
@@ -15,6 +18,9 @@ env:
   - spec=spec:dotnet_build
   - spec=spec:maven_build
   - spec=spec:go_build
+
+before_install:
+  - gem install bundler:2.2.20
 
 script:
   - bundle exec rake $spec
