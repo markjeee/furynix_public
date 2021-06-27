@@ -97,7 +97,7 @@ module FurynixSpec
   end
 
   def self.gemfury_version
-    '0.11.0'
+    '0.12.0'
   end
 
   def self.gemfury_dev_version
