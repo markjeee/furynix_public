@@ -11,21 +11,21 @@ namespace :spec do
 
     packages = [
                  { name: 'gemfury',
-                   version: '0.11.0',
+                   version: '0.12.0',
                    kind: 'deb',
-                   file: 'gemfury_0.11.0_all.deb',
+                   file: 'gemfury_0.12.0_all.deb',
                    pub: false
                  },
                  { name: 'gemfury',
-                   version: '0.11.0-1',
+                   version: '0.12.0-1',
                    kind: 'rpm',
-                   file: 'gemfury_0.11.0_all.rpm',
+                   file: 'gemfury_0.12.0_all.rpm',
                    pub: false
                  },
                  { name: 'gemfury',
-                   version: '0.11.0',
+                   version: '0.12.0',
                    kind: 'ruby',
-                   file: 'gemfury-0.11.0.gem',
+                   file: 'gemfury-0.12.0.gem',
                    pub: false
                  },
                  { name: 'gem_using_bundler',
