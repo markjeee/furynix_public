@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+source $(dirname $0)/functions
+
+configure_furynix_token
+detect_if_debian_wheezy
+prepare_apt
+
+exec_cmd "$apt install -y gemfury"
+exec_cmd "which ruby"
+exec_cmd "ruby -v"
+
+fury_path=$(which fury)
+exec_cmd "echo $fury_path" $out_file
+show_exec_boundary $out_file
+
+exec_cmd "$fury_path -v" $out_file
+show_exec_boundary $out_file
+
+exec_cmd "$fury_path yank $package_name -v $package_version" $out_file

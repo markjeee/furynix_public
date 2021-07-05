@@ -102,6 +102,36 @@ describe 'CLI' do
       gems.each { |gem| yank_if_exist(*gem) }
     end
 
+    it 'should show package versions' do
+      skip if FurynixSpec.skip_if_only_one
+
+      prepare_gemfury_gem
+      ret = cli_versions_test('https://apt.fury.io/cli/')
+      expect(ret).to be_a_docker_success
+
+      expect(File.exists?(@out_file_path)).to be_truthy
+      line_groups = parse_out_file
+
+      expect_latest_version_listed(line_groups)
+    end
+
+    it 'should yank a gem' do
+      skip if FurynixSpec.skip_if_only_one
+
+      gem = [ 'rspec-expectations', '3.9.0' ]
+      yank_if_exist(gem[0], gem[1])
+
+      f = File.new(FurynixSpec.fixtures_path('%s-%s.gem' % gem))
+      @fury.push_gem(f)
+
+      ret = cli_yank_test('https://apt.fury.io/cli/', gem[0], gem[1])
+      expect(ret).to be_a_docker_success
+
+      line_groups = parse_out_file
+      lines = line_groups[2]
+      expect(lines[1]).to match(/Yanked #{gem[0]}-#{gem[1]}/)
+    end
+
     private
 
     def prepare_gemfury_gem
@@ -156,6 +186,13 @@ describe 'CLI' do
     def expect_collaborator_markjeee(lines)
       account_count = lines.select { |l| l =~ /^markjeee\s+owner$/ }.count
       expect(account_count).to be > 0
+    end
+
+    def expect_latest_version_listed(line_groups)
+      lines = line_groups[2]
+
+      gemfury_count = lines.select { |l| l =~ /^#{FurynixSpec.gemfury_version}\s.+/ }.count
+      expect(gemfury_count).to be > 0
     end
 
     def parse_out_file
@@ -213,6 +250,19 @@ describe 'CLI' do
                     :env_file => FurynixSpec.create_env_file(env))
     end
 
+    def cli_yank_test(source, gem, gem_version)
+      env = FurynixSpec.
+              create_env_args({ 'source' => source,
+                                'package_name' => '%s' % gem,
+                                'package_version' => gem_version,
+                                'out_file' => FurynixSpec.calculate_build_path(@out_file_path)
+                              })
+
+      container.run(:exec => '/build/spec/exec/cli_yank_test',
+                    :capture => true,
+                    :env_file => FurynixSpec.create_env_file(env))
+    end
+
     def cli_accounts_test(source)
       env = FurynixSpec.
               create_env_args({ 'source' => source,
@@ -231,6 +281,17 @@ describe 'CLI' do
                               })
 
       container.run(:exec => '/build/spec/exec/cli_sharing_test',
+                    :capture => true,
+                    :env_file => FurynixSpec.create_env_file(env))
+    end
+
+    def cli_versions_test(source)
+      env = FurynixSpec.
+              create_env_args({ 'source' => source,
+                                'out_file' => FurynixSpec.calculate_build_path(@out_file_path)
+                              })
+
+      container.run(:exec => '/build/spec/exec/cli_versions_test',
                     :capture => true,
                     :env_file => FurynixSpec.create_env_file(env))
     end
