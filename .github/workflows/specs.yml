@@ -1,0 +1,58 @@
+name: build
+
+on:
+  push:
+    branches: [ master, gh-actions ]
+  schedule:
+    - cron: '0 1 * * *'
+  workflow_dispatch:
+
+jobs:
+  run-specs:
+    environment: furynix
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    concurrency: assets-${{ matrix.asset-tag }}
+    env:
+      FURYNIX_USER: ${{ secrets.FURYNIX_USER }}
+      FURYNIX_API_TOKEN: ${{ secrets.FURYNIX_API_TOKEN }}
+      FURYNIX_PUSH_TOKEN: ${{ secrets.FURYNIX_PUSH_TOKEN }}
+      FURYNIX_DEPLOY_TOKEN: ${{ secrets.FURYNIX_DEPLOY_TOKEN }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - task: spec:rubygems
+            asset-tag: gem
+          - task: spec:gradle_build
+            asset-tag: jar
+          - task: spec:apt_install
+            asset-tag: deb
+          - task: spec:yum_install
+            asset-tag: rpm
+          - task: spec:brew_install
+            asset-tag: tgz
+          - task: spec:cli
+            asset-tag: cli
+          - task: spec:api
+            asset-tag: api
+          - task: spec:curl_api
+            asset-tag: api
+          - task: spec:npm_install
+            asset-tag: node
+          - task: spec:dotnet_build
+            asset-tag: dotnet
+          - task: spec:maven_build
+            asset-tag: jar
+          - task: spec:go_build
+            asset-tag: git
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up ruby & bundler
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7.0
+          bundler-cache: true
+      - name: Run task
+        run: bundle exec rake ${{ matrix.task }}

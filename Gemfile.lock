@@ -1,13 +1,13 @@
 GEM
   remote: https://cli.gemfury.com/ruby/
   specs:
-    gemfury (0.11.0)
-      faraday (>= 0.9.0, < 0.16.0.pre)
+    gemfury (0.12.0)
+      faraday (>= 0.9.0, < 1.1.0.pre)
       highline (>= 1.6.0, < 2.1.0.pre)
       multi_json (~> 1.10)
       netrc (>= 0.10.0, < 0.12.0.pre)
-      progressbar (>= 1.10.1)
-      thor (>= 0.14.0, < 1.0.0.pre)
+      progressbar (>= 1.10.1, < 2.0.0.pre)
+      thor (>= 0.14.0, < 1.1.0.pre)
 
 GEM
   remote: https://repo.nlevel.io/ruby/
@@ -20,7 +20,7 @@ GEM
   specs:
     diff-lcs (1.4.4)
     dotenv (2.7.6)
-    faraday (0.15.4)
+    faraday (1.0.1)
       multipart-post (>= 1.2, < 3)
     highline (2.0.3)
     multi_json (1.15.0)
@@ -44,7 +44,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.10.0)
     rspec-support (3.10.2)
-    thor (0.20.3)
+    thor (1.0.1)
 
 PLATFORMS
   x86_64-darwin-20
