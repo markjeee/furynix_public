@@ -2,6 +2,10 @@
 
 source $(dirname $0)/functions
 
+if [ ! -z "$FURYNIX_USE_PROXY" ]; then
+    install_fiddler_ca
+fi
+
 detect_if_debian_wheezy
 prepare_apt
 

@@ -65,6 +65,17 @@ namespace :build do
     end
   end
 
+  desc 'Docker build Xenial environment'
+  task :xenial do
+    DockerTask.pull('ubuntu:xenial')
+    c = DockerTask.containers['furynix.xenial']
+    c.build(no_cache: true)
+
+    unless ENV['NOPUSH']
+      c.push
+    end
+  end
+
   desc 'Docker build Buster environment'
   task :buster do
     DockerTask.pull('debian:buster')

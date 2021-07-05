@@ -6,13 +6,17 @@ describe 'APT' do
     before do
       FurynixSpec.prepare
 
+      @apt_source = 'https://apt.fury.io/cli/'
+      @apt_source_custom_domain = 'https://cli.gemfury.com/apt/'
+      @apt_source_dev = 'https://apt.fury.io/cli-dev/'
+
       @out_file_path = FurynixSpec.prepare_docker_outfile
     end
 
     it 'should install v%s' % FurynixSpec.gemfury_version do
       skip if FurynixSpec.skip_if_only_one
 
-      ret = apt_install_gemfury('https://apt.fury.io/cli/',
+      ret = apt_install_gemfury(@apt_source,
                                 FurynixSpec.gemfury_version)
 
       expect(ret).to be_a_docker_success
@@ -22,7 +26,7 @@ describe 'APT' do
     it 'should install using custom domain' do
       skip if FurynixSpec.skip_if_only_one
 
-      ret = apt_install_gemfury('https://cli.gemfury.com/apt/',
+      ret = apt_install_gemfury(@apt_source_custom_domain,
                                 FurynixSpec.gemfury_version)
 
       expect(ret).to be_a_docker_success
@@ -32,7 +36,7 @@ describe 'APT' do
     it 'should install dev version v%s' % FurynixSpec.gemfury_dev_version do
       skip if FurynixSpec.skip_if_only_one
 
-      ret = apt_install_gemfury('https://apt.fury.io/cli-dev/',
+      ret = apt_install_gemfury(@apt_source_dev,
                                 FurynixSpec.gemfury_dev_version)
 
       expect(ret).to be_a_docker_success
@@ -43,7 +47,7 @@ describe 'APT' do
       it 'should install v%s' % v do
         skip if FurynixSpec.skip_if_only_one
 
-        ret = apt_install_gemfury('https://apt.fury.io/cli-dev/', v)
+        ret = apt_install_gemfury(@apt_source_dev, v)
 
         expect(ret).to be_a_docker_success
         expect_fury_version(v)
@@ -119,10 +123,6 @@ describe 'APT' do
     before do
       skip if FurynixSpec.skip_if_only_one
       @container_key = 'furynix-spec.stretch'
-
-      # apt_auth.conf not yet supported in this version
-      # refer: https://manpages.debian.org/buster/apt/apt_auth.conf.5.en.html
-      @skip_private_packages = 'Not yet supported'
     end
 
     it_should_behave_like 'install CLI'

@@ -123,17 +123,21 @@ prepare_apt() {
     fi
 
     exec_cmd "echo $fury_list | tee /etc/apt/sources.list.d/fury.list"
-    exec_cmd "mkdir -p /etc/apt/auth.conf.d"
 
-    cat >/etc/apt/auth.conf.d/fury.conf <<EOF
+    if [ ! -f /etc/apt/auth.conf ]; then
+        touch /etc/apt/auth.conf
+    fi
+
+    read -r -d '' INSERT_CODE <<EOF
 machine $source_host
-  login $furynix_token
-  password NOPASS
+  login $furynix_user
+  password $furynix_token
 EOF
-    chmod 0600 /etc/apt/auth.conf.d/fury.conf
-    ls -fl /etc/apt/auth.conf.d/fury.conf
-    ls -fl /etc/apt/auth.conf.d
-    cat /etc/apt/auth.conf.d/fury.conf
+    echo "$INSERT_CODE" | tee -a /etc/apt/auth.conf
+
+    chmod 0600 /etc/apt/auth.conf
+    ls -fl /etc/apt/auth.conf
+    more /etc/apt/auth.conf
 
     if [ ! -z "$FURYNIX_USE_PROXY" ]; then
         cat >/etc/apt/apt.conf.d/proxy.conf <<EOF
@@ -207,4 +211,10 @@ rawurlencode() {
 
     echo "${encoded}"
     REPLY="${encoded}"
+}
+
+install_fiddler_ca() {
+    ls -fl /build/spec/fixtures/FiddlerRootCertificate.crt
+    cp -f /build/spec/fixtures/FiddlerRootCertificate.crt /usr/local/share/ca-certificates/
+    update-ca-certificates
 }

@@ -64,6 +64,12 @@ DT.create({ :remote_repo => 'furynix/ubuntu',
             :build_path => File.join(build_path, 'dockerfiles/bionic')
           })
 
+DT.create({ :remote_repo => 'furynix/ubuntu',
+            :pull_tag => 'xenial',
+            :image_name => 'furynix.xenial',
+            :build_path => File.join(build_path, 'dockerfiles/xenial')
+          })
+
 DT.create({ :remote_repo => 'furynix/centos',
             :pull_tag => '8',
             :image_name => 'furynix.centos8',
@@ -170,7 +176,7 @@ DT.create({ :remote_repo => 'furynix/ubuntu',
             :image_name => 'furynix-spec.bionic',
           })
 
-DT.create({ :remote_repo => 'ubuntu',
+DT.create({ :remote_repo => 'furynix/ubuntu',
             :pull_tag => 'xenial',
             :image_name => 'furynix-spec.xenial',
           })
